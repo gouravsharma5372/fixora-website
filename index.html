@@ -1,1191 +1,943 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Fixora – Instant. Verified. Reliable.</title>
 <style>
-  :root{
-    --dark-blue:#0B1F3B;
-    --deep-blue:#142B4D;
-    --green:#00FF88;
-    --accent:#00E676;
-    --bg:#F4F6F9;
-    --text:#0B1F3B;
-    --card:#fff;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;}
+:root{
+  --navy:#0F172A;
+  --navy2:#1E293B;
+  --navy3:#334155;
+  --blue:#2563EB;
+  --blue2:#1D4ED8;
+  --cyan:#06B6D4;
+  --cyan2:#0891B2;
+  --bg:#F1F5F9;
+  --bg2:#E2E8F0;
+  --card:#FFFFFF;
+  --txt:#0F172A;
+  --txt2:#475569;
+  --txt3:#94A3B8;
+  --border:#E2E8F0;
+  --border2:#CBD5E1;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;}
 
-  /* ===== SPLASH ===== */
-  #splash{
-    position:fixed;inset:0;z-index:9999;
-    background:var(--dark-blue);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    overflow:hidden;
-    transition:opacity .8s ease,visibility .8s ease;
-  }
-  #splash.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+/* ══ SPLASH ══════════════════════════════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:9999;background:var(--navy);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  overflow:hidden;transition:opacity .9s ease,visibility .9s ease;
+}
+#splash.out{opacity:0;visibility:hidden;pointer-events:none;}
+#splashBg{position:absolute;inset:0;width:100%;height:100%;}
+.s-ring{
+  position:absolute;left:50%;top:50%;border-radius:50%;
+  border:1px solid rgba(37,99,235,.1);
+  transform:translate(-50%,-50%);
+  animation:sRing 4s ease-out infinite;pointer-events:none;
+}
+@keyframes sRing{0%{width:0;height:0;opacity:.5;}100%{width:1000px;height:1000px;opacity:0;}}
+.s-inner{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:22px;
+  animation:sUp .8s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes sUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+.s-logo{
+  filter:drop-shadow(0 0 20px rgba(37,99,235,.7)) drop-shadow(0 0 50px rgba(6,182,212,.3));
+  animation:lGlow 2s ease-in-out infinite alternate;
+}
+@keyframes lGlow{
+  from{filter:drop-shadow(0 0 16px rgba(37,99,235,.6)) drop-shadow(0 0 40px rgba(6,182,212,.2));}
+  to{filter:drop-shadow(0 0 36px rgba(37,99,235,1)) drop-shadow(0 0 80px rgba(6,182,212,.5));}
+}
+.s-tag h1{
+  font-size:clamp(2.2rem,5vw,3.4rem);font-weight:800;text-align:center;
+  background:linear-gradient(135deg,#fff 40%,#67E8F9);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:-.6px;
+}
+.s-tag p{
+  text-align:center;margin-top:8px;font-size:clamp(.85rem,1.8vw,1rem);
+  color:rgba(148,163,184,.85);font-weight:500;letter-spacing:2.5px;text-transform:uppercase;
+}
+.s-icons{display:flex;gap:18px;}
+.s-ic{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  color:rgba(148,163,184,.65);font-size:.68rem;font-weight:600;letter-spacing:.4px;
+}
+.s-ic:nth-child(odd){animation:icL .6s cubic-bezier(.22,1,.36,1) both;}
+.s-ic:nth-child(even){animation:icR .6s cubic-bezier(.22,1,.36,1) both;}
+.s-ic:nth-child(1){animation-delay:.25s;}.s-ic:nth-child(2){animation-delay:.33s;}
+.s-ic:nth-child(3){animation-delay:.41s;}.s-ic:nth-child(4){animation-delay:.49s;}
+.s-ic:nth-child(5){animation-delay:.57s;}
+@keyframes icL{from{opacity:0;transform:translateX(-50px);}to{opacity:1;transform:none;}}
+@keyframes icR{from{opacity:0;transform:translateX(50px);}to{opacity:1;transform:none;}}
+.s-ic-box{
+  width:46px;height:46px;border-radius:12px;font-size:1.25rem;
+  background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.22);
+  display:flex;align-items:center;justify-content:center;
+}
+.s-bar{width:170px;height:2px;background:rgba(255,255,255,.07);border-radius:9px;overflow:hidden;}
+.s-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--cyan));
+  border-radius:9px;animation:sFill 3.5s linear forwards;}
+@keyframes sFill{to{width:100%;}}
 
-  /* Electric canvas behind splash */
-  #splashCanvas{position:absolute;inset:0;width:100%;height:100%;}
+/* ══ NAV ═════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;height:64px;padding:0 6%;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(15,23,42,.55);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  transition:background .3s,border-color .3s,box-shadow .3s;
+}
+/* When scrolled into light sections, keep dark glass */
+nav.scrolled{
+  background:rgba(15,23,42,.85);
+  box-shadow:0 1px 0 rgba(255,255,255,.05),0 4px 24px rgba(0,0,0,.18);
+}
+.n-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.n-name{font-size:1.3rem;font-weight:800;color:#fff;letter-spacing:-.3px;}
+.n-name span{background:linear-gradient(135deg,#60A5FA,var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.n-links{display:flex;gap:26px;list-style:none;}
+.n-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .2s;}
+.n-links a:hover{color:#fff;}
+.n-btn{
+  background:linear-gradient(135deg,var(--blue),var(--cyan2));color:#fff;
+  border:none;padding:9px 22px;border-radius:8px;font-weight:600;font-size:.875rem;
+  cursor:pointer;letter-spacing:.1px;text-decoration:none;
+  box-shadow:0 4px 14px rgba(37,99,235,.38);
+  transition:opacity .2s,transform .2s,box-shadow .2s;
+}
+.n-btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 8px 22px rgba(37,99,235,.48);}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hbg span{width:22px;height:1.5px;background:rgba(255,255,255,.8);border-radius:2px;}
+.mob{
+  display:none;position:fixed;top:64px;left:0;right:0;z-index:499;
+  background:rgba(15,23,42,.97);backdrop-filter:blur(20px);
+  padding:22px 6%;flex-direction:column;gap:16px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.mob.open{display:flex;}
+.mob a{color:rgba(255,255,255,.8);text-decoration:none;font-size:.95rem;font-weight:500;}
 
-  /* Energy ripple */
-  .ripple-ring{
-    position:absolute;border-radius:50%;
-    border:1px solid rgba(0,255,136,.15);
-    animation:rippleOut 4s ease-out infinite;
-    pointer-events:none;
-  }
-  @keyframes rippleOut{
-    0%{width:0;height:0;opacity:.8;transform:translate(-50%,-50%);}
-    100%{width:900px;height:900px;opacity:0;transform:translate(-50%,-50%);}
-  }
+/* ══ HERO — DARK ═════════════════════════════════════════ */
+#hero{
+  min-height:100vh;padding-top:64px;
+  position:relative;overflow:hidden;
+  background:var(--navy);
+  display:flex;align-items:center;
+}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%;}
+.h-radial{
+  position:absolute;width:900px;height:900px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(37,99,235,.16) 0%,rgba(6,182,212,.06) 40%,transparent 70%);
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  animation:radP 5s ease-in-out infinite alternate;
+}
+@keyframes radP{from{opacity:.6;transform:translate(-50%,-50%) scale(.88);}to{opacity:1;transform:translate(-50%,-50%) scale(1.08);}}
 
-  /* Splash content */
-  .splash-content{
-    position:relative;z-index:2;
-    display:flex;flex-direction:column;align-items:center;gap:20px;
-    animation:splashIn .9s cubic-bezier(.34,1.56,.64,1) both;
-  }
-  @keyframes splashIn{
-    from{opacity:0;transform:scale(.6);}
-    to{opacity:1;transform:scale(1);}
-  }
+.hero-wrap{
+  position:relative;z-index:2;max-width:1160px;margin:0 auto;padding:80px 6%;
+  display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;
+}
+.h-pill{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;
+  background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.28);
+  border-radius:99px;padding:5px 14px 5px 8px;font-size:.76rem;font-weight:600;
+  color:#93C5FD;
+}
+.h-pill-dot{
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:.62rem;
+}
+.h-title{
+  font-size:clamp(2.3rem,4.2vw,3.8rem);font-weight:900;line-height:1.08;
+  color:#fff;margin-bottom:18px;letter-spacing:-.8px;
+}
+.h-title .gr{
+  background:linear-gradient(135deg,#60A5FA,#22D3EE);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.h-sub{font-size:1rem;color:rgba(148,163,184,.82);line-height:1.78;margin-bottom:34px;max-width:470px;}
+.h-search{
+  display:flex;align-items:center;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;overflow:hidden;margin-bottom:30px;
+  backdrop-filter:blur(12px);transition:border-color .2s,box-shadow .2s;
+}
+.h-search:focus-within{border-color:rgba(37,99,235,.5);box-shadow:0 0 0 3px rgba(37,99,235,.14);}
+.h-si{padding:0 14px;color:rgba(148,163,184,.55);font-size:.95rem;}
+.h-in{
+  flex:1;background:transparent;border:none;outline:none;
+  padding:15px 6px;font-size:.95rem;color:#fff;
+}
+.h-in::placeholder{color:rgba(148,163,184,.45);}
+.h-sbtn{
+  margin:6px;background:linear-gradient(135deg,var(--blue),var(--cyan2));
+  color:#fff;border:none;padding:10px 22px;border-radius:8px;
+  font-weight:700;font-size:.875rem;cursor:pointer;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(37,99,235,.4);transition:opacity .2s;
+}
+.h-sbtn:hover{opacity:.88;}
+.h-stats{display:flex;gap:0;flex-wrap:wrap;}
+.hst{display:flex;flex-direction:column;padding:0 24px 0 0;}
+.hst:first-child{padding-left:0;}
+.hst+.hst{border-left:1px solid rgba(255,255,255,.1);padding-left:24px;}
+.hst-n{font-size:1.6rem;font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(135deg,#fff,#94A3B8);
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.hst-l{font-size:.73rem;color:rgba(148,163,184,.6);font-weight:500;margin-top:2px;}
 
-  /* Logo SVG wrapper */
-  .logo-wrap{
-    position:relative;
-    filter:drop-shadow(0 0 18px #00FF88) drop-shadow(0 0 40px #00E676);
-  }
-  .logo-wrap.flash{animation:logoFlash .15s ease;}
-  @keyframes logoFlash{
-    0%,100%{filter:drop-shadow(0 0 18px #00FF88) drop-shadow(0 0 40px #00E676);}
-    50%{filter:drop-shadow(0 0 60px #fff) drop-shadow(0 0 100px #00FF88) brightness(2);}
-  }
+/* Hero card */
+.h-visual{display:flex;align-items:center;justify-content:center;}
+.hv-outer{position:relative;width:100%;max-width:350px;}
+.hv-card{
+  background:rgba(30,41,59,.72);backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,.09);border-radius:20px;padding:26px;
+  box-shadow:0 24px 64px rgba(0,0,0,.4),0 0 0 1px rgba(255,255,255,.04);
+  animation:cFloat 5s ease-in-out infinite;
+}
+@keyframes cFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.hvc-top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.hvc-av{
+  width:46px;height:46px;border-radius:12px;flex-shrink:0;font-size:1.25rem;
+  background:linear-gradient(135deg,var(--blue2),var(--cyan2));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(37,99,235,.4);
+}
+.hvc-nm{font-size:.9rem;font-weight:700;color:#fff;}
+.hvc-rl{font-size:.73rem;color:rgba(148,163,184,.65);margin-top:2px;}
+.hvc-online{
+  margin-left:auto;background:rgba(6,182,212,.1);border:1px solid rgba(6,182,212,.22);
+  color:#67E8F9;font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:99px;
+  display:flex;align-items:center;gap:4px;
+}
+.odot{width:5px;height:5px;background:#22D3EE;border-radius:50%;animation:od 1.5s infinite;}
+@keyframes od{0%,100%{opacity:1;}50%{opacity:.25;}}
+.hvc-r{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.hvc-lb{font-size:.78rem;color:rgba(148,163,184,.55);}
+.hvc-vl{font-size:.78rem;font-weight:600;color:rgba(226,232,240,.88);}
+.hvc-stars{color:#FBBF24;font-size:.8rem;}
+.hvc-div{border:none;border-top:1px solid rgba(255,255,255,.06);margin:12px 0;}
+.hvc-eta{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(6,182,212,.07);border:1px solid rgba(6,182,212,.14);
+  border-radius:9px;padding:9px 12px;margin-bottom:14px;
+}
+.hvc-eta-l{font-size:.77rem;color:rgba(148,163,184,.7);}
+.hvc-eta-v{font-size:.84rem;font-weight:700;color:#67E8F9;margin-left:auto;}
+.hvc-btn{
+  width:100%;padding:11px;border-radius:9px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan2));
+  color:#fff;border:none;font-weight:700;font-size:.875rem;cursor:pointer;
+  box-shadow:0 6px 20px rgba(37,99,235,.35);
+  transition:opacity .2s,transform .2s;
+}
+.hvc-btn:hover{opacity:.9;transform:translateY(-1px);}
+.hv-chip{
+  position:absolute;
+  background:rgba(30,41,59,.88);backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.08);border-radius:12px;
+  padding:9px 13px;display:flex;align-items:center;gap:9px;
+  font-size:.76rem;font-weight:600;color:rgba(226,232,240,.88);
+  box-shadow:0 8px 24px rgba(0,0,0,.28);
+}
+.hv-chip:nth-child(2){top:-20px;right:-14px;animation:cf1 4s ease-in-out infinite;}
+.hv-chip:nth-child(3){bottom:-16px;left:-14px;animation:cf2 4s ease-in-out 1s infinite;}
+@keyframes cf1{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes cf2{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
+.chip-sub{font-size:.66rem;color:rgba(148,163,184,.55);font-weight:400;margin-top:1px;}
 
-  .splash-tagline{text-align:center;}
-  .splash-tagline h1{
-    font-size:clamp(2rem,5vw,3.2rem);font-weight:800;
-    color:#fff;letter-spacing:-.5px;
-    text-shadow:0 0 20px rgba(0,255,136,.4);
-  }
-  .splash-tagline p{
-    font-size:clamp(1rem,2.5vw,1.4rem);
-    color:var(--green);font-weight:600;letter-spacing:2px;margin-top:8px;
-    text-shadow:0 0 12px rgba(0,255,136,.6);
-  }
+/* ══ LIGHT SECTION BASE ══════════════════════════════════ */
+.sec-wrap{max-width:1160px;margin:0 auto;padding:0 6%;}
+.sec-tag{
+  display:inline-block;background:rgba(37,99,235,.07);color:#2563EB;
+  border:1px solid rgba(37,99,235,.16);border-radius:99px;
+  padding:5px 14px;font-size:.7rem;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;margin-bottom:14px;
+}
+.sec-title{
+  font-size:clamp(1.85rem,3.2vw,2.75rem);font-weight:900;color:var(--navy);
+  line-height:1.12;margin-bottom:14px;letter-spacing:-.5px;
+}
+.sec-sub{font-size:.975rem;color:var(--txt2);line-height:1.78;max-width:500px;}
+.sec-hdr{margin-bottom:52px;}
+.sec-hdr.cx{text-align:center;}.sec-hdr.cx .sec-sub{margin:0 auto;}
 
-  /* Service icons row */
-  .splash-icons{
-    display:flex;gap:28px;margin-top:10px;
-  }
-  .si{
-    display:flex;flex-direction:column;align-items:center;gap:6px;
-    color:rgba(255,255,255,.75);font-size:.72rem;letter-spacing:.5px;font-weight:600;
-    animation:slideFromSide .7s cubic-bezier(.34,1.56,.64,1) both;
-  }
-  .si:nth-child(odd){animation-name:slideFromLeft;}
-  .si:nth-child(even){animation-name:slideFromRight;}
-  .si:nth-child(1){animation-delay:.3s;}
-  .si:nth-child(2){animation-delay:.4s;}
-  .si:nth-child(3){animation-delay:.5s;}
-  .si:nth-child(4){animation-delay:.6s;}
-  .si:nth-child(5){animation-delay:.7s;}
-  @keyframes slideFromLeft{from{opacity:0;transform:translateX(-80px);}to{opacity:1;transform:none;}}
-  @keyframes slideFromRight{from{opacity:0;transform:translateX(80px);}to{opacity:1;transform:none;}}
-  .si-icon{
-    width:52px;height:52px;border-radius:14px;
-    background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);
-    display:flex;align-items:center;justify-content:center;
-    font-size:1.5rem;
-    box-shadow:0 0 12px rgba(0,255,136,.15);
-  }
+/* ══ SERVICES ════════════════════════════════════════════ */
+#services{padding:88px 0;background:var(--card);}
+.svc-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(188px,1fr));gap:16px;
+}
+.svc-card{
+  border-radius:16px;padding:28px 22px;text-align:center;
+  border:1px solid var(--border);background:var(--card);
+  cursor:default;position:relative;overflow:hidden;
+  transition:transform .28s,box-shadow .28s,border-color .28s;
+}
+.svc-card::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.svc-card:hover::after{transform:scaleX(1);}
+.svc-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(15,23,42,.09);border-color:rgba(37,99,235,.2);}
+.svc-ico{
+  width:58px;height:58px;border-radius:15px;margin:0 auto 16px;font-size:1.55rem;
+  background:linear-gradient(135deg,#EFF6FF,#E0F2FE);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .28s;
+}
+.svc-card:hover .svc-ico{transform:scale(1.08) rotate(-4deg);}
+.svc-title{font-size:.92rem;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.svc-desc{font-size:.78rem;color:var(--txt2);line-height:1.58;}
 
-  /* Progress bar */
-  .splash-progress{
-    width:200px;height:3px;background:rgba(255,255,255,.1);border-radius:9px;overflow:hidden;margin-top:8px;
-  }
-  .splash-progress-fill{
-    height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--accent));border-radius:9px;
-    animation:fillBar 3s linear forwards;
-  }
-  @keyframes fillBar{to{width:100%;}}
+/* ══ FEATURES ════════════════════════════════════════════ */
+#features{padding:88px 0;background:var(--bg);}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:18px;}
+.feat-card{
+  background:var(--card);border-radius:16px;padding:28px;
+  border:1px solid var(--border);
+  transition:transform .28s,box-shadow .28s,border-color .28s;
+  position:relative;overflow:hidden;
+}
+.feat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  transform:scaleX(0);transform-origin:left;transition:transform .32s;
+}
+.feat-card:hover::before{transform:scaleX(1);}
+.feat-card:hover{transform:translateY(-4px);box-shadow:0 16px 44px rgba(15,23,42,.09);border-color:rgba(37,99,235,.2);}
+.fc-ico{
+  width:46px;height:46px;border-radius:12px;margin-bottom:16px;font-size:1.3rem;
+  background:linear-gradient(135deg,#EFF6FF,#E0F2FE);
+  border:1px solid rgba(37,99,235,.1);
+  display:flex;align-items:center;justify-content:center;
+}
+.fc-title{font-size:.975rem;font-weight:700;color:var(--navy);margin-bottom:7px;}
+.fc-desc{font-size:.825rem;color:var(--txt2);line-height:1.65;}
 
-  /* ===== NAV ===== */
-  nav{
-    position:fixed;top:0;left:0;right:0;z-index:100;
-    background:rgba(11,31,59,.92);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid rgba(0,255,136,.12);
-    padding:0 5%;
-    display:flex;align-items:center;justify-content:space-between;
-    height:64px;
-  }
-  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-  .nav-logo-text{
-    font-size:1.35rem;font-weight:800;color:#fff;
-    letter-spacing:-.3px;
-  }
-  .nav-logo-text span{color:var(--green);}
-  .nav-links{display:flex;gap:30px;list-style:none;}
-  .nav-links a{
-    color:rgba(255,255,255,.75);text-decoration:none;font-size:.9rem;font-weight:500;
-    transition:color .2s;
-  }
-  .nav-links a:hover{color:var(--green);}
-  .nav-cta{
-    background:var(--green);color:var(--dark-blue);
-    border:none;padding:9px 22px;border-radius:8px;font-weight:700;font-size:.88rem;
-    cursor:pointer;transition:transform .2s,box-shadow .2s;
-    text-decoration:none;
-  }
-  .nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,255,136,.4);}
-  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
-  .hamburger span{width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s;}
-  .mobile-menu{
-    display:none;position:fixed;top:64px;left:0;right:0;z-index:99;
-    background:rgba(11,31,59,.97);backdrop-filter:blur(14px);
-    padding:24px 5%;flex-direction:column;gap:20px;
-    border-bottom:1px solid rgba(0,255,136,.12);
-  }
-  .mobile-menu.open{display:flex;}
-  .mobile-menu a{color:#fff;text-decoration:none;font-size:1rem;font-weight:500;}
+/* ══ HOW IT WORKS ════════════════════════════════════════ */
+#how{padding:88px 0;background:var(--card);}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:28px;position:relative;}
+.steps::before{
+  content:'';position:absolute;top:41px;left:calc(12.5% + 20px);right:calc(12.5% + 20px);
+  height:1px;background:linear-gradient(90deg,transparent,rgba(37,99,235,.22),var(--blue),rgba(37,99,235,.22),transparent);
+  pointer-events:none;
+}
+.step{text-align:center;}
+.step-num{
+  width:50px;height:50px;border-radius:50%;margin:0 auto 18px;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;font-size:1rem;font-weight:900;
+  display:flex;align-items:center;justify-content:center;position:relative;z-index:1;
+  box-shadow:0 6px 20px rgba(15,23,42,.2),0 0 0 4px var(--card),0 0 0 5px rgba(37,99,235,.18);
+}
+.step-em{font-size:1.75rem;margin-bottom:10px;}
+.step-title{font-size:.9rem;font-weight:700;color:var(--navy);margin-bottom:7px;}
+.step-desc{font-size:.8rem;color:var(--txt2);line-height:1.62;}
 
-  /* ===== HERO ===== */
-  #hero{
-    min-height:100vh;padding-top:64px;
-    position:relative;overflow:hidden;
-    background:linear-gradient(135deg,#f0f4ff 0%,#e8f5f0 50%,#f4f6f9 100%);
-    display:flex;align-items:center;
-  }
-  #heroCanvas{position:absolute;inset:0;width:100%;height:100%;opacity:.55;}
+/* ══ BUSINESS ════════════════════════════════════════════ */
+#biz{padding:88px 0;background:var(--bg);}
+.biz-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+.biz-card{
+  background:var(--card);border-radius:18px;padding:32px;
+  border:1px solid var(--border);
+  transition:box-shadow .28s,border-color .28s;
+}
+.biz-card:hover{border-color:rgba(37,99,235,.22);box-shadow:0 12px 38px rgba(15,23,42,.08);}
+.biz-ttl{font-size:1rem;font-weight:800;color:var(--navy);margin-bottom:22px;display:flex;align-items:center;gap:9px;}
+.biz-item{display:flex;gap:14px;margin-bottom:18px;align-items:flex-start;}
+.biz-ic{
+  width:34px;height:34px;border-radius:9px;flex-shrink:0;
+  background:linear-gradient(135deg,#EFF6FF,#E0F2FE);
+  border:1px solid rgba(37,99,235,.1);
+  display:flex;align-items:center;justify-content:center;font-size:.88rem;margin-top:1px;
+}
+.biz-lbl{font-size:.875rem;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.biz-desc{font-size:.78rem;color:var(--txt2);line-height:1.58;}
 
-  .hero-inner{
-    position:relative;z-index:2;
-    max-width:1200px;margin:0 auto;padding:80px 5%;
-    display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;
-  }
-  .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    background:rgba(0,255,136,.12);border:1px solid rgba(0,230,118,.4);
-    border-radius:99px;padding:6px 16px;font-size:.82rem;font-weight:700;
-    color:#00a855;margin-bottom:20px;
-  }
-  .badge-dot{width:8px;height:8px;background:var(--accent);border-radius:50%;animation:pulse 1.5s infinite;}
-  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+/* ══ ROADMAP ═════════════════════════════════════════════ */
+#scale{padding:88px 0;background:var(--card);}
+.tl{display:flex;flex-direction:column;position:relative;}
+.tl::before{
+  content:'';position:absolute;left:27px;top:28px;bottom:28px;width:1px;
+  background:linear-gradient(180deg,var(--blue),var(--cyan),rgba(6,182,212,.12));
+}
+.tl-item{display:flex;gap:22px;align-items:flex-start;padding-bottom:32px;position:relative;}
+.tl-dot{
+  width:56px;height:56px;border-radius:50%;flex-shrink:0;font-size:1.15rem;
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(37,99,235,.25);
+  box-shadow:0 4px 16px rgba(15,23,42,.18),0 0 0 5px var(--card);
+  position:relative;z-index:1;
+}
+.tl-body{
+  flex:1;background:var(--card);border-radius:14px;padding:20px 24px;
+  border:1px solid var(--border);box-shadow:0 2px 10px rgba(15,23,42,.04);
+  margin-top:6px;transition:border-color .28s,box-shadow .28s;
+}
+.tl-body:hover{border-color:rgba(37,99,235,.22);box-shadow:0 8px 28px rgba(15,23,42,.08);}
+.tl-phase{font-size:.68rem;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.tl-title{font-size:.975rem;font-weight:800;color:var(--navy);margin-bottom:5px;}
+.tl-desc{font-size:.82rem;color:var(--txt2);line-height:1.64;}
+.tl-badge{
+  display:inline-block;margin-top:9px;
+  background:rgba(37,99,235,.07);color:var(--blue);
+  border:1px solid rgba(37,99,235,.16);
+  font-size:.68rem;font-weight:700;padding:3px 10px;border-radius:99px;
+}
 
-  .hero-title{
-    font-size:clamp(2.2rem,4vw,3.6rem);font-weight:900;line-height:1.1;
-    color:var(--dark-blue);margin-bottom:18px;
-  }
-  .hero-title .highlight{
-    color:transparent;
-    background:linear-gradient(135deg,#00a855,#00FF88);
-    -webkit-background-clip:text;background-clip:text;
-  }
-  .hero-desc{font-size:1.05rem;color:#4a5568;line-height:1.7;margin-bottom:32px;}
+/* ══ CTA ═════════════════════════════════════════════════ */
+#cta{
+  padding:100px 6%;text-align:center;position:relative;overflow:hidden;
+  background:var(--navy);
+}
+.cta-glow{
+  position:absolute;width:700px;height:700px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(37,99,235,.18) 0%,transparent 65%);
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  animation:ctaG 4s ease-in-out infinite alternate;
+}
+@keyframes ctaG{from{transform:translate(-50%,-50%) scale(.88);opacity:.7;}to{transform:translate(-50%,-50%) scale(1.1);opacity:1;}}
+#cta h2{
+  font-size:clamp(1.9rem,3.8vw,3rem);font-weight:900;color:#fff;
+  margin-bottom:14px;letter-spacing:-.6px;position:relative;
+}
+#cta p{font-size:.975rem;color:rgba(148,163,184,.75);margin-bottom:36px;position:relative;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;}
+.btn-pri{
+  background:linear-gradient(135deg,var(--blue),var(--cyan2));color:#fff;
+  padding:13px 34px;border-radius:10px;border:none;font-weight:700;font-size:.925rem;
+  cursor:pointer;text-decoration:none;display:inline-block;letter-spacing:.1px;
+  box-shadow:0 8px 26px rgba(37,99,235,.42);
+  transition:opacity .2s,transform .2s,box-shadow .2s;
+}
+.btn-pri:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 14px 34px rgba(37,99,235,.52);}
+.btn-out{
+  background:rgba(255,255,255,.05);color:#fff;
+  padding:13px 34px;border-radius:10px;
+  border:1px solid rgba(255,255,255,.15);font-weight:600;font-size:.925rem;
+  cursor:pointer;backdrop-filter:blur(10px);text-decoration:none;display:inline-block;
+  transition:background .2s,border-color .2s;
+}
+.btn-out:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.28);}
 
-  .hero-search{
-    display:flex;gap:0;background:#fff;
-    border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,.1);
-    border:1.5px solid rgba(0,230,118,.3);overflow:hidden;
-    margin-bottom:20px;
-  }
-  .hero-search-icon{
-    padding:0 16px;display:flex;align-items:center;color:#9ca3af;font-size:1.2rem;
-  }
-  .hero-search input{
-    flex:1;border:none;outline:none;padding:16px 8px;font-size:1rem;
-    background:transparent;color:var(--dark-blue);
-  }
-  .hero-search input::placeholder{color:#9ca3af;}
-  .hero-search-btn{
-    background:linear-gradient(135deg,var(--green),var(--accent));
-    color:var(--dark-blue);border:none;padding:0 28px;
-    font-weight:800;font-size:.95rem;cursor:pointer;
-    transition:filter .2s;white-space:nowrap;
-  }
-  .hero-search-btn:hover{filter:brightness(1.1);}
+/* ══ FOOTER ══════════════════════════════════════════════ */
+footer{
+  background:var(--navy2);border-top:1px solid rgba(255,255,255,.05);
+  padding:32px 6%;display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;
+}
+.foot-l{display:flex;align-items:center;gap:10px;}
+.foot-txt{font-size:.8rem;color:rgba(148,163,184,.5);}
+.foot-txt strong{color:rgba(148,163,184,.78);}
+.foot-r{display:flex;gap:20px;}
+.foot-r a{font-size:.78rem;color:rgba(148,163,184,.38);text-decoration:none;transition:color .2s;}
+.foot-r a:hover{color:rgba(148,163,184,.76);}
 
-  .hero-stats{display:flex;gap:32px;flex-wrap:wrap;}
-  .stat{display:flex;flex-direction:column;}
-  .stat-num{font-size:1.6rem;font-weight:900;color:var(--dark-blue);}
-  .stat-num span{color:var(--accent);}
-  .stat-label{font-size:.78rem;color:#6b7280;font-weight:500;}
+/* ══ DIVIDER ═════════════════════════════════════════════ */
+/* Smooth transition from dark hero to white services */
+.hero-bottom-fade{
+  height:64px;background:linear-gradient(to bottom,var(--navy),var(--card));
+  margin-top:-2px;
+}
 
-  /* Hero visual */
-  .hero-visual{
-    display:flex;align-items:center;justify-content:center;
-    position:relative;
-  }
-  .hero-card-wrap{position:relative;width:100%;max-width:380px;}
-  .hero-main-card{
-    background:#fff;border-radius:20px;
-    box-shadow:0 20px 60px rgba(0,0,0,.12);
-    padding:28px;
-    animation:floatCard 4s ease-in-out infinite;
-  }
-  @keyframes floatCard{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
-  .hmc-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-  .hmc-avatar{
-    width:52px;height:52px;border-radius:50%;
-    background:linear-gradient(135deg,var(--dark-blue),var(--deep-blue));
-    display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;
-    flex-shrink:0;
-  }
-  .hmc-name{font-weight:700;color:var(--dark-blue);font-size:1rem;}
-  .hmc-role{font-size:.8rem;color:#6b7280;}
-  .hmc-badge{
-    margin-left:auto;background:rgba(0,255,136,.15);
-    color:#00a855;font-size:.72rem;font-weight:700;
-    padding:4px 10px;border-radius:99px;border:1px solid rgba(0,230,118,.3);
-  }
-  .hmc-row{display:flex;justify-content:space-between;margin-bottom:10px;}
-  .hmc-label{font-size:.82rem;color:#9ca3af;}
-  .hmc-val{font-size:.82rem;font-weight:600;color:var(--dark-blue);}
-  .hmc-stars{color:#f59e0b;font-size:.9rem;}
-  .hmc-divider{border:none;border-top:1px solid #f0f0f0;margin:14px 0;}
-  .hmc-btn{
-    width:100%;padding:12px;border-radius:10px;
-    background:linear-gradient(135deg,var(--dark-blue),var(--deep-blue));
-    color:#fff;border:none;font-weight:700;font-size:.9rem;cursor:pointer;
-    display:flex;align-items:center;justify-content:center;gap:8px;
-    transition:transform .2s,box-shadow .2s;
-  }
-  .hmc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(11,31,59,.3);}
-  .hmc-btn .btn-icon{
-    width:20px;height:20px;background:var(--green);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--dark-blue);
-  }
+/* ══ REVEAL ══════════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease;}
+.reveal.vis{opacity:1;transform:none;}
+.d1{transition-delay:.07s;}.d2{transition-delay:.14s;}.d3{transition-delay:.21s;}
+.d4{transition-delay:.28s;}.d5{transition-delay:.35s;}
 
-  /* Floating badges */
-  .float-badge{
-    position:absolute;background:#fff;border-radius:12px;
-    box-shadow:0 8px 24px rgba(0,0,0,.12);padding:10px 14px;
-    display:flex;align-items:center;gap:10px;
-    font-size:.8rem;font-weight:600;color:var(--dark-blue);
-    animation:floatBadge 3s ease-in-out infinite;
-  }
-  .float-badge:nth-child(2){top:-20px;right:-20px;animation-delay:.5s;}
-  .float-badge:nth-child(3){bottom:-10px;left:-20px;animation-delay:1s;}
-  @keyframes floatBadge{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-  .fb-icon{font-size:1.2rem;}
-
-  /* ===== SECTIONS ===== */
-  section{padding:90px 5%;}
-  .section-inner{max-width:1200px;margin:0 auto;}
-  .section-tag{
-    display:inline-block;background:rgba(0,255,136,.1);
-    color:#00a855;font-size:.78rem;font-weight:700;letter-spacing:1.5px;
-    padding:5px 14px;border-radius:99px;border:1px solid rgba(0,230,118,.3);
-    margin-bottom:14px;text-transform:uppercase;
-  }
-  .section-title{
-    font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:900;
-    color:var(--dark-blue);line-height:1.15;margin-bottom:14px;
-  }
-  .section-sub{font-size:1.05rem;color:#6b7280;max-width:560px;line-height:1.7;}
-  .section-header{margin-bottom:56px;}
-  .section-header.center{text-align:center;}
-  .section-header.center .section-sub{margin:0 auto;}
-
-  /* ===== SERVICES ===== */
-  #services{background:#fff;}
-  .services-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;
-  }
-  .service-card{
-    border-radius:16px;padding:28px 22px;
-    border:1.5px solid #f0f0f0;background:#fff;
-    text-align:center;cursor:pointer;
-    transition:transform .3s,box-shadow .3s,border-color .3s;
-    position:relative;overflow:hidden;
-  }
-  .service-card::before{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(0,255,136,.06),rgba(0,230,118,.02));
-    opacity:0;transition:opacity .3s;
-  }
-  .service-card:hover::before{opacity:1;}
-  .service-card:hover{
-    transform:translateY(-6px);
-    box-shadow:0 20px 40px rgba(0,0,0,.1);
-    border-color:rgba(0,230,118,.4);
-  }
-  .sc-icon{
-    width:64px;height:64px;border-radius:16px;margin:0 auto 16px;
-    background:linear-gradient(135deg,#f0fdf4,#dcfce7);
-    display:flex;align-items:center;justify-content:center;font-size:1.8rem;
-    transition:transform .3s;
-  }
-  .service-card:hover .sc-icon{transform:scale(1.12) rotate(-5deg);}
-  .sc-title{font-size:1rem;font-weight:700;color:var(--dark-blue);margin-bottom:6px;}
-  .sc-desc{font-size:.82rem;color:#6b7280;line-height:1.5;}
-
-  /* ===== FEATURES ===== */
-  #features{
-    background:linear-gradient(135deg,var(--dark-blue) 0%,var(--deep-blue) 100%);
-    position:relative;overflow:hidden;
-  }
-  #features .section-title{color:#fff;}
-  #features .section-sub{color:rgba(255,255,255,.6);}
-  #features .section-tag{background:rgba(0,255,136,.15);color:var(--green);}
-  .features-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;
-  }
-  .feature-card{
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:16px;padding:28px;
-    transition:transform .3s,background .3s,border-color .3s;
-    position:relative;overflow:hidden;
-  }
-  .feature-card::after{
-    content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,var(--green),var(--accent));
-    transform:scaleX(0);transform-origin:left;transition:transform .3s;
-  }
-  .feature-card:hover::after{transform:scaleX(1);}
-  .feature-card:hover{
-    transform:translateY(-4px);
-    background:rgba(0,255,136,.07);
-    border-color:rgba(0,255,136,.2);
-  }
-  .fc-icon{
-    width:52px;height:52px;border-radius:14px;
-    background:rgba(0,255,136,.12);border:1px solid rgba(0,255,136,.2);
-    display:flex;align-items:center;justify-content:center;font-size:1.5rem;
-    margin-bottom:18px;
-  }
-  .fc-title{font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px;}
-  .fc-desc{font-size:.88rem;color:rgba(255,255,255,.55);line-height:1.6;}
-
-  /* Electric lines in features bg */
-  .elec-line{
-    position:absolute;background:linear-gradient(90deg,transparent,rgba(0,255,136,.06),transparent);
-    height:1px;width:100%;pointer-events:none;
-    animation:scanLine 6s linear infinite;
-  }
-  @keyframes scanLine{from{transform:translateY(-100vh);}to{transform:translateY(100vh);}}
-
-  /* ===== HOW IT WORKS ===== */
-  #how{background:var(--bg);}
-  .steps-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;
-    position:relative;
-  }
-  .step-card{text-align:center;position:relative;}
-  .step-num{
-    width:56px;height:56px;border-radius:50%;
-    background:linear-gradient(135deg,var(--dark-blue),var(--deep-blue));
-    color:#fff;font-size:1.3rem;font-weight:900;
-    display:flex;align-items:center;justify-content:center;
-    margin:0 auto 18px;position:relative;z-index:1;
-    box-shadow:0 8px 24px rgba(11,31,59,.25);
-  }
-  .step-num::after{
-    content:'';position:absolute;inset:-4px;border-radius:50%;
-    border:2px dashed rgba(0,230,118,.35);
-    animation:rotateDash 8s linear infinite;
-  }
-  @keyframes rotateDash{to{transform:rotate(360deg);}}
-  .step-icon{font-size:2rem;margin-bottom:12px;}
-  .step-title{font-size:1rem;font-weight:700;color:var(--dark-blue);margin-bottom:8px;}
-  .step-desc{font-size:.85rem;color:#6b7280;line-height:1.6;}
-
-  /* ===== BUSINESS ===== */
-  #business{background:#fff;}
-  .biz-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
-  .biz-card{
-    border-radius:16px;padding:32px;
-    border:1.5px solid #e5e7eb;
-    transition:border-color .3s,box-shadow .3s;
-  }
-  .biz-card:hover{border-color:rgba(0,230,118,.4);box-shadow:0 12px 32px rgba(0,0,0,.07);}
-  .biz-card-title{
-    font-size:1.15rem;font-weight:800;color:var(--dark-blue);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .biz-item{
-    display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;
-  }
-  .biz-dot{
-    width:32px;height:32px;border-radius:8px;flex-shrink:0;
-    background:linear-gradient(135deg,rgba(0,255,136,.15),rgba(0,230,118,.08));
-    border:1px solid rgba(0,230,118,.25);
-    display:flex;align-items:center;justify-content:center;font-size:.95rem;
-    margin-top:2px;
-  }
-  .biz-label{font-size:.9rem;font-weight:700;color:var(--dark-blue);margin-bottom:3px;}
-  .biz-desc{font-size:.82rem;color:#6b7280;line-height:1.5;}
-
-  /* ===== SCALABILITY ===== */
-  #scale{background:linear-gradient(135deg,#f0fdf4 0%,#f4f6f9 100%);}
-  .scale-timeline{display:flex;flex-direction:column;gap:0;position:relative;}
-  .scale-timeline::before{
-    content:'';position:absolute;left:28px;top:28px;bottom:28px;width:2px;
-    background:linear-gradient(180deg,var(--green),var(--accent),rgba(0,230,118,.2));
-    border-radius:2px;
-  }
-  .scale-item{
-    display:flex;gap:24px;align-items:flex-start;padding:0 0 36px 0;
-    position:relative;
-  }
-  .scale-dot{
-    width:58px;height:58px;border-radius:50%;flex-shrink:0;
-    background:linear-gradient(135deg,var(--dark-blue),var(--deep-blue));
-    display:flex;align-items:center;justify-content:center;
-    font-size:1.3rem;color:#fff;position:relative;z-index:1;
-    box-shadow:0 6px 20px rgba(11,31,59,.25);
-  }
-  .scale-content{flex:1;background:#fff;border-radius:14px;padding:22px;
-    border:1px solid #e5e7eb;box-shadow:0 4px 16px rgba(0,0,0,.05);
-    margin-top:8px;
-  }
-  .scale-phase{font-size:.72rem;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
-  .scale-title{font-size:1rem;font-weight:800;color:var(--dark-blue);margin-bottom:6px;}
-  .scale-desc{font-size:.85rem;color:#6b7280;line-height:1.6;}
-  .scale-tag{
-    display:inline-block;margin-top:10px;
-    background:rgba(0,255,136,.1);color:#00a855;
-    font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:99px;
-    border:1px solid rgba(0,230,118,.25);
-  }
-
-  /* ===== CTA ===== */
-  #cta{
-    background:linear-gradient(135deg,var(--dark-blue),var(--deep-blue));
-    text-align:center;padding:100px 5%;position:relative;overflow:hidden;
-  }
-  .cta-glow{
-    position:absolute;width:500px;height:500px;border-radius:50%;
-    background:radial-gradient(circle,rgba(0,255,136,.15) 0%,transparent 70%);
-    left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;
-    animation:glowPulse 3s ease-in-out infinite;
-  }
-  @keyframes glowPulse{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.15);}}
-  #cta h2{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:#fff;margin-bottom:16px;position:relative;}
-  #cta p{font-size:1.05rem;color:rgba(255,255,255,.65);margin-bottom:36px;position:relative;}
-  .cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;}
-  .btn-primary{
-    background:linear-gradient(135deg,var(--green),var(--accent));
-    color:var(--dark-blue);padding:15px 36px;border-radius:10px;
-    border:none;font-weight:800;font-size:1rem;cursor:pointer;
-    transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-block;
-  }
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(0,255,136,.4);}
-  .btn-outline{
-    background:transparent;color:#fff;padding:15px 36px;border-radius:10px;
-    border:1.5px solid rgba(255,255,255,.25);font-weight:700;font-size:1rem;
-    cursor:pointer;transition:border-color .2s,background .2s;text-decoration:none;display:inline-block;
-  }
-  .btn-outline:hover{border-color:var(--green);background:rgba(0,255,136,.07);}
-
-  /* ===== FOOTER ===== */
-  footer{
-    background:var(--dark-blue);color:rgba(255,255,255,.5);
-    padding:40px 5%;text-align:center;font-size:.85rem;
-    border-top:1px solid rgba(255,255,255,.06);
-  }
-  footer strong{color:var(--green);}
-
-  /* ===== REVEAL ===== */
-  .reveal{
-    opacity:0;transform:translateY(30px);
-    transition:opacity .65s ease,transform .65s ease;
-  }
-  .reveal.visible{opacity:1;transform:none;}
-
-  /* ===== RESPONSIVE ===== */
-  @media(max-width:900px){
-    .hero-inner{grid-template-columns:1fr;}
-    .hero-visual{display:none;}
-    .biz-grid{grid-template-columns:1fr;}
-  }
-  @media(max-width:600px){
-    .nav-links,.nav-cta{display:none;}
-    .hamburger{display:flex;}
-    .splash-icons{gap:14px;}
-    .si{font-size:.65rem;}
-    .si-icon{width:40px;height:40px;font-size:1.1rem;}
-  }
+/* ══ RESPONSIVE ══════════════════════════════════════════ */
+@media(max-width:900px){
+  .hero-wrap{grid-template-columns:1fr;}
+  .h-visual{display:none;}
+  .biz-grid{grid-template-columns:1fr;}
+  .steps::before{display:none;}
+}
+@media(max-width:600px){
+  .n-links,.n-btn{display:none;}
+  .hbg{display:flex;}
+  .s-icons{gap:10px;}
+  .s-ic{font-size:.62rem;}
+  .s-ic-box{width:40px;height:40px;font-size:1.1rem;}
+  footer{flex-direction:column;text-align:center;}
+  .foot-r{justify-content:center;}
+}
 </style>
 </head>
 <body>
 
-<!-- ===== SPLASH SCREEN ===== -->
+<!-- ══ SPLASH ══════════════════════════════════════════════ -->
 <div id="splash">
-  <canvas id="splashCanvas"></canvas>
-
-  <!-- Ripple rings -->
-  <div class="ripple-ring" style="position:absolute;left:50%;top:50%;animation-delay:0s;"></div>
-  <div class="ripple-ring" style="position:absolute;left:50%;top:50%;animation-delay:1.3s;"></div>
-  <div class="ripple-ring" style="position:absolute;left:50%;top:50%;animation-delay:2.6s;"></div>
-
-  <div class="splash-content">
-    <!-- BIG LOGO -->
-    <div class="logo-wrap" id="splashLogo">
-      <svg width="160" height="160" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer glow circle -->
-        <circle cx="80" cy="80" r="75" stroke="rgba(0,255,136,0.15)" stroke-width="1"/>
-        <circle cx="80" cy="80" r="65" stroke="rgba(0,255,136,0.08)" stroke-width="1"/>
-        <!-- Background dark circle -->
-        <circle cx="80" cy="80" r="70" fill="#0B1F3B"/>
-        <!-- Wrench body (forms the F spine) -->
-        <rect x="38" y="32" width="18" height="96" rx="6" fill="#1a3a5c"/>
-        <!-- F top bar -->
-        <rect x="38" y="32" width="60" height="16" rx="6" fill="#1a3a5c"/>
-        <!-- F middle bar (shorter = wrench gap) -->
-        <rect x="38" y="68" width="46" height="14" rx="6" fill="#1a3a5c"/>
-        <!-- Wrench head top -->
-        <circle cx="42" cy="38" r="14" fill="none" stroke="#2a5080" stroke-width="8"/>
-        <!-- Wrench handle detail line -->
-        <line x1="47" y1="52" x2="47" y2="120" stroke="#2a5080" stroke-width="4"/>
-        <!-- Wrench open jaw notch top -->
-        <path d="M 30 26 Q 32 22 36 24 L 36 32 Q 32 32 30 28 Z" fill="#2a5080"/>
-        <path d="M 56 26 Q 54 22 50 24 L 50 32 Q 54 32 56 28 Z" fill="#2a5080"/>
-
-        <!-- Lightning bolt (electric green, cuts diagonally) -->
-        <path d="M 92 24 L 60 82 L 80 82 L 48 136 L 114 66 L 90 66 Z"
-              fill="#00FF88"
-              filter="url(#glow)"/>
-        <!-- Lightning core (brighter center) -->
-        <path d="M 92 24 L 65 80 L 82 80 L 52 130 L 108 70 L 88 70 Z"
-              fill="#ffffff" opacity="0.25"/>
-
+  <canvas id="splashBg"></canvas>
+  <div class="s-ring" style="animation-delay:0s"></div>
+  <div class="s-ring" style="animation-delay:1.4s"></div>
+  <div class="s-ring" style="animation-delay:2.8s"></div>
+  <div class="s-inner">
+    <div class="s-logo">
+      <svg width="130" height="130" viewBox="0 0 160 160" fill="none">
         <defs>
-          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="4" result="blur"/>
-            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
+          <linearGradient id="gBolt" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#06B6D4"/>
+          </linearGradient>
+          <filter id="gf"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
+        <circle cx="80" cy="80" r="74" stroke="rgba(37,99,235,.18)" stroke-width="1"/>
+        <circle cx="80" cy="80" r="68" fill="#0F172A"/>
+        <rect x="36" y="30" width="17" height="100" rx="5.5" fill="#1E3A8A"/>
+        <rect x="36" y="30" width="62" height="16" rx="5.5" fill="#1E3A8A"/>
+        <rect x="36" y="66" width="46" height="14" rx="5.5" fill="#1E3A8A"/>
+        <circle cx="44" cy="36" r="13" fill="none" stroke="#1E40AF" stroke-width="7"/>
+        <path d="M 95 22 L 62 80 L 83 80 L 50 138 L 118 64 L 93 64 Z" fill="url(#gBolt)" filter="url(#gf)"/>
+        <path d="M 95 22 L 66 78 L 83 78 L 54 132 L 112 68 L 91 68 Z" fill="white" opacity=".14"/>
       </svg>
     </div>
-
-    <div class="splash-tagline">
+    <div class="s-tag">
       <h1>Fixora</h1>
-      <p>Instant. Verified. Reliable.</p>
+      <p>Instant · Verified · Reliable</p>
     </div>
-
-    <div class="splash-icons">
-      <div class="si"><div class="si-icon">🔧</div>Plumbing</div>
-      <div class="si"><div class="si-icon">⚡</div>Electrical</div>
-      <div class="si"><div class="si-icon">❄️</div>AC Repair</div>
-      <div class="si"><div class="si-icon">🔩</div>Carpentry</div>
-      <div class="si"><div class="si-icon">🖥️</div>Appliance</div>
+    <div class="s-icons">
+      <div class="s-ic"><div class="s-ic-box">⚡</div>Electrical</div>
+      <div class="s-ic"><div class="s-ic-box">🔧</div>Plumbing</div>
+      <div class="s-ic"><div class="s-ic-box">❄️</div>AC Repair</div>
+      <div class="s-ic"><div class="s-ic-box">🪚</div>Carpentry</div>
+      <div class="s-ic"><div class="s-ic-box">🖥️</div>Appliance</div>
     </div>
-
-    <div class="splash-progress"><div class="splash-progress-fill"></div></div>
+    <div class="s-bar"><div class="s-fill"></div></div>
   </div>
 </div>
 
-<!-- ===== NAVBAR ===== -->
-<nav>
-  <a href="#" class="nav-logo">
-    <!-- Small nav logo SVG -->
-    <svg width="34" height="34" viewBox="0 0 160 160" fill="none">
-      <circle cx="80" cy="80" r="70" fill="#0B1F3B"/>
-      <rect x="38" y="32" width="18" height="96" rx="5" fill="#1a3a5c"/>
-      <rect x="38" y="32" width="60" height="14" rx="5" fill="#1a3a5c"/>
-      <rect x="38" y="68" width="44" height="13" rx="5" fill="#1a3a5c"/>
-      <path d="M 92 24 L 60 82 L 80 82 L 48 136 L 114 66 L 90 66 Z" fill="#00FF88" filter="url(#gnav)"/>
-      <defs><filter id="gnav"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<!-- ══ NAV ═════════════════════════════════════════════════ -->
+<nav id="mainNav">
+  <a href="#" class="n-logo">
+    <svg width="30" height="30" viewBox="0 0 160 160" fill="none">
+      <defs>
+        <linearGradient id="nl" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#06B6D4"/>
+        </linearGradient>
+        <filter id="nf"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <circle cx="80" cy="80" r="68" fill="#0F172A"/>
+      <rect x="36" y="30" width="17" height="100" rx="5" fill="#1E3A8A"/>
+      <rect x="36" y="30" width="62" height="16" rx="5" fill="#1E3A8A"/>
+      <rect x="36" y="66" width="46" height="14" rx="5" fill="#1E3A8A"/>
+      <path d="M 95 22 L 62 80 L 83 80 L 50 138 L 118 64 L 93 64 Z" fill="url(#nl)" filter="url(#nf)"/>
     </svg>
-    <span class="nav-logo-text">Fix<span>ora</span></span>
+    <span class="n-name">Fix<span>ora</span></span>
   </a>
-
-  <ul class="nav-links">
+  <ul class="n-links">
     <li><a href="#services">Services</a></li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#how">How it Works</a></li>
-    <li><a href="#business">Business</a></li>
-    <li><a href="#scale">Scale</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#biz">Business</a></li>
+    <li><a href="#scale">Roadmap</a></li>
   </ul>
-
-  <a href="#cta" class="nav-cta">Get Started</a>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+  <a href="#cta" class="n-btn">Get Started →</a>
+  <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#services" onclick="closeMobile()">Services</a>
-  <a href="#features" onclick="closeMobile()">Features</a>
-  <a href="#how" onclick="closeMobile()">How it Works</a>
-  <a href="#business" onclick="closeMobile()">Business</a>
-  <a href="#scale" onclick="closeMobile()">Scale</a>
-  <a href="#cta" class="nav-cta" onclick="closeMobile()" style="text-align:center">Get Started</a>
+<div class="mob" id="mobMenu">
+  <a href="#services" onclick="cM()">Services</a>
+  <a href="#features" onclick="cM()">Features</a>
+  <a href="#how" onclick="cM()">How It Works</a>
+  <a href="#biz" onclick="cM()">Business</a>
+  <a href="#scale" onclick="cM()">Roadmap</a>
+  <a href="#cta" class="n-btn" style="text-align:center" onclick="cM()">Get Started →</a>
 </div>
 
-<!-- ===== HERO ===== -->
+<!-- ══ HERO — DARK ══════════════════════════════════════════ -->
 <section id="hero">
   <canvas id="heroCanvas"></canvas>
-  <div class="hero-inner">
+  <div class="h-radial"></div>
+  <div class="hero-wrap">
+    <!-- Left -->
     <div>
-      <div class="hero-badge reveal"><div class="badge-dot"></div>Now Live in Bengaluru 🇮🇳</div>
-      <h1 class="hero-title reveal">
+      <div class="h-pill reveal">
+        <div class="h-pill-dot">🇮🇳</div>
+        Now Live in Bengaluru — India's First Verified Repair Network
+      </div>
+      <h1 class="h-title reveal">
         Instant Access to<br>
-        <span class="highlight">Verified Technicians</span><br>
-        Near You
+        <span class="gr">Verified Technicians</span><br>
+        Right at Your Door
       </h1>
-      <p class="hero-desc reveal">
-        Book certified professionals for plumbing, electrical, AC, carpentry & appliance repair.
-        Transparent pricing. Real-time tracking. 60-minute arrival guarantee.
-      </p>
+      <p class="h-sub reveal">Book certified professionals for electrical, plumbing, AC, carpentry & more. Transparent pricing, live tracking, 60-minute arrival guarantee.</p>
 
-      <div class="hero-search reveal">
-        <div class="hero-search-icon">📍</div>
-        <input type="text" placeholder="Enter your area or pin code…" id="locationInput"/>
-        <button class="hero-search-btn" onclick="handleSearch()">⚡ Find Now</button>
+      <div class="h-search reveal">
+        <span class="h-si">📍</span>
+        <input class="h-in" id="locInput" type="text" placeholder="Enter your area or pin code…"/>
+        <button class="h-sbtn" onclick="doSearch()">Find Now →</button>
       </div>
 
-      <div class="hero-stats reveal">
-        <div class="stat"><span class="stat-num">12<span>K+</span></span><span class="stat-label">Verified Pros</span></div>
-        <div class="stat"><span class="stat-num">4.8<span>★</span></span><span class="stat-label">Avg. Rating</span></div>
-        <div class="stat"><span class="stat-num">60<span>min</span></span><span class="stat-label">Avg. Response</span></div>
-        <div class="stat"><span class="stat-num">98<span>%</span></span><span class="stat-label">Satisfaction</span></div>
+      <div class="h-stats reveal">
+        <div class="hst"><span class="hst-n">12K+</span><span class="hst-l">Verified Pros</span></div>
+        <div class="hst"><span class="hst-n">4.8★</span><span class="hst-l">Avg. Rating</span></div>
+        <div class="hst"><span class="hst-n">60 min</span><span class="hst-l">Avg. Response</span></div>
+        <div class="hst"><span class="hst-n">98%</span><span class="hst-l">Satisfaction</span></div>
       </div>
     </div>
 
-    <div class="hero-visual reveal">
-      <div class="hero-card-wrap">
-        <!-- Floating badge top-right -->
-        <div class="float-badge" style="top:-20px;right:-20px">
-          <span class="fb-icon">✅</span>
-          <div><div style="font-size:.72rem;color:#6b7280;font-weight:500">Background</div><div>Verified Pro</div></div>
+    <!-- Right -->
+    <div class="h-visual reveal">
+      <div class="hv-outer">
+        <div class="hv-chip" style="top:-20px;right:-14px;">
+          <span>✅</span>
+          <div><div style="font-weight:600">Verified Professional</div><div class="chip-sub">Background Checked</div></div>
         </div>
-        <!-- Main card -->
-        <div class="hero-main-card">
-          <div class="hmc-header">
-            <div class="hmc-avatar">👷</div>
-            <div>
-              <div class="hmc-name">Rajan Sharma</div>
-              <div class="hmc-role">Electrician · 9 yrs exp</div>
-            </div>
-            <div class="hmc-badge">🟢 Online</div>
+        <div class="hv-card">
+          <div class="hvc-top">
+            <div class="hvc-av">👷</div>
+            <div><div class="hvc-nm">Rajan Sharma</div><div class="hvc-rl">Electrician · 9 yrs exp</div></div>
+            <div class="hvc-online"><div class="odot"></div>Online</div>
           </div>
-          <div class="hmc-row">
-            <span class="hmc-label">Distance</span>
-            <span class="hmc-val">1.2 km away</span>
+          <div class="hvc-r"><span class="hvc-lb">Distance</span><span class="hvc-vl">1.2 km away</span></div>
+          <div class="hvc-r"><span class="hvc-lb">Rating</span><span class="hvc-vl"><span class="hvc-stars">★★★★★</span> 4.9 (847 jobs)</span></div>
+          <div class="hvc-r"><span class="hvc-lb">Service charge</span><span class="hvc-vl">₹299 – ₹799</span></div>
+          <div class="hvc-div"></div>
+          <div class="hvc-eta">
+            <span>🕐</span>
+            <span class="hvc-eta-l">Estimated arrival</span>
+            <span class="hvc-eta-v">~18 min</span>
           </div>
-          <div class="hmc-row">
-            <span class="hmc-label">Rating</span>
-            <span class="hmc-val"><span class="hmc-stars">★★★★★</span> 4.9</span>
-          </div>
-          <div class="hmc-row">
-            <span class="hmc-label">Jobs done</span>
-            <span class="hmc-val">847 completed</span>
-          </div>
-          <div class="hmc-row">
-            <span class="hmc-label">Est. arrival</span>
-            <span class="hmc-val" style="color:#00a855;font-weight:700">~18 minutes</span>
-          </div>
-          <hr class="hmc-divider"/>
-          <div class="hmc-row" style="margin-bottom:14px">
-            <span class="hmc-label">Service charge</span>
-            <span class="hmc-val">₹299 – ₹799</span>
-          </div>
-          <button class="hmc-btn">
-            <div class="btn-icon">⚡</div>
-            Book Instantly
-          </button>
+          <button class="hvc-btn">Book Instantly →</button>
         </div>
-        <!-- Floating badge bottom-left -->
-        <div class="float-badge" style="bottom:-10px;left:-20px">
-          <span class="fb-icon">🔔</span>
-          <div><div style="font-size:.72rem;color:#6b7280;font-weight:500">Just booked</div><div>AC repair · Koramangala</div></div>
+        <div class="hv-chip" style="bottom:-16px;left:-14px;">
+          <span>🔔</span>
+          <div><div style="font-weight:600">AC repair · Koramangala</div><div class="chip-sub">Just booked · 2 min ago</div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== SERVICES ===== -->
+<!-- Seamless dark → light transition -->
+<div class="hero-bottom-fade"></div>
+
+<!-- ══ SERVICES — LIGHT ═════════════════════════════════════ -->
 <section id="services">
-  <div class="section-inner">
-    <div class="section-header center">
-      <div class="section-tag">Our Services</div>
-      <h2 class="section-title">Every Home Problem, One Platform</h2>
-      <p class="section-sub">From minor fixes to full installations — certified professionals for every need.</p>
+  <div class="sec-wrap">
+    <div class="sec-hdr cx">
+      <div class="sec-tag">Our Services</div>
+      <h2 class="sec-title reveal">Every Home Problem.<br>One Platform.</h2>
+      <p class="sec-sub reveal">Certified professionals across six core categories — on demand, every day.</p>
     </div>
-    <div class="services-grid">
-      <div class="service-card reveal">
-        <div class="sc-icon">⚡</div>
-        <div class="sc-title">Electrical</div>
-        <div class="sc-desc">Wiring, switchboards, fans, MCB, inverter installation & fault detection</div>
-      </div>
-      <div class="service-card reveal">
-        <div class="sc-icon">🔧</div>
-        <div class="sc-title">Plumbing</div>
-        <div class="sc-desc">Leak repairs, pipe fitting, drainage, tap & geyser installation</div>
-      </div>
-      <div class="service-card reveal">
-        <div class="sc-icon">❄️</div>
-        <div class="sc-title">AC Repair</div>
-        <div class="sc-desc">AC service, gas refill, PCB repair, installation & deep cleaning</div>
-      </div>
-      <div class="service-card reveal">
-        <div class="sc-icon">🪚</div>
-        <div class="sc-title">Carpentry</div>
-        <div class="sc-desc">Furniture assembly, door repairs, wooden flooring & cabinet fitting</div>
-      </div>
-      <div class="service-card reveal">
-        <div class="sc-icon">🖥️</div>
-        <div class="sc-title">Appliances</div>
-        <div class="sc-desc">Washing machine, refrigerator, microwave & TV repair</div>
-      </div>
-      <div class="service-card reveal">
-        <div class="sc-icon">🎨</div>
-        <div class="sc-title">Painting</div>
-        <div class="sc-desc">Interior, exterior, texture, waterproofing & wall putty services</div>
-      </div>
+    <div class="svc-grid">
+      <div class="svc-card reveal d1"><div class="svc-ico">⚡</div><div class="svc-title">Electrical</div><div class="svc-desc">Wiring, switchboards, fans, MCBs, inverter installation & fault detection</div></div>
+      <div class="svc-card reveal d2"><div class="svc-ico">🔧</div><div class="svc-title">Plumbing</div><div class="svc-desc">Leak repairs, pipe fitting, drainage, tap & geyser installation</div></div>
+      <div class="svc-card reveal d3"><div class="svc-ico">❄️</div><div class="svc-title">AC Repair</div><div class="svc-desc">AC servicing, gas refills, PCB repair, installation & deep cleaning</div></div>
+      <div class="svc-card reveal d4"><div class="svc-ico">🪚</div><div class="svc-title">Carpentry</div><div class="svc-desc">Furniture assembly, door repairs, wood flooring & cabinet fitting</div></div>
+      <div class="svc-card reveal d5"><div class="svc-ico">🖥️</div><div class="svc-title">Appliances</div><div class="svc-desc">Washing machine, refrigerator, microwave & TV repair & servicing</div></div>
+      <div class="svc-card reveal d1"><div class="svc-ico">🎨</div><div class="svc-title">Painting</div><div class="svc-desc">Interior, exterior, texture, waterproofing & wall putty work</div></div>
     </div>
   </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
+<!-- ══ FEATURES — LIGHT ═════════════════════════════════════ -->
 <section id="features">
-  <div class="elec-line" style="top:25%;animation-delay:0s;"></div>
-  <div class="elec-line" style="top:60%;animation-delay:2s;"></div>
-  <div class="section-inner">
-    <div class="section-header center">
-      <div class="section-tag">Why Fixora</div>
-      <h2 class="section-title">Built Different. Built Better.</h2>
-      <p class="section-sub">Everything you need for a seamless repair experience — powered by trust and technology.</p>
+  <div class="sec-wrap">
+    <div class="sec-hdr cx">
+      <div class="sec-tag">Why Fixora</div>
+      <h2 class="sec-title reveal">Built Different.<br>Built Better.</h2>
+      <p class="sec-sub reveal">Every touchpoint engineered for trust, speed, and a seamless experience.</p>
     </div>
-    <div class="features-grid">
-      <div class="feature-card reveal">
-        <div class="fc-icon">🛡️</div>
-        <div class="fc-title">Verified Professionals</div>
-        <div class="fc-desc">Every technician undergoes Aadhaar verification, skill assessment, and background screening before listing.</div>
-      </div>
-      <div class="feature-card reveal">
-        <div class="fc-icon">📅</div>
-        <div class="fc-title">Real-Time Booking</div>
-        <div class="fc-desc">Instant confirmation with live ETA tracking. Know exactly when your pro arrives — down to the minute.</div>
-      </div>
-      <div class="feature-card reveal">
-        <div class="fc-icon">🚨</div>
-        <div class="fc-title">Emergency Service</div>
-        <div class="fc-desc">24/7 emergency dispatch for critical failures. Burst pipes, power outages — we respond in under 30 minutes.</div>
-      </div>
-      <div class="feature-card reveal">
-        <div class="fc-icon">⭐</div>
-        <div class="fc-title">Smart Rating System</div>
-        <div class="fc-desc">AI-powered reviews with fraud detection. Authentic ratings you can rely on to choose the right pro.</div>
-      </div>
-      <div class="feature-card reveal">
-        <div class="fc-icon">🔐</div>
-        <div class="fc-title">Secure Payment</div>
-        <div class="fc-desc">UPI, cards, and wallets — all encrypted. Money held in escrow until you confirm job completion.</div>
-      </div>
-      <div class="feature-card reveal">
-        <div class="fc-icon">🎧</div>
-        <div class="fc-title">24/7 Support</div>
-        <div class="fc-desc">Human agents + AI chatbot. Disputes resolved within 2 hours with full refund protection.</div>
-      </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal d1"><div class="fc-ico">🛡️</div><div class="fc-title">Verified Professionals</div><div class="fc-desc">Aadhaar verification, skill assessment, and background screening before every listing goes live.</div></div>
+      <div class="feat-card reveal d2"><div class="fc-ico">📅</div><div class="fc-title">Real-Time Booking</div><div class="fc-desc">Instant confirmation with live GPS tracking. Know your technician's ETA down to the minute.</div></div>
+      <div class="feat-card reveal d3"><div class="fc-ico">🚨</div><div class="fc-title">Emergency Service</div><div class="fc-desc">24/7 emergency dispatch for critical failures. Burst pipes, power outages — 30-min response.</div></div>
+      <div class="feat-card reveal d4"><div class="fc-ico">⭐</div><div class="fc-title">Smart Rating System</div><div class="fc-desc">AI-powered review verification with fraud detection. Authentic ratings you can rely on.</div></div>
+      <div class="feat-card reveal d5"><div class="fc-ico">🔐</div><div class="fc-title">Secure Payments</div><div class="fc-desc">UPI, cards & wallets — all encrypted. Escrow-based release only after job confirmation.</div></div>
+      <div class="feat-card reveal d1"><div class="fc-ico">🎧</div><div class="fc-title">24/7 Support</div><div class="fc-desc">Human agents backed by AI. Disputes resolved in under 2 hours with full refund protection.</div></div>
     </div>
   </div>
 </section>
 
-<!-- ===== HOW IT WORKS ===== -->
+<!-- ══ HOW IT WORKS — LIGHT ══════════════════════════════════ -->
 <section id="how">
-  <div class="section-inner">
-    <div class="section-header center">
-      <div class="section-tag">How It Works</div>
-      <h2 class="section-title">Fixed in 4 Simple Steps</h2>
-      <p class="section-sub">From search to solution — faster than calling around.</p>
+  <div class="sec-wrap">
+    <div class="sec-hdr cx">
+      <div class="sec-tag">How It Works</div>
+      <h2 class="sec-title reveal">Fixed in 4 Simple Steps</h2>
+      <p class="sec-sub reveal">From search to solution in minutes — faster than calling around.</p>
     </div>
-    <div class="steps-grid">
-      <div class="step-card reveal">
+    <div class="steps">
+      <div class="step reveal d1">
         <div class="step-num">1</div>
-        <div class="step-icon">📍</div>
-        <div class="step-title">Enter Your Location</div>
-        <div class="step-desc">Type your area or share live location. We match you to available pros nearby in real time.</div>
+        <div class="step-em">📍</div>
+        <div class="step-title">Enter Location</div>
+        <div class="step-desc">Share your area or live location. We match you to available pros in real time.</div>
       </div>
-      <div class="step-card reveal">
+      <div class="step reveal d2">
         <div class="step-num">2</div>
-        <div class="step-icon">🔍</div>
-        <div class="step-title">Choose Your Pro</div>
-        <div class="step-desc">Browse verified profiles, ratings, and transparent pricing. No hidden fees, ever.</div>
+        <div class="step-em">🔍</div>
+        <div class="step-title">Choose a Pro</div>
+        <div class="step-desc">Browse verified profiles, ratings, and transparent pricing. No hidden fees.</div>
       </div>
-      <div class="step-card reveal">
+      <div class="step reveal d3">
         <div class="step-num">3</div>
-        <div class="step-icon">⚡</div>
+        <div class="step-em">⚡</div>
         <div class="step-title">Instant Booking</div>
-        <div class="step-desc">Confirm in one tap. Get live tracking of your technician's arrival with SMS & app alerts.</div>
+        <div class="step-desc">Confirm in one tap. Track your technician live with SMS and push alerts.</div>
       </div>
-      <div class="step-card reveal">
+      <div class="step reveal d4">
         <div class="step-num">4</div>
-        <div class="step-icon">✅</div>
-        <div class="step-title">Job Done & Pay</div>
-        <div class="step-desc">Review the work, pay securely only when satisfied. Rate your experience and close the loop.</div>
+        <div class="step-em">✅</div>
+        <div class="step-title">Done & Pay</div>
+        <div class="step-desc">Review the work. Pay only when satisfied. Rate your experience to close the loop.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== BUSINESS MODEL ===== -->
-<section id="business">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-tag">Business Model</div>
-      <h2 class="section-title">Revenue Built for Scale</h2>
-      <p class="section-sub">Multiple monetisation streams designed for sustainable, high-margin growth.</p>
+<!-- ══ BUSINESS — LIGHT ══════════════════════════════════════ -->
+<section id="biz">
+  <div class="sec-wrap">
+    <div class="sec-hdr">
+      <div class="sec-tag">Business Model</div>
+      <h2 class="sec-title reveal">Revenue Built for Scale</h2>
+      <p class="sec-sub reveal">Multiple monetisation streams engineered for sustainable, high-margin growth.</p>
     </div>
     <div class="biz-grid">
       <div class="biz-card reveal">
-        <div class="biz-card-title">💰 Revenue Streams</div>
-        <div class="biz-item">
-          <div class="biz-dot">📊</div>
-          <div><div class="biz-label">10% Platform Commission</div><div class="biz-desc">Charged on every completed booking. Scales directly with transaction volume.</div></div>
-        </div>
-        <div class="biz-item">
-          <div class="biz-dot">🚨</div>
-          <div><div class="biz-label">Emergency Surcharge</div><div class="biz-desc">20–30% premium on emergency and off-hours bookings — high demand, high margin.</div></div>
-        </div>
-        <div class="biz-item">
-          <div class="biz-dot">👑</div>
-          <div><div class="biz-label">₹999/Month Premium Listing</div><div class="biz-desc">Top-of-search visibility, priority dispatch, and verified badge for professionals.</div></div>
-        </div>
-        <div class="biz-item">
-          <div class="biz-dot">🤝</div>
-          <div><div class="biz-label">B2B Partnerships</div><div class="biz-desc">AMC contracts with housing societies, offices, and real-estate developers.</div></div>
-        </div>
+        <div class="biz-ttl">💰 Revenue Streams</div>
+        <div class="biz-item"><div class="biz-ic">📊</div><div><div class="biz-lbl">10% Platform Commission</div><div class="biz-desc">Charged on every completed booking. Scales directly with transaction volume, zero fixed cost.</div></div></div>
+        <div class="biz-item"><div class="biz-ic">🚨</div><div><div class="biz-lbl">Emergency Surcharge</div><div class="biz-desc">20–30% premium on emergency and off-hours bookings — high demand, premium margin.</div></div></div>
+        <div class="biz-item"><div class="biz-ic">👑</div><div><div class="biz-lbl">₹999/Month Premium Listing</div><div class="biz-desc">Top-of-search visibility, priority dispatch, and verified badge for professionals.</div></div></div>
+        <div class="biz-item"><div class="biz-ic">🤝</div><div><div class="biz-lbl">B2B AMC Contracts</div><div class="biz-desc">Annual Maintenance Contracts with housing societies, offices & real-estate developers.</div></div></div>
       </div>
       <div class="biz-card reveal">
-        <div class="biz-card-title">📈 Market Opportunity</div>
-        <div class="biz-item">
-          <div class="biz-dot">🇮🇳</div>
-          <div><div class="biz-label">₹3.5 Lakh Crore Market</div><div class="biz-desc">India's home services sector — largely unorganised and ripe for disruption.</div></div>
-        </div>
-        <div class="biz-item">
-          <div class="biz-dot">📱</div>
-          <div><div class="biz-label">750M+ Smartphone Users</div><div class="biz-desc">Rapidly growing urban population comfortable with app-based service booking.</div></div>
-        </div>
-        <div class="biz-item">
-          <div class="biz-dot">🏠</div>
-          <div><div class="biz-label">40M Urban Households</div><div class="biz-desc">Primary target segment in Tier 1 & Tier 2 cities with high service frequency.</div></div>
-        </div>
-        <div class="biz-item">
-          <div class="biz-dot">🔧</div>
-          <div><div class="biz-label">Underserved Technician Side</div><div class="biz-desc">Skilled tradespeople lack digital presence — Fixora unlocks their earning potential.</div></div>
-        </div>
+        <div class="biz-ttl">📈 Market Opportunity</div>
+        <div class="biz-item"><div class="biz-ic">🇮🇳</div><div><div class="biz-lbl">₹3.5 Lakh Crore Market</div><div class="biz-desc">India's home services sector — largely unorganised and wide open for disruption.</div></div></div>
+        <div class="biz-item"><div class="biz-ic">📱</div><div><div class="biz-lbl">750M+ Smartphone Users</div><div class="biz-desc">Urban India rapidly adopting app-based service booking across all demographics.</div></div></div>
+        <div class="biz-item"><div class="biz-ic">🏠</div><div><div class="biz-lbl">40M Urban Households</div><div class="biz-desc">Primary target segment in Tier 1 & Tier 2 cities with high service frequency needs.</div></div></div>
+        <div class="biz-item"><div class="biz-ic">🔧</div><div><div class="biz-lbl">Underserved Technician Side</div><div class="biz-desc">Skilled tradespeople lack digital presence — Fixora unlocks their income potential at scale.</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== SCALABILITY ===== -->
+<!-- ══ ROADMAP — LIGHT ═══════════════════════════════════════ -->
 <section id="scale">
-  <div class="section-inner">
-    <div class="section-header">
-      <div class="section-tag">Roadmap</div>
-      <h2 class="section-title">From One City to <br>Pan-India Dominance</h2>
-      <p class="section-sub">A phased rollout strategy built for speed, quality, and sustainable expansion.</p>
+  <div class="sec-wrap">
+    <div class="sec-hdr">
+      <div class="sec-tag">Roadmap</div>
+      <h2 class="sec-title reveal">From One City to<br>Pan-India Dominance</h2>
+      <p class="sec-sub reveal">A phased rollout built for speed, quality, and sustainable expansion.</p>
     </div>
-    <div class="scale-timeline">
-      <div class="scale-item reveal">
-        <div class="scale-dot">🏙️</div>
-        <div class="scale-content">
-          <div class="scale-phase">Phase 1 · 2024–2025</div>
-          <div class="scale-title">Single City Launch — Bengaluru</div>
-          <div class="scale-desc">Nail the product-market fit. Build trust through hyper-local operations. Achieve 10,000 monthly bookings with a Net Promoter Score above 70.</div>
-          <span class="scale-tag">🟢 In Progress</span>
+    <div class="tl">
+      <div class="tl-item reveal">
+        <div class="tl-dot">🏙️</div>
+        <div class="tl-body">
+          <div class="tl-phase">Phase 1 · 2024–2025</div>
+          <div class="tl-title">Single City Launch — Bengaluru</div>
+          <div class="tl-desc">Nail product-market fit. Build trust through hyper-local operations. Target 10,000 monthly bookings and an NPS above 70.</div>
+          <span class="tl-badge">🟢 In Progress</span>
         </div>
       </div>
-      <div class="scale-item reveal">
-        <div class="scale-dot">🗺️</div>
-        <div class="scale-content">
-          <div class="scale-phase">Phase 2 · 2025–2026</div>
-          <div class="scale-title">Multi-City Expansion</div>
-          <div class="scale-desc">Expand to Mumbai, Delhi NCR, Hyderabad & Pune. Onboard 50,000 professionals. Introduce subscription plans and AMC contracts.</div>
-          <span class="scale-tag">🟡 Upcoming</span>
+      <div class="tl-item reveal">
+        <div class="tl-dot">🗺️</div>
+        <div class="tl-body">
+          <div class="tl-phase">Phase 2 · 2025–2026</div>
+          <div class="tl-title">Multi-City Expansion</div>
+          <div class="tl-desc">Expand to Mumbai, Delhi NCR, Hyderabad & Pune. Onboard 50,000 professionals. Launch subscription plans and AMC contracts.</div>
+          <span class="tl-badge">🟡 Upcoming</span>
         </div>
       </div>
-      <div class="scale-item reveal">
-        <div class="scale-dot">🇮🇳</div>
-        <div class="scale-content">
-          <div class="scale-phase">Phase 3 · 2026–2027</div>
-          <div class="scale-title">Pan-India Platform</div>
-          <div class="scale-desc">200+ cities including Tier 2 markets. Launch Fixora Pro Academy for skill certification. Target 5M annual bookings.</div>
-          <span class="scale-tag">🔵 Planned</span>
+      <div class="tl-item reveal">
+        <div class="tl-dot">🇮🇳</div>
+        <div class="tl-body">
+          <div class="tl-phase">Phase 3 · 2026–2027</div>
+          <div class="tl-title">Pan-India Platform</div>
+          <div class="tl-desc">200+ cities including Tier 2 markets. Launch Fixora Pro Academy for skill certification. Target 5 million annual bookings.</div>
+          <span class="tl-badge">🔵 Planned</span>
         </div>
       </div>
-      <div class="scale-item reveal">
-        <div class="scale-dot">🤖</div>
-        <div class="scale-content">
-          <div class="scale-phase">Future · 2028+</div>
-          <div class="scale-title">AI + IoT Integration</div>
-          <div class="scale-desc">Smart home integrations that self-diagnose faults. Predictive maintenance alerts. AI scheduling and autonomous dispatch optimisation.</div>
-          <span class="scale-tag">⚡ Vision</span>
+      <div class="tl-item reveal" style="padding-bottom:0">
+        <div class="tl-dot">🤖</div>
+        <div class="tl-body">
+          <div class="tl-phase">Future · 2028+</div>
+          <div class="tl-title">AI + IoT Integration</div>
+          <div class="tl-desc">Smart home integrations that self-diagnose faults. Predictive maintenance alerts. AI scheduling and autonomous dispatch optimisation.</div>
+          <span class="tl-badge">⚡ Vision</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===== CTA ===== -->
+<!-- ══ CTA ═══════════════════════════════════════════════════ -->
 <section id="cta">
   <div class="cta-glow"></div>
-  <div class="section-inner">
-    <h2>Ready to Fix Anything, <br>Instantly?</h2>
-    <p>Join thousands of homeowners who trust Fixora to get it done right, the first time.</p>
-    <div class="cta-btns">
-      <a href="#hero" class="btn-primary">⚡ Book a Technician</a>
-      <a href="#business" class="btn-outline">Learn About Fixora</a>
-    </div>
+  <h2 class="reveal">Ready to Fix Anything, Instantly?</h2>
+  <p class="reveal">Join thousands of homeowners who trust Fixora to get it done right, the first time.</p>
+  <div class="cta-btns reveal">
+    <a href="#hero" class="btn-pri">Book a Technician →</a>
+    <a href="#biz" class="btn-out">Learn About Fixora</a>
   </div>
 </section>
 
-<!-- ===== FOOTER ===== -->
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
 <footer>
-  <p>© 2024 <strong>Fixora Technologies Pvt. Ltd.</strong> · Built with ⚡ for India · All rights reserved.</p>
-  <p style="margin-top:8px;font-size:.78rem;">Bengaluru · Mumbai · Delhi · Hyderabad</p>
+  <div class="foot-l">
+    <svg width="26" height="26" viewBox="0 0 160 160" fill="none">
+      <defs>
+        <linearGradient id="fl" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#06B6D4"/>
+        </linearGradient>
+      </defs>
+      <circle cx="80" cy="80" r="68" fill="#0F172A"/>
+      <rect x="36" y="30" width="17" height="100" rx="5" fill="#1E3A8A"/>
+      <rect x="36" y="30" width="62" height="16" rx="5" fill="#1E3A8A"/>
+      <rect x="36" y="66" width="46" height="14" rx="5" fill="#1E3A8A"/>
+      <path d="M 95 22 L 62 80 L 83 80 L 50 138 L 118 64 L 93 64 Z" fill="url(#fl)"/>
+    </svg>
+    <span class="foot-txt">© 2024 <strong>Fixora Technologies Pvt. Ltd.</strong> · All rights reserved.</span>
+  </div>
+  <div class="foot-r">
+    <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Careers</a><a href="#">Contact</a>
+  </div>
 </footer>
 
-
 <script>
-/* ============================================================
-   SPLASH CANVAS — Electric animated background
-   ============================================================ */
+/* ── SPLASH CANVAS ───────────────────────────────────── */
 (function(){
-  const canvas = document.getElementById('splashCanvas');
-  const ctx = canvas.getContext('2d');
-  let W, H, particles=[], bolts=[];
+  const c=document.getElementById('splashBg'),x=c.getContext('2d');
+  let W,H,pts=[],bolts=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight;};
+  resize();addEventListener('resize',resize);
 
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  for(let i=0;i<75;i++) pts.push({
+    x:Math.random()*2000,y:Math.random()*2000,
+    vx:(Math.random()-.5)*.32,vy:(Math.random()-.5)*.32,
+    r:Math.random()*1.7+.4,o:Math.random()*.45+.12,
+    col:Math.random()>.5?'37,99,235':'6,182,212'
+  });
+  const mkB=()=>{
+    const sx=Math.random()*W,ey=Math.random()*H*.6,ex=sx+(Math.random()-.5)*220,pts2=[];
+    for(let i=0;i<=10;i++){const t=i/10;pts2.push({x:sx+(ex-sx)*t+(Math.random()-.5)*(1-t)*90,y:(ey)*t});}
+    bolts.push({pts:pts2,life:1,d:.033+Math.random()*.022});
+  };
+  setInterval(()=>{if(bolts.length<5)mkB();},380);
 
-  // Particles
-  for(let i=0;i<80;i++){
-    particles.push({
-      x: Math.random()*1920,
-      y: Math.random()*1080,
-      r: Math.random()*2+.5,
-      vx:(Math.random()-.5)*.4,
-      vy:(Math.random()-.5)*.4,
-      o: Math.random()*.7+.2
+  const frame=t=>{
+    const gx=W/2+Math.sin(t*.0004)*55,gy=H/2+Math.cos(t*.0003)*38;
+    const g=x.createRadialGradient(gx,gy,0,gx,gy,Math.max(W,H)*.9);
+    g.addColorStop(0,'#1E293B');g.addColorStop(.5,'#0F172A');g.addColorStop(1,'#080d16');
+    x.fillStyle=g;x.fillRect(0,0,W,H);
+    const rg=x.createRadialGradient(W/2,H/2,0,W/2,H/2,Math.max(W,H)*.5);
+    rg.addColorStop(0,'rgba(37,99,235,.14)');rg.addColorStop(.5,'rgba(6,182,212,.05)');rg.addColorStop(1,'transparent');
+    x.fillStyle=rg;x.fillRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);
+      x.fillStyle=`rgba(${p.col},${p.o})`;x.shadowColor=`rgba(${p.col},.7)`;x.shadowBlur=5;x.fill();x.shadowBlur=0;
     });
-  }
-
-  function randomBolt(){
-    const sx = Math.random()*W;
-    const sy = 0;
-    const ex = sx + (Math.random()-0.5)*300;
-    const ey = Math.random()*H*.7;
-    const pts = [];
-    const segs = 8+Math.floor(Math.random()*6);
-    for(let i=0;i<=segs;i++){
-      const t=i/segs;
-      pts.push({
-        x: sx+(ex-sx)*t + (Math.random()-.5)*(1-t)*120,
-        y: sy+(ey-sy)*t
-      });
-    }
-    return {pts, life:1, decay:Math.random()*.04+.03};
-  }
-
-  setInterval(()=>{
-    if(bolts.length<5) bolts.push(randomBolt());
-  }, 350);
-
-  let grad;
-  function makeGrad(t){
-    const cx = W/2 + Math.sin(t*.0003)*80;
-    const cy = H/2 + Math.cos(t*.0002)*50;
-    grad = ctx.createRadialGradient(cx,cy,0,cx,cy,Math.max(W,H)*.8);
-    grad.addColorStop(0,'#142B4D');
-    grad.addColorStop(.5,'#0B1F3B');
-    grad.addColorStop(1,'#060f1e');
-  }
-
-  function drawBolt(b){
-    ctx.beginPath();
-    ctx.moveTo(b.pts[0].x, b.pts[0].y);
-    for(let i=1;i<b.pts.length;i++) ctx.lineTo(b.pts[i].x, b.pts[i].y);
-    ctx.strokeStyle = `rgba(0,255,136,${b.life*.5})`;
-    ctx.lineWidth = b.life*1.5;
-    ctx.shadowColor = '#00FF88';
-    ctx.shadowBlur = 12*b.life;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-
-    // core
-    ctx.beginPath();
-    ctx.moveTo(b.pts[0].x, b.pts[0].y);
-    for(let i=1;i<b.pts.length;i++) ctx.lineTo(b.pts[i].x, b.pts[i].y);
-    ctx.strokeStyle = `rgba(255,255,255,${b.life*.35})`;
-    ctx.lineWidth = b.life*.5;
-    ctx.stroke();
-  }
-
-  function frame(t){
-    makeGrad(t);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0,0,W,H);
-
-    // Particles
-    particles.forEach(p=>{
-      p.x=(p.x+p.vx+W)%W;
-      p.y=(p.y+p.vy+H)%H;
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,255,136,${p.o})`;
-      ctx.shadowColor='#00FF88';
-      ctx.shadowBlur=8;
-      ctx.fill();
-      ctx.shadowBlur=0;
+    for(let i=0;i<3;i++){const r=((t*.05+i*80)%480),o=Math.max(0,.1*(1-r/480));x.beginPath();x.arc(W/2,H/2,r,0,Math.PI*2);x.strokeStyle=`rgba(37,99,235,${o})`;x.lineWidth=1;x.stroke();}
+    bolts.filter(b=>b.life>0).forEach(b=>{
+      x.beginPath();x.moveTo(b.pts[0].x,b.pts[0].y);b.pts.slice(1).forEach(p=>x.lineTo(p.x,p.y));
+      x.strokeStyle=`rgba(37,99,235,${b.life*.42})`;x.lineWidth=b.life*1.4;x.shadowColor='#2563EB';x.shadowBlur=9*b.life;x.stroke();x.shadowBlur=0;b.life-=b.d;
     });
-
-    // Energy waves
-    for(let i=0;i<3;i++){
-      const r = ((t*.06 + i*100)%600);
-      const o = Math.max(0, .15*(1-r/600));
-      ctx.beginPath();
-      ctx.arc(W/2,H/2,r,0,Math.PI*2);
-      ctx.strokeStyle=`rgba(0,255,136,${o})`;
-      ctx.lineWidth=1;
-      ctx.stroke();
-    }
-
-    // Bolts
-    bolts = bolts.filter(b=>b.life>0);
-    bolts.forEach(b=>{
-      drawBolt(b);
-      b.life-=b.decay;
-    });
-
+    bolts=bolts.filter(b=>b.life>0);
     requestAnimationFrame(frame);
-  }
+  };
   requestAnimationFrame(frame);
 })();
 
-/* ============================================================
-   HERO CANVAS — Soft electric energy lines
-   ============================================================ */
+/* ── HERO CANVAS ─────────────────────────────────────── */
 (function(){
-  const canvas = document.getElementById('heroCanvas');
-  const ctx = canvas.getContext('2d');
-  let W,H, lines=[];
+  const c=document.getElementById('heroCanvas'),x=c.getContext('2d');
+  let W,H,lines=[],bolts=[];
+  const resize=()=>{W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;};
+  resize();addEventListener('resize',resize);
 
-  function resize(){
-    W = canvas.width = canvas.offsetWidth;
-    H = canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
+  for(let i=0;i<16;i++) lines.push({
+    x:Math.random()*1920,y:Math.random()*1080,
+    len:Math.random()*240+70,angle:Math.random()*Math.PI*2,
+    spd:(Math.random()-.5)*.0035,o:Math.random()*.16+.03,
+    flk:Math.random()*Math.PI*2,col:Math.random()>.5?'37,99,235':'6,182,212'
+  });
+  const mkB=()=>{
+    const sx=Math.random()*W,sy=Math.random()*H*.3,ex=sx+(Math.random()-.5)*160,ey=sy+Math.random()*H*.45,pts=[];
+    for(let i=0;i<=8;i++){const t=i/8;pts.push({x:sx+(ex-sx)*t+(Math.random()-.5)*(1-t)*70,y:sy+(ey-sy)*t});}
+    bolts.push({pts,life:1,d:.042+Math.random()*.028});
+  };
+  setInterval(()=>{if(bolts.length<3)mkB();},950);
 
-  for(let i=0;i<12;i++){
-    lines.push({
-      x:Math.random()*1920,
-      y:Math.random()*1080,
-      len:Math.random()*200+80,
-      angle:Math.random()*Math.PI*2,
-      speed:(Math.random()-.5)*.3,
-      o:Math.random()*.3+.05,
-      flicker:Math.random()*Math.PI*2
-    });
-  }
-
-  function frame(t){
-    ctx.clearRect(0,0,W,H);
+  const frame=t=>{
+    x.clearRect(0,0,W,H);
+    const bg=x.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#0F172A');bg.addColorStop(.5,'#111827');bg.addColorStop(1,'#0F172A');
+    x.fillStyle=bg;x.fillRect(0,0,W,H);
+    const rg=x.createRadialGradient(W/2,H*.52,0,W/2,H*.52,W*.55);
+    rg.addColorStop(0,'rgba(37,99,235,.12)');rg.addColorStop(.4,'rgba(6,182,212,.045)');rg.addColorStop(1,'transparent');
+    x.fillStyle=rg;x.fillRect(0,0,W,H);
     lines.forEach(l=>{
-      l.angle+=l.speed*.005;
-      l.flicker+=.04;
-      const o = l.o*(0.5+0.5*Math.sin(l.flicker));
-      const ex = l.x+Math.cos(l.angle)*l.len;
-      const ey = l.y+Math.sin(l.angle)*l.len;
-      const g=ctx.createLinearGradient(l.x,l.y,ex,ey);
-      g.addColorStop(0,'rgba(0,200,100,0)');
-      g.addColorStop(.5,`rgba(0,230,118,${o})`);
-      g.addColorStop(1,'rgba(0,200,100,0)');
-      ctx.beginPath();ctx.moveTo(l.x,l.y);ctx.lineTo(ex,ey);
-      ctx.strokeStyle=g;ctx.lineWidth=1.2;ctx.stroke();
+      l.angle+=l.spd;l.flk+=.032;
+      const o=l.o*(0.35+0.65*Math.sin(l.flk));
+      const ex2=l.x+Math.cos(l.angle)*l.len,ey2=l.y+Math.sin(l.angle)*l.len;
+      const g=x.createLinearGradient(l.x,l.y,ex2,ey2);
+      g.addColorStop(0,`rgba(${l.col},0)`);g.addColorStop(.5,`rgba(${l.col},${o})`);g.addColorStop(1,`rgba(${l.col},0)`);
+      x.beginPath();x.moveTo(l.x,l.y);x.lineTo(ex2,ey2);x.strokeStyle=g;x.lineWidth=1;x.stroke();
     });
+    bolts.filter(b=>b.life>0).forEach(b=>{
+      x.beginPath();x.moveTo(b.pts[0].x,b.pts[0].y);b.pts.slice(1).forEach(p=>x.lineTo(p.x,p.y));
+      x.strokeStyle=`rgba(37,99,235,${b.life*.28})`;x.lineWidth=b.life;x.shadowColor='#2563EB';x.shadowBlur=7*b.life;x.stroke();x.shadowBlur=0;b.life-=b.d;
+    });
+    bolts=bolts.filter(b=>b.life>0);
     requestAnimationFrame(frame);
-  }
+  };
   requestAnimationFrame(frame);
 })();
 
-/* ============================================================
-   SPLASH LOGO FLASH every 2s
-   ============================================================ */
-(function(){
-  const logo = document.getElementById('splashLogo');
-  setInterval(()=>{
-    logo.classList.add('flash');
-    setTimeout(()=>logo.classList.remove('flash'),300);
-  },2000);
-})();
-
-/* ============================================================
-   SPLASH → HOMEPAGE transition after 3.5s
-   ============================================================ */
+/* ── SPLASH OUT ──────────────────────────────────────── */
 setTimeout(()=>{
-  const splash = document.getElementById('splash');
-  splash.style.transition='opacity .9s ease, visibility .9s ease';
-  splash.classList.add('hidden');
-  setTimeout(()=>{ splash.style.display='none'; }, 1000);
-}, 3500);
+  const s=document.getElementById('splash');
+  s.classList.add('out');
+  setTimeout(()=>s.style.display='none',1000);
+},3500);
 
-/* ============================================================
-   SCROLL REVEAL
-   ============================================================ */
-(function(){
-  const els = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  },{threshold:.12});
-  els.forEach(el=>io.observe(el));
+/* ── NAV SCROLL ──────────────────────────────────────── */
+addEventListener('scroll',()=>{
+  document.getElementById('mainNav').classList.toggle('scrolled',scrollY>20);
+});
+
+/* ── HAMBURGER ───────────────────────────────────────── */
+document.getElementById('hbg').addEventListener('click',()=>document.getElementById('mobMenu').classList.toggle('open'));
+function cM(){document.getElementById('mobMenu').classList.remove('open');}
+
+/* ── SCROLL REVEAL ───────────────────────────────────── */
+new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');} });
+},{threshold:.1}).observe
+// observe all
+;(()=>{
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');}});
+  },{threshold:.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
 
-/* ============================================================
-   HAMBURGER MENU
-   ============================================================ */
-function closeMobile(){
-  document.getElementById('mobileMenu').classList.remove('open');
-}
-document.getElementById('hamburger').addEventListener('click',function(){
-  document.getElementById('mobileMenu').classList.toggle('open');
-});
-
-/* ============================================================
-   SEARCH HANDLER
-   ============================================================ */
-function handleSearch(){
-  const val = document.getElementById('locationInput').value.trim();
-  if(val){
-    alert(`🔍 Finding verified technicians near "${val}"…\n\nThis would launch the full search in the production app!`);
-  } else {
-    document.getElementById('locationInput').focus();
-    document.getElementById('locationInput').style.boxShadow='0 0 0 3px rgba(0,230,118,.4)';
-    setTimeout(()=>document.getElementById('locationInput').style.boxShadow='',1500);
+/* ── SEARCH ──────────────────────────────────────────── */
+function doSearch(){
+  const v=document.getElementById('locInput').value.trim();
+  if(v){alert(`🔍 Finding verified technicians near "${v}"…\n\nThis launches the full search in the production app!`);}
+  else{
+    const el=document.getElementById('locInput');
+    el.focus();
+    el.parentElement.style.borderColor='rgba(37,99,235,.55)';
+    el.parentElement.style.boxShadow='0 0 0 3px rgba(37,99,235,.16)';
+    setTimeout(()=>{el.parentElement.style.borderColor='';el.parentElement.style.boxShadow='';},1600);
   }
 }
-
-/* ============================================================
-   NAVBAR SCROLL EFFECT
-   ============================================================ */
-window.addEventListener('scroll',function(){
-  const nav=document.querySelector('nav');
-  if(window.scrollY>20){
-    nav.style.borderBottomColor='rgba(0,255,136,.2)';
-  } else {
-    nav.style.borderBottomColor='rgba(0,255,136,.12)';
-  }
-});
 </script>
 </body>
 </html>
