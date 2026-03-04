@@ -641,6 +641,7 @@ footer{
     <li><a href="#biz">Business</a></li>
     <li><a href="#scale">Roadmap</a></li>
   </ul>
+  <button class="n-worker-btn" onclick="openWorkerModal()">Join as Worker</button>
   <a href="#cta" class="n-btn">Get Started →</a>
   <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
@@ -675,6 +676,23 @@ footer{
         <span class="h-si">📍</span>
         <input class="h-in" id="locInput" type="text" placeholder="Enter your area or pin code…"/>
         <button class="h-sbtn" onclick="doSearch()">Find Now →</button>
+      </div>
+
+      <div class="h-worker-cta reveal">
+        <span class="h-worker-label">Are you a technician?</span>
+        <button class="h-worker-btn" onclick="openWorkerModal()">
+          <span class="h-worker-btn-icon">🔧</span>
+          Register as Worker
+          <span class="h-worker-arrow">→</span>
+        </button>
+      </div>
+
+      <!-- Live ticker -->
+      <div class="ticker-wrap reveal">
+        <div class="ticker-live"><span class="ticker-dot"></span>LIVE</div>
+        <div class="ticker-track">
+          <div class="ticker-reel" id="tickerReel"></div>
+        </div>
       </div>
 
       <div class="h-stats reveal">
@@ -1118,5 +1136,135 @@ function doSearch(){
   }
 }
 </script>
+<!-- ══ WORKER REGISTRATION MODAL ══════════════════════════════ -->
+<div id="workerOverlay" class="w-overlay" onclick="handleOverlayClick(event)">
+  <div class="w-modal" role="dialog" aria-modal="true" aria-label="Register as Worker">
+
+    <button class="w-close" onclick="closeWorkerModal()" aria-label="Close">✕</button>
+
+    <div class="w-header">
+      <div class="w-header-icon">🔧</div>
+      <div>
+        <div class="w-earn">Earn more by joining Fixora's trusted service network.</div>
+        <h2 class="w-title">Register as a Worker</h2>
+      </div>
+    </div>
+
+    <form class="w-form" id="workerForm" onsubmit="submitWorkerForm(event)" novalidate>
+
+      <div class="w-row">
+        <div class="w-field">
+          <label class="w-label">Full Name <span class="w-req">*</span></label>
+          <input class="w-input" type="text" placeholder="e.g. Rajan Sharma" required/>
+        </div>
+        <div class="w-field">
+          <label class="w-label">Phone Number <span class="w-req">*</span></label>
+          <input class="w-input" type="tel" placeholder="+91 98765 43210" required/>
+        </div>
+      </div>
+
+      <div class="w-row">
+        <div class="w-field">
+          <label class="w-label">City <span class="w-req">*</span></label>
+          <input class="w-input" type="text" placeholder="e.g. Bengaluru" required/>
+        </div>
+        <div class="w-field">
+          <label class="w-label">Years of Experience <span class="w-req">*</span></label>
+          <input class="w-input" type="number" placeholder="e.g. 5" min="0" max="50" required/>
+        </div>
+      </div>
+
+      <div class="w-field">
+        <label class="w-label">Service Category <span class="w-req">*</span></label>
+        <div class="w-select-wrap">
+          <select class="w-input w-select" required>
+            <option value="" disabled selected>Select your service…</option>
+            <option>Electrician</option>
+            <option>Plumber</option>
+            <option>AC Repair &amp; Installation</option>
+            <option>Carpenter</option>
+            <option>Appliance Repair</option>
+            <option>Painting</option>
+            <option>Other</option>
+          </select>
+          <span class="w-select-arrow">▾</span>
+        </div>
+      </div>
+
+      <div class="w-row">
+        <div class="w-field">
+          <label class="w-label">Upload ID Proof <span class="w-req">*</span></label>
+          <label class="w-upload" id="idLabel">
+            <input type="file" accept="image/*,.pdf" onchange="handleFile(this,'idLabel','idName')" required/>
+            <span class="w-upload-ico">📄</span>
+            <span class="w-upload-txt" id="idName">Aadhaar / PAN / Voter ID</span>
+            <span class="w-upload-hint">PNG, JPG or PDF</span>
+          </label>
+        </div>
+        <div class="w-field">
+          <label class="w-label">Work Photo / Portfolio</label>
+          <label class="w-upload" id="photoLabel">
+            <input type="file" accept="image/*" onchange="handleFile(this,'photoLabel','photoName')"/>
+            <span class="w-upload-ico">📸</span>
+            <span class="w-upload-txt" id="photoName">Upload a photo of your work</span>
+            <span class="w-upload-hint">JPG or PNG, max 5 MB</span>
+          </label>
+        </div>
+      </div>
+
+      <p class="w-verify-note">
+        🔒 All workers go through ID verification before joining the Fixora network.
+      </p>
+
+      <button type="submit" class="w-submit">
+        <span id="wBtnTxt">Submit Application →</span>
+      </button>
+
+    </form>
+
+    <!-- Success state -->
+    <div class="w-success" id="wSuccess">
+      <div class="w-success-ico">✅</div>
+      <h3>Application Submitted!</h3>
+      <p>Thanks for joining Fixora. Our team will verify your details and reach out within <strong>24–48 hours</strong>.</p>
+      <button class="w-submit" style="margin-top:20px" onclick="closeWorkerModal()">Close</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ── WORKER MODAL ────────────────────────────────────── */
+function openWorkerModal(){
+  const ov=document.getElementById('workerOverlay');
+  document.getElementById('workerForm').style.display='';
+  document.getElementById('wSuccess').style.display='none';
+  ov.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeWorkerModal(){
+  document.getElementById('workerOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('workerOverlay')) closeWorkerModal();
+}
+function handleFile(inp,labelId,nameId){
+  const f=inp.files[0];if(!f)return;
+  document.getElementById(nameId).textContent=f.name;
+  document.getElementById(labelId).classList.add('has-file');
+}
+function submitWorkerForm(e){
+  e.preventDefault();
+  const btn=document.getElementById('wBtnTxt');
+  btn.textContent='Submitting…';
+  setTimeout(()=>{
+    document.getElementById('workerForm').style.display='none';
+    document.getElementById('wSuccess').style.display='flex';
+  },1200);
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeWorkerModal();});
+</script>
+
 </body>
 </html>
