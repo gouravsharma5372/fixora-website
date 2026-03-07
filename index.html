@@ -311,8 +311,8 @@ nav.scrolled{
 .svc-card{
   border-radius:16px;padding:28px 22px;text-align:center;
   border:1px solid var(--border);background:var(--card);
-  cursor:default;position:relative;overflow:hidden;
-  transition:transform .28s,box-shadow .28s,border-color .28s;
+  cursor:pointer;user-select:none;position:relative;overflow:hidden;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
 }
 .svc-card::after{
   content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
@@ -1259,6 +1259,797 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
   transition:background .2s,border-color .2s,color .2s;
 }
 .n-btn-ghost:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.35);color:#fff;}
+
+/* service price tag */
+.svc-price{
+  display:inline-block;margin-top:10px;
+  background:rgba(37,99,235,.08);color:#2563EB;
+  border:1px solid rgba(37,99,235,.18);border-radius:99px;
+  font-size:.68rem;font-weight:700;padding:3px 11px;
+}
+
+/* ══ WORKER PROFILE CARDS (complete restyle) ══════════ */
+.wp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px;}
+
+.wp-card{
+  background:linear-gradient(160deg,rgba(17,24,39,.98) 0%,rgba(15,23,42,.98) 100%);
+  border:1px solid rgba(255,255,255,.07);border-radius:22px;padding:28px 20px 22px;
+  text-align:center;position:relative;overflow:hidden;
+  transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .32s,border-color .32s;
+  cursor:default;
+}
+.wp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#2563EB,#06B6D4);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+.wp-card:hover::before{transform:scaleX(1);}
+.wp-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 0 1px rgba(37,99,235,.2);border-color:rgba(37,99,235,.2);}
+
+/* glow on hover */
+.wp-card::after{
+  content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.1) 0%,transparent 70%);
+  opacity:0;transition:opacity .35s;pointer-events:none;
+}
+.wp-card:hover::after{opacity:1;}
+
+/* availability badge */
+.wp-status{
+  position:absolute;top:13px;right:13px;font-size:.62rem;font-weight:700;
+  padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;
+}
+.wp-status.avail{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.25);}
+.wp-status.busy {background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.2);}
+.wp-status-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:od 1.5s infinite;}
+
+/* photo ring */
+.wp-photo-ring{
+  width:88px;height:88px;border-radius:50%;margin:0 auto 16px;
+  position:relative;
+  box-shadow:0 0 0 3px var(--bg),0 0 0 5px rgba(37,99,235,.25),0 10px 28px rgba(0,0,0,.4);
+  transition:box-shadow .32s;flex-shrink:0;
+}
+.wp-card:hover .wp-photo-ring{box-shadow:0 0 0 3px var(--bg),0 0 0 5px rgba(37,99,235,.55),0 14px 36px rgba(37,99,235,.22);}
+.wp-photo{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+.wp-photo-fallback{
+  width:100%;height:100%;border-radius:50%;
+  background:linear-gradient(135deg,#1E3A8A,#0891B2);
+  color:#fff;font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+}
+.wp-verify-badge{
+  position:absolute;bottom:2px;right:2px;width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,#2563EB,#0891B2);border:2px solid var(--bg);
+  color:#fff;font-size:.62rem;display:flex;align-items:center;justify-content:center;
+}
+
+/* text info */
+.wp-info{margin-bottom:10px;}
+.wp-name{font-family:'Syne',sans-serif;font-size:.98rem;font-weight:800;color:#F1F5F9;margin-bottom:3px;}
+.wp-prof{font-size:.75rem;color:rgba(148,163,184,.6);font-weight:500;margin-bottom:4px;}
+.wp-loc{font-size:.68rem;color:rgba(148,163,184,.4);}
+
+/* stars */
+.wp-stars-row{margin-bottom:2px;}
+.wp-stars{color:#FBBF24;font-size:.8rem;letter-spacing:.5px;}
+.wp-rating-num{font-size:.78rem;font-weight:700;color:#F1F5F9;}
+.wp-rating-cnt{font-size:.68rem;color:rgba(148,163,184,.4);}
+
+.wp-divider{height:1px;background:rgba(255,255,255,.07);margin:12px 0;}
+
+/* meta pills */
+.wp-meta-row{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap;}
+.wp-charge-pill,.wp-eta-pill{
+  display:flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;
+  padding:4px 10px;border-radius:99px;
+}
+.wp-charge-pill{background:rgba(37,99,235,.08);color:#93C5FD;border:1px solid rgba(37,99,235,.15);}
+.wp-eta-pill{background:rgba(6,182,212,.07);color:#67E8F9;border:1px solid rgba(6,182,212,.15);}
+
+/* book button */
+.wp-book-btn{
+  width:100%;padding:10px;border-radius:11px;
+  background:linear-gradient(135deg,#2563EB,#0891B2);
+  color:#fff;border:none;font-weight:700;font-size:.8rem;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  box-shadow:0 5px 16px rgba(37,99,235,.32);
+  transition:opacity .2s,transform .2s,box-shadow .2s;
+}
+.wp-book-btn:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 9px 24px rgba(37,99,235,.45);}
+.wp-book-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none;background:#334155;}
+
+/* ══ MAP PHOTO MARKERS ════════════════════════════════ */
+.map-photo-marker{
+  position:absolute;transform:translate(-50%,-100%);z-index:8;cursor:pointer;
+  animation:markerDrop .5s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes markerDrop{from{opacity:0;transform:translate(-50%,-115%);}to{opacity:1;transform:translate(-50%,-100%);}}
+.map-photo-marker:hover .mpm-ring{transform:scale(1.15);box-shadow:0 0 0 3px #fff,0 8px 24px rgba(0,0,0,.6);}
+.mpm-ring{
+  width:48px;height:48px;border-radius:50%;overflow:hidden;
+  transition:transform .22s cubic-bezier(.22,1,.36,1),box-shadow .22s;
+  position:relative;z-index:1;
+}
+.map-photo-marker.avail .mpm-ring{box-shadow:0 0 0 3px #2563EB,0 6px 18px rgba(0,0,0,.5);}
+.map-photo-marker.busy  .mpm-ring{box-shadow:0 0 0 3px #EF4444,0 6px 18px rgba(0,0,0,.5);}
+.mpm-img{width:100%;height:100%;object-fit:cover;display:block;}
+.mpm-fallback{
+  width:100%;height:100%;background:linear-gradient(135deg,#1E3A8A,#0891B2);
+  color:#fff;font-family:'Syne',sans-serif;font-weight:800;font-size:.75rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.mpm-dot{
+  position:absolute;top:1px;right:1px;width:12px;height:12px;
+  border-radius:50%;border:2px solid #0c1829;z-index:2;
+}
+.mpm-dot.avail{background:#22C55E;box-shadow:0 0 6px rgba(34,197,94,.8);}
+.mpm-dot.busy {background:#EF4444;box-shadow:0 0 6px rgba(239,68,68,.7);}
+.mpm-shadow{width:10px;height:5px;background:rgba(0,0,0,.4);border-radius:50%;margin:3px auto 0;filter:blur(2px);}
+
+/* ══ MAP WORKER CARD (info popup) ══════════════════════ */
+.map-worker-card{
+  position:absolute;z-index:20;width:210px;
+  background:rgba(12,24,41,.97);border:1px solid rgba(255,255,255,.1);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.7),0 0 0 1px rgba(37,99,235,.12);
+  pointer-events:none;
+}
+.mwc-header{display:flex;align-items:center;gap:11px;padding:14px 14px 10px;}
+.mwc-img{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(37,99,235,.4);}
+.mwc-name{font-family:'Syne',sans-serif;font-size:.82rem;font-weight:800;color:#fff;margin-bottom:2px;}
+.mwc-prof{font-size:.68rem;color:rgba(148,163,184,.6);margin-bottom:3px;}
+.mwc-stars{font-size:.68rem;color:#FBBF24;}
+.mwc-stars strong{color:#fff;font-size:.72rem;}
+.mwc-cnt{color:rgba(148,163,184,.45);font-size:.65rem;}
+.mwc-sep{height:1px;background:rgba(255,255,255,.07);margin:0 14px;}
+.mwc-rows{padding:10px 14px;}
+.mwc-row{display:flex;justify-content:space-between;font-size:.68rem;margin-bottom:5px;}
+.mwc-lbl{color:rgba(148,163,184,.5);}
+.mwc-val{font-weight:600;color:rgba(226,232,240,.85);}
+.mwc-avail-badge,.mwc-busy-badge{
+  margin:0 14px 12px;padding:5px 10px;border-radius:99px;font-size:.65rem;font-weight:700;
+  display:flex;align-items:center;gap:5px;width:fit-content;
+}
+.mwc-avail-badge span,.mwc-busy-badge span{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;}
+.mwc-avail-badge{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.25);}
+.mwc-busy-badge {background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.2);}
+
+
+/* ══ WORKER PROFILES ════════════════════════════════════ */
+.wp-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:20px;
+}
+.wp-card{
+  background:var(--card);border-radius:20px;
+  border:1px solid var(--border);
+  padding:26px 20px 22px;text-align:center;
+  position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+  cursor:default;
+}
+.wp-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  transform:scaleX(0);transform-origin:left;transition:transform .32s;
+}
+.wp-card:hover::before{transform:scaleX(1);}
+.wp-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(15,23,42,.12);border-color:rgba(37,99,235,.22);}
+/* availability badge */
+.wp-status{
+  position:absolute;top:14px;right:14px;
+  font-size:.65rem;font-weight:700;padding:3px 10px;border-radius:99px;
+  display:flex;align-items:center;gap:4px;
+}
+.wp-status.avail{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.25);}
+.wp-status.busy{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.2);}
+.wp-status-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:od 1.5s infinite;}
+/* avatar */
+.wp-avatar{
+  width:72px;height:72px;border-radius:50%;
+  margin:0 auto 14px;font-size:1.8rem;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 4px var(--card),0 0 0 6px rgba(37,99,235,.15),0 8px 24px rgba(15,23,42,.1);
+  position:relative;transition:transform .3s,box-shadow .3s;
+}
+.wp-card:hover .wp-avatar{transform:scale(1.08);box-shadow:0 0 0 4px var(--card),0 0 0 6px rgba(37,99,235,.3),0 12px 30px rgba(37,99,235,.18);}
+.wp-verify{
+  position:absolute;bottom:0;right:-2px;
+  width:20px;height:20px;border-radius:50%;
+  background:#2563EB;border:2px solid var(--card);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;
+}
+.wp-name{font-family:'Syne',sans-serif;font-size:.975rem;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.wp-prof{font-size:.75rem;color:var(--txt2);font-weight:500;margin-bottom:10px;}
+.wp-stars{color:#FBBF24;font-size:.82rem;letter-spacing:1px;}
+.wp-rating-val{font-size:.78rem;font-weight:700;color:var(--navy);margin-left:4px;}
+.wp-rating-cnt{font-size:.7rem;color:var(--txt3);}
+.wp-divider{height:1px;background:var(--border);margin:12px 0;}
+.wp-charge{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:14px;}
+.wp-charge-ico{font-size:.85rem;}
+.wp-charge-val{font-size:.85rem;font-weight:700;color:var(--navy);}
+.wp-book-btn{
+  width:100%;padding:9px;border-radius:9px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan2));
+  color:#fff;border:none;font-weight:700;font-size:.8rem;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  box-shadow:0 4px 14px rgba(37,99,235,.28);
+  transition:opacity .2s,transform .2s;
+}
+.wp-book-btn:hover{opacity:.88;transform:translateY(-1px);}
+.wp-book-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+/* ══ NEARBY MAP MODAL ════════════════════════════════════ */
+#nearbyModal{
+  position:fixed;inset:0;z-index:820;
+  background:rgba(6,10,24,.0);backdrop-filter:blur(0px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .42s cubic-bezier(.22,1,.36,1),visibility .42s,background .42s,backdrop-filter .42s;
+  display:flex;align-items:center;justify-content:center;padding:16px;
+}
+#nearbyModal.open{
+  opacity:1;visibility:visible;pointer-events:all;
+  background:rgba(6,10,24,.9);backdrop-filter:blur(18px);
+}
+.map-panel{
+  width:100%;max-width:860px;height:90vh;max-height:640px;
+  background:#0F172A;border-radius:22px;
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:0 48px 120px rgba(0,0,0,.7),0 0 0 1px rgba(37,99,235,.1);
+  display:flex;flex-direction:column;overflow:hidden;
+  transform:translateY(40px) scale(.94);opacity:0;
+  transition:transform .48s cubic-bezier(.22,1,.36,1),opacity .48s;
+}
+#nearbyModal.open .map-panel{transform:translateY(0) scale(1);opacity:1;}
+.map-header{
+  padding:16px 22px;background:rgba(15,23,42,.95);
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:14px;flex-shrink:0;
+}
+.map-htitle{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;}
+.map-hsub{font-size:.72rem;color:rgba(148,163,184,.55);margin-top:2px;}
+.map-hclose{
+  margin-left:auto;width:32px;height:32px;border-radius:9px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);
+  color:rgba(148,163,184,.7);font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.map-hclose:hover{background:rgba(239,68,68,.15);color:#FCA5A5;border-color:rgba(239,68,68,.3);}
+.map-canvas-wrap{
+  flex:1;position:relative;overflow:hidden;min-height:0;
+  background:linear-gradient(160deg,#0d1b2e 0%,#0a1628 50%,#0d1b2e 100%);
+}
+/* SVG map bg */
+.map-svg-bg{position:absolute;inset:0;width:100%;height:100%;opacity:.3;}
+/* user location pulse */
+.map-user-pin{
+  position:absolute;transform:translate(-50%,-50%);z-index:10;
+  pointer-events:none;
+}
+.map-user-core{
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,#2563EB,#06B6D4);
+  border:3px solid #fff;
+  box-shadow:0 0 0 0 rgba(37,99,235,.5);
+  animation:userPing 2s ease-in-out infinite;
+}
+@keyframes userPing{
+  0%{box-shadow:0 0 0 0 rgba(37,99,235,.6);}
+  70%{box-shadow:0 0 0 22px rgba(37,99,235,.0);}
+  100%{box-shadow:0 0 0 0 rgba(37,99,235,.0);}
+}
+.map-user-ring{
+  position:absolute;inset:-14px;border-radius:50%;
+  border:2px solid rgba(37,99,235,.3);animation:ringExp 2s ease-in-out infinite;
+}
+@keyframes ringExp{0%{transform:scale(.6);opacity:.8;}100%{transform:scale(1.4);opacity:0;}}
+/* worker markers */
+.map-marker{
+  position:absolute;transform:translate(-50%,-100%);z-index:8;
+  cursor:pointer;
+  animation:markerDrop .45s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes markerDrop{from{opacity:0;transform:translate(-50%,-120%);}to{opacity:1;transform:translate(-50%,-100%);}}
+.marker-bubble{
+  width:44px;height:44px;border-radius:50% 50% 50% 4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:800;color:#fff;
+  font-family:'Syne',sans-serif;letter-spacing:.3px;
+  box-shadow:0 6px 20px rgba(0,0,0,.45);
+  border:2px solid rgba(255,255,255,.2);
+  transition:transform .2s,box-shadow .2s;
+  position:relative;
+}
+.map-marker:hover .marker-bubble{transform:scale(1.15);box-shadow:0 10px 28px rgba(0,0,0,.5);}
+.marker-bubble.avail{background:linear-gradient(135deg,#2563EB,#0891B2);}
+.marker-bubble.busy{background:linear-gradient(135deg,#DC2626,#9F1239);}
+.marker-shadow{
+  width:8px;height:4px;background:rgba(0,0,0,.35);
+  border-radius:50%;margin:0 auto;margin-top:2px;
+  filter:blur(2px);
+}
+/* worker popup on map */
+.map-popup{
+  position:absolute;z-index:20;width:200px;
+  background:rgba(15,23,42,.98);border:1px solid rgba(255,255,255,.1);
+  border-radius:14px;padding:14px;
+  box-shadow:0 16px 44px rgba(0,0,0,.55),0 0 0 1px rgba(37,99,235,.12);
+  animation:popIn .22s cubic-bezier(.22,1,.36,1);pointer-events:none;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.88) translateY(6px);}to{opacity:1;transform:none;}}
+.popup-name{font-family:'Syne',sans-serif;font-size:.875rem;font-weight:800;color:#fff;margin-bottom:2px;}
+.popup-prof{font-size:.7rem;color:rgba(148,163,184,.65);margin-bottom:8px;}
+.popup-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;font-size:.72rem;}
+.popup-lbl{color:rgba(148,163,184,.5);}
+.popup-val{font-weight:600;color:rgba(226,232,240,.85);}
+.popup-status{
+  margin-top:8px;display:flex;align-items:center;gap:5px;
+  font-size:.68rem;font-weight:700;padding:4px 9px;border-radius:99px;
+  width:fit-content;
+}
+.popup-status.avail{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.25);}
+.popup-status.busy{background:rgba(239,68,68,.1);color:#EF4444;border:1px solid rgba(239,68,68,.2);}
+/* map legend */
+.map-legend{
+  position:absolute;bottom:16px;left:16px;
+  background:rgba(15,23,42,.92);border:1px solid rgba(255,255,255,.08);
+  border-radius:12px;padding:10px 14px;
+  display:flex;gap:16px;font-size:.68rem;font-weight:600;
+}
+.leg-item{display:flex;align-items:center;gap:6px;color:rgba(148,163,184,.7);}
+.leg-dot{width:10px;height:10px;border-radius:50%;}
+.leg-dot.avail{background:linear-gradient(135deg,#2563EB,#06B6D4);}
+.leg-dot.busy{background:#EF4444;}
+.leg-dot.you{background:linear-gradient(135deg,#2563EB,#06B6D4);border:2px solid #fff;}
+/* locate me button */
+.map-locate-btn{
+  position:absolute;bottom:16px;right:16px;
+  background:linear-gradient(135deg,#2563EB,#0891B2);color:#fff;
+  border:none;border-radius:10px;padding:10px 16px;
+  font-size:.78rem;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  box-shadow:0 6px 18px rgba(37,99,235,.4);
+  display:flex;align-items:center;gap:6px;
+  transition:opacity .2s,transform .2s;
+}
+.map-locate-btn:hover{opacity:.88;transform:translateY(-2px);}
+/* map stats bar */
+.map-statsbar{
+  padding:10px 22px;background:rgba(15,23,42,.6);
+  border-top:1px solid rgba(255,255,255,.05);
+  display:flex;gap:24px;flex-shrink:0;flex-wrap:wrap;
+}
+.map-stat{display:flex;align-items:center;gap:7px;font-size:.72rem;}
+.map-stat-dot{width:8px;height:8px;border-radius:50%;}
+.map-stat-label{color:rgba(148,163,184,.55);}
+.map-stat-val{font-weight:700;color:rgba(226,232,240,.8);}
+
+/* ══ CREATE ACCOUNT MODAL ════════════════════════════════ */
+#createAccModal{
+  position:fixed;inset:0;z-index:830;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:rgba(6,10,24,.0);backdrop-filter:blur(0px);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .42s cubic-bezier(.22,1,.36,1),visibility .42s,background .42s,backdrop-filter .42s;
+}
+#createAccModal.open{
+  opacity:1;visibility:visible;pointer-events:all;
+  background:rgba(6,10,24,.88);backdrop-filter:blur(18px);
+}
+.ca-card{
+  width:100%;max-width:480px;max-height:92vh;overflow-y:auto;
+  background:linear-gradient(160deg,#0F172A 0%,#111827 100%);
+  border:1px solid rgba(255,255,255,.09);border-radius:26px;
+  box-shadow:0 48px 120px rgba(0,0,0,.7),0 0 0 1px rgba(37,99,235,.12),inset 0 1px 0 rgba(255,255,255,.06);
+  transform:translateY(40px) scale(.94);opacity:0;
+  transition:transform .48s cubic-bezier(.22,1,.36,1),opacity .48s;
+  scrollbar-width:thin;scrollbar-color:rgba(37,99,235,.3) transparent;
+}
+.ca-card::-webkit-scrollbar{width:4px;}
+.ca-card::-webkit-scrollbar-thumb{background:rgba(37,99,235,.3);border-radius:99px;}
+#createAccModal.open .ca-card{transform:translateY(0) scale(1);opacity:1;}
+.ca-stripe{height:4px;background:linear-gradient(90deg,#06B6D4,#2563EB,#06B6D4);background-size:200% 100%;animation:stripeMove 3s linear infinite;}
+.ca-glow{position:absolute;top:0;left:0;right:0;height:200px;background:radial-gradient(ellipse 75% 55% at 50% -5%,rgba(6,182,212,.2) 0%,rgba(37,99,235,.08) 45%,transparent 100%);pointer-events:none;}
+.ca-body{padding:32px 34px 34px;position:relative;}
+.ca-close{position:absolute;top:18px;right:18px;width:32px;height:32px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:rgba(148,163,184,.6);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.ca-close:hover{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.3);color:#FCA5A5;transform:rotate(90deg);}
+.ca-icon{width:64px;height:64px;border-radius:18px;margin:0 auto 20px;background:linear-gradient(135deg,rgba(6,182,212,.22),rgba(37,99,235,.18));border:1.5px solid rgba(6,182,212,.32);display:flex;align-items:center;justify-content:center;font-size:1.9rem;box-shadow:0 0 28px rgba(6,182,212,.3);}
+.ca-title{text-align:center;font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-.4px;margin-bottom:5px;}
+.ca-title span{background:linear-gradient(135deg,#22D3EE,#60A5FA);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.ca-sub{text-align:center;font-size:.8rem;color:rgba(148,163,184,.55);margin-bottom:26px;}
+/* step indicator */
+.ca-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px;}
+.ca-step-dot{
+  width:30px;height:30px;border-radius:50%;font-size:.75rem;font-weight:800;
+  font-family:'Syne',sans-serif;
+  display:flex;align-items:center;justify-content:center;
+  border:2px solid rgba(255,255,255,.12);
+  color:rgba(148,163,184,.4);background:rgba(255,255,255,.04);
+  transition:all .35s;
+}
+.ca-step-dot.done{background:linear-gradient(135deg,#2563EB,#0891B2);border-color:transparent;color:#fff;box-shadow:0 0 14px rgba(37,99,235,.45);}
+.ca-step-dot.active{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.5);color:#60A5FA;}
+.ca-step-line{flex:1;height:2px;background:rgba(255,255,255,.07);max-width:40px;transition:background .4s;}
+.ca-step-line.done{background:linear-gradient(90deg,#2563EB,#06B6D4);}
+/* form fields reuse lfield + linput */
+.ca-field{display:flex;flex-direction:column;gap:7px;margin-bottom:14px;}
+.ca-field label{font-size:.75rem;font-weight:600;color:rgba(148,163,184,.65);}
+.ca-wrap{position:relative;display:flex;align-items:center;}
+.ca-ico{position:absolute;left:14px;font-size:.95rem;color:rgba(148,163,184,.38);pointer-events:none;transition:color .22s;z-index:1;}
+.ca-wrap input,.ca-wrap select{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);
+  border-radius:12px;padding:12px 14px 12px 42px;font-size:.875rem;color:#fff;
+  font-family:'DM Sans',sans-serif;outline:none;-webkit-appearance:none;appearance:none;
+  transition:border-color .25s,background .25s,box-shadow .25s;
+}
+.ca-wrap select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer;}
+.ca-wrap select option{background:#1E293B;color:#fff;}
+.ca-wrap input::placeholder{color:rgba(148,163,184,.3);}
+.ca-wrap input:focus,.ca-wrap select:focus{border-color:rgba(6,182,212,.55);background:rgba(6,182,212,.05);box-shadow:0 0 0 3px rgba(6,182,212,.1);}
+.ca-wrap:focus-within .ca-ico{color:#22D3EE;}
+/* Aadhaar section */
+.ca-aadhaar-box{
+  background:rgba(6,182,212,.06);border:1px solid rgba(6,182,212,.18);
+  border-radius:14px;padding:18px;margin-bottom:16px;
+}
+.ca-aadhaar-title{font-size:.75rem;font-weight:700;color:#22D3EE;letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.ca-otp-row{display:flex;gap:8px;margin-top:10px;}
+.ca-otp-inp{
+  flex:1;text-align:center;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);border-radius:10px;
+  padding:12px 4px;font-size:1.1rem;font-weight:800;color:#fff;
+  font-family:'Syne',sans-serif;outline:none;letter-spacing:4px;
+  transition:border-color .22s,box-shadow .22s;
+}
+.ca-otp-inp:focus{border-color:rgba(6,182,212,.6);box-shadow:0 0 0 3px rgba(6,182,212,.12);}
+.ca-send-otp{
+  padding:12px 18px;border-radius:10px;
+  background:linear-gradient(135deg,#0891B2,#2563EB);
+  border:none;color:#fff;font-size:.8rem;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;white-space:nowrap;
+  box-shadow:0 4px 14px rgba(6,182,212,.35);
+  transition:opacity .2s,transform .2s;
+}
+.ca-send-otp:hover{opacity:.88;transform:translateY(-1px);}
+.ca-verify-badge{
+  display:inline-flex;align-items:center;gap:6px;margin-top:10px;
+  background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);
+  color:#4ADE80;font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:99px;
+  animation:fadeIn .4s ease;display:none;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+/* submit btn */
+.ca-submit{
+  width:100%;padding:14px;border-radius:13px;margin-top:8px;
+  background:linear-gradient(135deg,#06B6D4,#2563EB);
+  border:none;color:#fff;font-size:.95rem;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;letter-spacing:.15px;
+  box-shadow:0 8px 28px rgba(6,182,212,.4),inset 0 1px 0 rgba(255,255,255,.1);
+  position:relative;overflow:hidden;transition:opacity .2s,transform .2s,box-shadow .2s;
+}
+.ca-submit::before{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.18),transparent);transition:left .5s;}
+.ca-submit:hover::before{left:160%;}
+.ca-submit:hover{opacity:.9;transform:translateY(-2px);box-shadow:0 14px 36px rgba(6,182,212,.5);}
+.ca-submit:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.ca-login-link{text-align:center;margin-top:18px;font-size:.8rem;color:rgba(148,163,184,.5);}
+.ca-login-link a{color:#22D3EE;font-weight:600;text-decoration:none;transition:color .2s;}
+.ca-login-link a:hover{color:#67E8F9;}
+
+/* ── Aadhaar step 2 (OTP screen) ── */
+#ca-step2{display:none;}
+#ca-step1{display:block;}
+
+@media(max-width:600px){
+  .wp-grid{grid-template-columns:repeat(2,1fr);}
+  .map-panel{height:100dvh;max-height:100dvh;border-radius:0;}
+  .ca-card{border-radius:18px;}
+  .ca-body{padding:24px 20px 26px;}
+}
+@media(max-width:400px){
+  .wp-grid{grid-template-columns:1fr;}
+}
+
+/* ═══ CONTRACTORS NAV LINK ════════════════════════════════ */
+.n-contractors-link{
+  background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(6,182,212,.08));
+  border:1px solid rgba(37,99,235,.2);
+  padding:5px 12px !important;border-radius:99px;
+  color:rgba(255,255,255,.85) !important;
+  transition:background .2s,border-color .2s,color .2s !important;
+}
+.n-contractors-link:hover{
+  background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(6,182,212,.15)) !important;
+  border-color:rgba(37,99,235,.45) !important;color:#fff !important;
+}
+
+/* ═══ WORKER PROFILE MODAL ════════════════════════════════ */
+#wpModal{
+  position:fixed;inset:0;z-index:850;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(5,10,22,0);pointer-events:none;
+  padding:20px;
+  transition:background .35s ease;
+}
+#wpModal.wpm-open{
+  background:rgba(5,10,22,.9);pointer-events:all;
+  backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+}
+.wpm-card{
+  width:100%;max-width:520px;max-height:90vh;
+  background:linear-gradient(155deg,#0d1729 0%,#091018 100%);
+  border:1px solid rgba(255,255,255,.09);border-radius:28px;
+  box-shadow:0 40px 120px rgba(0,0,0,.8),0 0 0 1px rgba(37,99,235,.08) inset;
+  overflow-y:auto;
+  transform:scale(.88) translateY(30px);opacity:0;
+  transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .35s ease;
+  scrollbar-width:thin;scrollbar-color:rgba(37,99,235,.2) transparent;
+}
+#wpModal.wpm-open .wpm-card{transform:scale(1) translateY(0);opacity:1;}
+.wpm-card::-webkit-scrollbar{width:3px;}
+.wpm-card::-webkit-scrollbar-thumb{background:rgba(37,99,235,.25);border-radius:99px;}
+
+/* hero strip */
+.wpm-hero{
+  position:relative;padding:36px 28px 0;text-align:center;
+  background:linear-gradient(180deg,rgba(37,99,235,.08) 0%,transparent 100%);
+}
+.wpm-close-btn{
+  position:absolute;top:14px;right:14px;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  color:rgba(148,163,184,.7);cursor:pointer;font-size:.85rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,color .2s,transform .25s;
+}
+.wpm-close-btn:hover{background:rgba(239,68,68,.12);color:#FCA5A5;transform:rotate(90deg);}
+
+/* big photo */
+.wpm-photo-wrap{
+  width:110px;height:110px;border-radius:50%;margin:0 auto 16px;
+  box-shadow:0 0 0 4px rgba(15,23,42,1),0 0 0 7px rgba(37,99,235,.3),0 16px 40px rgba(0,0,0,.5);
+  position:relative;overflow:hidden;
+  transition:box-shadow .3s;
+}
+#wpModal.wpm-open .wpm-photo-wrap{box-shadow:0 0 0 4px rgba(15,23,42,1),0 0 0 7px rgba(37,99,235,.5),0 20px 50px rgba(37,99,235,.2);}
+.wpm-photo-wrap img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+.wpm-photo-fallback{
+  width:100%;height:100%;border-radius:50%;
+  background:linear-gradient(135deg,#1E3A8A,#0891B2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;
+}
+.wpm-vbadge{
+  position:absolute;bottom:4px;right:4px;
+  width:24px;height:24px;border-radius:50%;
+  background:linear-gradient(135deg,#16A34A,#0891B2);
+  border:2.5px solid #0d1729;color:#fff;font-size:.62rem;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* availability pill on modal */
+.wpm-avail-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:.65rem;font-weight:800;padding:4px 12px;border-radius:99px;
+  margin-bottom:12px;letter-spacing:.2px;
+}
+.wpm-avail-pill.av{background:rgba(34,197,94,.1);color:#22C55E;border:1px solid rgba(34,197,94,.22);}
+.wpm-avail-pill.bz{background:rgba(239,68,68,.08);color:#F87171;border:1px solid rgba(239,68,68,.18);}
+.wpm-avail-dot{width:6px;height:6px;border-radius:50%;background:currentColor;animation:wpmBlink 1.5s infinite;}
+@keyframes wpmBlink{0%,100%{opacity:1}50%{opacity:.25}}
+
+.wpm-name{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:900;color:#fff;letter-spacing:-.5px;margin-bottom:4px;}
+.wpm-prof{font-size:.82rem;color:rgba(148,163,184,.55);margin-bottom:14px;}
+
+/* stars */
+.wpm-stars-row{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:20px;}
+.wpm-stars{color:#FBBF24;font-size:1rem;letter-spacing:2px;}
+.wpm-rating-big{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:900;color:#F1F5F9;}
+.wpm-jobs-ct{font-size:.72rem;color:rgba(148,163,184,.4);}
+
+/* stat pills grid */
+.wpm-stats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;padding:0 28px 20px;
+}
+.wpm-stat{
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:14px;padding:12px 14px;
+  transition:background .2s,border-color .2s;
+}
+.wpm-stat:hover{background:rgba(37,99,235,.06);border-color:rgba(37,99,235,.18);}
+.wpm-stat-lbl{font-size:.62rem;color:rgba(148,163,184,.42);font-weight:600;margin-bottom:4px;letter-spacing:.3px;text-transform:uppercase;}
+.wpm-stat-val{font-size:.88rem;font-weight:700;color:#F1F5F9;}
+
+/* about section */
+.wpm-about{padding:0 28px 20px;}
+.wpm-about-title{font-size:.68rem;font-weight:700;color:rgba(148,163,184,.42);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;}
+.wpm-about-text{font-size:.82rem;color:rgba(148,163,184,.7);line-height:1.7;}
+
+/* tags */
+.wpm-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0 28px 24px;}
+.wpm-tag{
+  font-size:.65rem;font-weight:600;padding:4px 11px;border-radius:99px;
+  background:rgba(37,99,235,.07);color:#93C5FD;border:1px solid rgba(37,99,235,.14);
+}
+
+/* action buttons */
+.wpm-actions{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;padding:0 28px 28px;
+}
+.wpm-btn-book{
+  padding:13px;border-radius:14px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#2563EB,#0891B2);
+  color:#fff;font-size:.82rem;font-weight:700;font-family:'DM Sans',sans-serif;
+  box-shadow:0 5px 18px rgba(37,99,235,.35);
+  transition:opacity .18s,transform .2s,box-shadow .2s;
+}
+.wpm-btn-book:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 9px 26px rgba(37,99,235,.45);}
+.wpm-btn-book:disabled{background:rgba(51,65,85,.5);box-shadow:none;transform:none;opacity:.5;cursor:not-allowed;}
+.wpm-btn-call{
+  padding:13px;border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);
+  color:rgba(148,163,184,.8);font-size:.82rem;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  transition:background .2s,border-color .2s,color .2s;
+}
+.wpm-btn-call:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff;}
+
+/* ═══ CONTRACTORS MODAL ═══════════════════════════════════ */
+#contractorsModal{
+  position:fixed;inset:0;z-index:800;
+  display:flex;align-items:flex-end;justify-content:center;
+  background:rgba(5,10,22,0);pointer-events:none;
+  transition:background .4s ease;
+}
+#contractorsModal.cm-open{
+  background:rgba(5,10,22,.87);pointer-events:all;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+}
+.cm-sheet{
+  width:100%;max-width:1200px;height:93vh;
+  background:linear-gradient(180deg,#0d1729 0%,#091018 100%);
+  border:1px solid rgba(255,255,255,.07);
+  border-bottom:none;border-radius:28px 28px 0 0;
+  box-shadow:0 -30px 90px rgba(0,0,0,.75);
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .5s cubic-bezier(.22,1,.36,1);
+  overflow:hidden;
+}
+#contractorsModal.cm-open .cm-sheet{transform:translateY(0);}
+.cm-handle{width:42px;height:4px;border-radius:99px;background:rgba(255,255,255,.12);margin:13px auto 0;flex-shrink:0;}
+.cm-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 32px 16px;flex-shrink:0;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.cm-hdr-left{display:flex;align-items:center;gap:16px;}
+.cm-icon{
+  width:52px;height:52px;border-radius:16px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(37,99,235,.15),rgba(6,182,212,.1));
+  border:1px solid rgba(37,99,235,.22);
+  display:flex;align-items:center;justify-content:center;font-size:1.5rem;
+}
+.cm-title{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;letter-spacing:-.3px;}
+.cm-sub{font-size:.72rem;color:rgba(148,163,184,.45);margin-top:3px;}
+.cm-x{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.04);
+  color:rgba(148,163,184,.65);font-size:.9rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,color .2s,transform .25s;
+}
+.cm-x:hover{background:rgba(239,68,68,.12);color:#FCA5A5;transform:rotate(90deg);}
+.cm-filterbar{
+  display:flex;align-items:center;gap:8px;
+  padding:12px 32px;flex-shrink:0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  overflow-x:auto;scrollbar-width:none;
+}
+.cm-filterbar::-webkit-scrollbar{display:none;}
+.cm-pill{
+  white-space:nowrap;padding:7px 16px;border-radius:99px;
+  font-size:.71rem;font-weight:700;cursor:pointer;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.03);color:rgba(148,163,184,.6);
+  font-family:'DM Sans',sans-serif;transition:all .18s ease;
+}
+.cm-pill:hover{background:rgba(37,99,235,.1);color:#93C5FD;border-color:rgba(37,99,235,.25);}
+.cm-pill.on{background:rgba(37,99,235,.16);color:#60A5FA;border-color:rgba(37,99,235,.35);box-shadow:0 0 14px rgba(37,99,235,.15);}
+.cm-found{margin-left:auto;flex-shrink:0;font-size:.69rem;color:rgba(148,163,184,.35);font-weight:600;white-space:nowrap;}
+.cm-body{flex:1;overflow-y:auto;padding:26px 32px 36px;scrollbar-width:thin;scrollbar-color:rgba(37,99,235,.25) transparent;}
+.cm-body::-webkit-scrollbar{width:4px;}
+.cm-body::-webkit-scrollbar-thumb{background:rgba(37,99,235,.3);border-radius:4px;}
+.cm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px;}
+
+/* contractor card */
+.cc-card{
+  background:linear-gradient(160deg,rgba(15,26,48,.98),rgba(9,16,30,.98));
+  border:1px solid rgba(255,255,255,.065);border-radius:22px;
+  padding:24px 18px 18px;text-align:center;
+  position:relative;overflow:hidden;
+  transition:transform .32s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
+  animation:ccIn .45s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes ccIn{from{opacity:0;transform:translateY(22px) scale(.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+.cc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#2563EB,#06B6D4,#2563EB);
+  background-size:200% 100%;
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease;
+}
+.cc-card:hover::before{transform:scaleX(1);}
+.cc-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 24px 55px rgba(0,0,0,.5),0 0 0 1px rgba(37,99,235,.2);
+  border-color:rgba(37,99,235,.22);
+}
+.cc-badge{
+  position:absolute;top:12px;right:12px;
+  font-size:.57rem;font-weight:800;padding:3px 9px;
+  border-radius:99px;display:flex;align-items:center;gap:4px;
+}
+.cc-badge.av{background:rgba(34,197,94,.09);color:#22C55E;border:1px solid rgba(34,197,94,.2);}
+.cc-badge.bz{background:rgba(239,68,68,.07);color:#F87171;border:1px solid rgba(239,68,68,.18);}
+.cc-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.6s infinite;}
+.cc-ring{
+  width:84px;height:84px;border-radius:50%;margin:0 auto 14px;
+  position:relative;overflow:hidden;
+  box-shadow:0 0 0 3px rgba(9,16,30,1),0 0 0 5px rgba(37,99,235,.22),0 10px 24px rgba(0,0,0,.45);
+  transition:box-shadow .3s;
+}
+.cc-card:hover .cc-ring{box-shadow:0 0 0 3px rgba(9,16,30,1),0 0 0 5px rgba(37,99,235,.5),0 12px 32px rgba(37,99,235,.18);}
+.cc-ring img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;}
+.cc-ring .cc-fallback{
+  width:100%;height:100%;border-radius:50%;
+  background:linear-gradient(135deg,#1E3A8A,#0891B2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;
+}
+.cc-vbadge{
+  position:absolute;bottom:2px;right:2px;width:22px;height:22px;
+  border-radius:50%;background:linear-gradient(135deg,#2563EB,#0891B2);
+  border:2.5px solid rgba(9,16,30,1);color:#fff;font-size:.55rem;
+  display:flex;align-items:center;justify-content:center;
+}
+.cc-name{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:800;color:#F1F5F9;margin-bottom:2px;}
+.cc-spec{font-size:.67rem;color:rgba(148,163,184,.5);margin-bottom:9px;line-height:1.35;}
+.cc-stars{color:#FBBF24;font-size:.76rem;letter-spacing:.3px;}
+.cc-rnum{font-size:.73rem;font-weight:700;color:#F1F5F9;}
+.cc-rct{font-size:.6rem;color:rgba(148,163,184,.38);}
+.cc-area{font-size:.6rem;color:rgba(148,163,184,.35);margin:4px 0 10px;}
+.cc-sep{height:1px;background:rgba(255,255,255,.055);margin-bottom:12px;}
+.cc-pills{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+.cc-cpill{font-size:.62rem;font-weight:600;padding:3px 10px;border-radius:99px;
+  background:rgba(37,99,235,.08);color:#93C5FD;border:1px solid rgba(37,99,235,.15);}
+.cc-ppill{font-size:.62rem;font-weight:600;padding:3px 10px;border-radius:99px;
+  background:rgba(6,182,212,.07);color:#67E8F9;border:1px solid rgba(6,182,212,.13);}
+.cc-btn{
+  width:100%;padding:10px;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#2563EB,#0891B2);
+  color:#fff;font-size:.76rem;font-weight:700;font-family:'DM Sans',sans-serif;
+  box-shadow:0 4px 16px rgba(37,99,235,.28);
+  transition:opacity .18s,transform .18s,box-shadow .18s;
+}
+.cc-btn:hover{opacity:.88;transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,99,235,.4);}
+.cc-btn:disabled{background:rgba(51,65,85,.6);box-shadow:none;transform:none;opacity:.5;cursor:not-allowed;}
+
+@media(max-width:640px){
+  .cm-hdr{padding:14px 18px 12px;}
+  .cm-filterbar{padding:10px 16px;}
+  .cm-body{padding:18px 14px 28px;}
+  .cm-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:13px;}
+  .wpm-stats{grid-template-columns:1fr 1fr;}
+  .wpm-actions{grid-template-columns:1fr 1fr;}
+}
 </style>
 </head>
 <body>
@@ -1320,28 +2111,28 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
   </a>
   <ul class="n-links">
     <li><a href="#services">Services</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#biz">Business</a></li>
-    <li><a href="#scale">Roadmap</a></li>
+    <li><a href="#workers">Workers</a></li>
+    <li><a href="#scale">Vision</a></li>
+    <li><a href="#" onclick="openNearby();return false;">📍 Nearby</a></li>
+    <li><a href="#" onclick="openContractors();return false;" class="n-contractors-link">🏗️ Contractors</a></li>
   </ul>
   <div class="nav-actions">
     <button class="n-btn-ghost" onclick="openLogin()">Log In</button>
     <button class="n-btn-worker" onclick="openWorkerReg()">🛠️ Register as Worker</button>
-    <a href="#cta" class="n-btn">Get Started →</a>
+    <button class="n-btn" onclick="openCreateAccount()">Create Account</button>
     <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <div class="mob" id="mobMenu">
   <a href="#services" onclick="cM()">Services</a>
-  <a href="#features" onclick="cM()">Features</a>
-  <a href="#how" onclick="cM()">How It Works</a>
-  <a href="#biz" onclick="cM()">Business</a>
-  <a href="#scale" onclick="cM()">Roadmap</a>
+  <a href="#workers" onclick="cM()">Workers</a>
+  <a href="#scale" onclick="cM()">Vision</a>
+  <a href="#" onclick="cM();openNearby();">📍 Nearby Workers</a>
+  <a href="#" onclick="cM();openContractors();" style="color:#A5F3FC;font-weight:600;">🏗️ Contractors</a>
   <a href="#" onclick="cM();openLogin();" style="color:rgba(255,255,255,.75);font-weight:500;">🔑 Log In</a>
   <a href="#" onclick="cM();openWorkerReg();" style="color:#A5F3FC;font-weight:600;">🛠️ Register as Worker</a>
   <a href="#" onclick="cM();openComplaint();" style="color:#FCA5A5;font-weight:600;">📋 Register Complaint</a>
-  <a href="#cta" class="n-btn" style="text-align:center" onclick="cM()">Get Started →</a>
+  <a href="#" onclick="cM();openCreateAccount();" class="n-btn" style="text-align:center;">Create Account</a>
 </div>
 
 <!-- ══ HERO ═════════════════════════════════════════════ -->
@@ -1359,7 +2150,7 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
         <span class="gr">Verified Technicians</span><br>
         Right at Your Door
       </h1>
-      <p class="h-sub reveal">Book certified professionals for electrical, plumbing, AC, carpentry & more. Transparent pricing, live tracking, 30-minute arrival guarantee.</p>
+      <p class="h-sub reveal">Book certified professionals for electrical, plumbing, AC, carpentry & more. Transparent pricing, live tracking, 60-minute arrival guarantee.</p>
       <div class="h-search reveal">
         <span class="h-si">📍</span>
         <input class="h-in" id="locInput" type="text" placeholder="Enter your area or pin code…"/>
@@ -1377,7 +2168,7 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
       <div class="h-stats reveal">
         <div class="hst"><span class="hst-n">12K+</span><span class="hst-l">Verified Pros</span></div>
         <div class="hst"><span class="hst-n">4.8★</span><span class="hst-l">Avg. Rating</span></div>
-        <div class="hst"><span class="hst-n">30 min</span><span class="hst-l">Avg. Response</span></div>
+        <div class="hst"><span class="hst-n">60 min</span><span class="hst-l">Avg. Response</span></div>
         <div class="hst"><span class="hst-n">98%</span><span class="hst-l">Satisfaction</span></div>
       </div>
     </div>
@@ -1387,20 +2178,22 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
           <span>✅</span>
           <div><div style="font-weight:600">Verified Professional</div><div class="chip-sub">Background Checked</div></div>
         </div>
-        <div class="hv-card">
+        <div class="hv-card" id="heroWorkerCard">
           <div class="hvc-top">
-            <div class="hvc-av">👷</div>
-            <div><div class="hvc-nm">Rajan Sharma</div><div class="hvc-rl">Electrician · 9 yrs exp</div></div>
+            <div class="hvc-av" id="hvcAv" style="overflow:hidden;padding:0;background:none;">
+              <img id="hvcImg" src="" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>
+            </div>
+            <div><div class="hvc-nm" id="hvcName">Rajan Sharma</div><div class="hvc-rl" id="hvcRole">Electrician · 9 yrs exp</div></div>
             <div class="hvc-online"><div class="odot"></div>Online</div>
           </div>
-          <div class="hvc-r"><span class="hvc-lb">Distance</span><span class="hvc-vl">1.2 km away</span></div>
-          <div class="hvc-r"><span class="hvc-lb">Rating</span><span class="hvc-vl"><span class="hvc-stars">★★★★★</span> 4.9 (847 jobs)</span></div>
-          <div class="hvc-r"><span class="hvc-lb">Service charge</span><span class="hvc-vl">₹299 – ₹799</span></div>
+          <div class="hvc-r"><span class="hvc-lb">Distance</span><span class="hvc-vl" id="hvcDist">1.2 km away</span></div>
+          <div class="hvc-r"><span class="hvc-lb">Rating</span><span class="hvc-vl"><span class="hvc-stars" id="hvcStars">★★★★★</span> <span id="hvcRating">4.9</span> (<span id="hvcJobs">847</span> jobs)</span></div>
+          <div class="hvc-r"><span class="hvc-lb">Service charge</span><span class="hvc-vl" id="hvcCharge">₹299 – ₹799</span></div>
           <div class="hvc-div"></div>
           <div class="hvc-eta">
             <span>🕐</span>
             <span class="hvc-eta-l">Estimated arrival</span>
-            <span class="hvc-eta-v">~18 min</span>
+            <span class="hvc-eta-v" id="hvcEta">~18 min</span>
           </div>
           <button class="hvc-btn">Book Instantly →</button>
         </div>
@@ -1421,15 +2214,65 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
     <div class="sec-hdr cx">
       <div class="sec-tag">Our Services</div>
       <h2 class="sec-title reveal">Every Home Problem.<br>One Platform.</h2>
-      <p class="sec-sub reveal">Certified professionals across six core categories — on demand, every day.</p>
+      <p class="sec-sub reveal">Certified professionals across all major categories — on demand, every day.</p>
     </div>
     <div class="svc-grid">
-      <div class="svc-card reveal d1"><div class="svc-ico">⚡</div><div class="svc-title">Electrical</div><div class="svc-desc">Wiring, switchboards, fans, MCBs, inverter installation & fault detection</div></div>
-      <div class="svc-card reveal d2"><div class="svc-ico">🔧</div><div class="svc-title">Plumbing</div><div class="svc-desc">Leak repairs, pipe fitting, drainage, tap & geyser installation</div></div>
-      <div class="svc-card reveal d3"><div class="svc-ico">❄️</div><div class="svc-title">AC Repair</div><div class="svc-desc">AC servicing, gas refills, PCB repair, installation & deep cleaning</div></div>
-      <div class="svc-card reveal d4"><div class="svc-ico">🪚</div><div class="svc-title">Carpentry</div><div class="svc-desc">Furniture assembly, door repairs, wood flooring & cabinet fitting</div></div>
-      <div class="svc-card reveal d5"><div class="svc-ico">🖥️</div><div class="svc-title">Appliances</div><div class="svc-desc">Washing machine, refrigerator, microwave & TV repair & servicing</div></div>
-      <div class="svc-card reveal d1"><div class="svc-ico">🎨</div><div class="svc-title">Painting</div><div class="svc-desc">Interior, exterior, texture, waterproofing & wall putty work</div></div>
+      <div class="svc-card reveal d1" onclick="openServiceWorkers('Plumbing')" role="button" tabindex="0">
+        <div class="svc-ico">🔧</div>
+        <div class="svc-title">Plumbing</div>
+        <div class="svc-desc">Leak repairs, pipe fitting, drainage clearing, tap &amp; geyser installation</div>
+        <div class="svc-price">Starting ₹199</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d2" onclick="openServiceWorkers('Electrical')" role="button" tabindex="0">
+        <div class="svc-ico">⚡</div>
+        <div class="svc-title">Electrical</div>
+        <div class="svc-desc">Wiring, switchboards, fans, MCBs, inverter installation &amp; fault detection</div>
+        <div class="svc-price">Starting ₹249</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d3" onclick="openServiceWorkers('AC Repair')" role="button" tabindex="0">
+        <div class="svc-ico">❄️</div>
+        <div class="svc-title">AC Repair</div>
+        <div class="svc-desc">AC servicing, gas refills, PCB repair, installation &amp; deep cleaning</div>
+        <div class="svc-price">Starting ₹399</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d4" onclick="openServiceWorkers('Appliance Repair')" role="button" tabindex="0">
+        <div class="svc-ico">🖥️</div>
+        <div class="svc-title">Appliance Repair</div>
+        <div class="svc-desc">Washing machine, refrigerator, microwave &amp; TV repair &amp; servicing</div>
+        <div class="svc-price">Starting ₹299</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d5" onclick="openServiceWorkers('Painting')" role="button" tabindex="0">
+        <div class="svc-ico">🎨</div>
+        <div class="svc-title">Painter</div>
+        <div class="svc-desc">Interior, exterior, texture, waterproofing &amp; premium wall putty work</div>
+        <div class="svc-price">Starting ₹799</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d1" onclick="openServiceWorkers('Carpentry')" role="button" tabindex="0">
+        <div class="svc-ico">🪚</div>
+        <div class="svc-title">Carpentry</div>
+        <div class="svc-desc">Furniture assembly, door repairs, wood flooring &amp; cabinet fitting</div>
+        <div class="svc-price">Starting ₹349</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d2" onclick="openServiceWorkers('Cleaning')" role="button" tabindex="0">
+        <div class="svc-ico">🧹</div>
+        <div class="svc-title">Cleaning Service</div>
+        <div class="svc-desc">Deep home cleaning, sofa shampooing, bathroom sanitisation &amp; pest control</div>
+        <div class="svc-price">Starting ₹499</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
+      <div class="svc-card reveal d3" onclick="openServiceWorkers('Medical')" role="button" tabindex="0">
+        <div class="svc-ico">🏥</div>
+        <div class="svc-title">Medical Assistance</div>
+        <div class="svc-desc">At-home nursing, blood tests, physiotherapy, IV drip &amp; elder care support</div>
+        <div class="svc-price">Starting ₹599</div>
+        <div class="svc-cta-hint"><span>View Workers</span><span class="svc-arrow">→</span></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1495,28 +2338,21 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
 </section>
 
 <!-- ══ BUSINESS ══════════════════════════════════════════ -->
-<section id="biz">
+<!-- REMOVED AS REQUESTED -->
+
+<!-- ══ WORKER PROFILES ══════════════════════════════════ -->
+<section id="workers" style="padding:88px 0;background:var(--bg);">
   <div class="sec-wrap">
-    <div class="sec-hdr">
-      <div class="sec-tag">Business Model</div>
-      <h2 class="sec-title reveal">Revenue Built for Scale</h2>
-      <p class="sec-sub reveal">Multiple monetisation streams engineered for sustainable, high-margin growth.</p>
+    <div class="sec-hdr cx">
+      <div class="sec-tag">Our Professionals</div>
+      <h2 class="sec-title reveal">Meet Your Trusted<br>Service Experts</h2>
+      <p class="sec-sub reveal">Every worker is background-verified, skill-tested, and ready within 60 minutes.</p>
     </div>
-    <div class="biz-grid">
-      <div class="biz-card reveal">
-        <div class="biz-ttl">💰 Revenue Streams</div>
-        <div class="biz-item"><div class="biz-ic">📊</div><div><div class="biz-lbl">10% Platform Commission</div><div class="biz-desc">Charged on every completed booking. Scales directly with transaction volume.</div></div></div>
-        <div class="biz-item"><div class="biz-ic">🚨</div><div><div class="biz-lbl">Emergency Surcharge</div><div class="biz-desc">20–30% premium on emergency and off-hours bookings — high demand, premium margin.</div></div></div>
-        <div class="biz-item"><div class="biz-ic">👑</div><div><div class="biz-lbl">₹999/Month Premium Listing</div><div class="biz-desc">Top-of-search visibility, priority dispatch, and verified badge for professionals.</div></div></div>
-        <div class="biz-item"><div class="biz-ic">🤝</div><div><div class="biz-lbl">B2B AMC Contracts</div><div class="biz-desc">Annual Maintenance Contracts with housing societies, offices & real-estate developers.</div></div></div>
-      </div>
-      <div class="biz-card reveal">
-        <div class="biz-ttl">📈 Market Opportunity</div>
-        <div class="biz-item"><div class="biz-ic">🇮🇳</div><div><div class="biz-lbl">₹3.5 Lakh Crore Market</div><div class="biz-desc">India's home services sector — largely unorganised and wide open for disruption.</div></div></div>
-        <div class="biz-item"><div class="biz-ic">📱</div><div><div class="biz-lbl">750M+ Smartphone Users</div><div class="biz-desc">Urban India rapidly adopting app-based service booking across all demographics.</div></div></div>
-        <div class="biz-item"><div class="biz-ic">🏠</div><div><div class="biz-lbl">40M Urban Households</div><div class="biz-desc">Primary target segment in Tier 1 & Tier 2 cities with high service frequency needs.</div></div></div>
-        <div class="biz-item"><div class="biz-ic">🔧</div><div><div class="biz-lbl">Underserved Technician Side</div><div class="biz-desc">Skilled tradespeople lack digital presence — Fixora unlocks their income potential.</div></div></div>
-      </div>
+    <div class="wp-grid" id="workerGrid">
+      <!-- cards injected by JS -->
+    </div>
+    <div style="text-align:center;margin-top:36px;">
+      <button class="btn-pri" style="font-size:.875rem;padding:12px 32px;" onclick="openNearby()">📍 Find Nearby Workers →</button>
     </div>
   </div>
 </section>
@@ -1544,7 +2380,6 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
   <h2 class="reveal">Ready to Fix Anything, Instantly?</h2>
   <p class="reveal">Join thousands of homeowners who trust Fixora to get it done right, the first time.</p>
   <div class="cta-btns reveal">
-    <a href="#hero" class="btn-pri">Book a Technician →</a>
     <button class="btn-out" onclick="openWorkerReg()">🛠️ Join as a Worker</button>
     <button class="btn-out" onclick="openComplaint()" style="border-color:rgba(252,165,165,.3);color:#FCA5A5;">📋 Register Complaint</button>
   </div>
@@ -1720,6 +2555,7 @@ input[type="range"].reg-slider::-webkit-slider-thumb:hover {
 
       <!-- Buttons -->
       <div class="reg-footer">
+        <div id="wrApiError" style="display:none;color:#FCA5A5;font-size:.76rem;text-align:center;margin-bottom:8px;padding:6px 10px;background:rgba(239,68,68,.08);border-radius:8px;width:100%;"></div>
         <button class="reg-cancel-btn" onclick="closeWorkerReg()">✕ Cancel</button>
         <button class="reg-submit-btn" id="submitBtn" onclick="submitRegistration()">
           Submit Application →
@@ -2015,6 +2851,10 @@ function validateForm() {
 }
 
 function submitRegistration() {
+  // Delegate to API-connected handler
+  submitWorkerReg();
+}
+function _submitRegistration_original() {
   if (!validateForm()) return;
 
   // Loading state
@@ -2772,7 +3612,7 @@ const KB = {
       'Avoid opening the AC unit yourself — refrigerant is hazardous',
       'If the unit makes loud noises or smells, switch it off at the wall',
     ],
-    reassure: '❄️ AC technician is en route! Average ETA under 30 minutes.',
+    reassure: '❄️ AC technician is en route! Average ETA under 60 minutes.',
     followUp: 'Is the AC not turning on at all, or is it running but not cooling?',
   },
   'appliance problem': {
@@ -3408,6 +4248,238 @@ setTimeout(() => {
   .cpl-grid{grid-template-columns:1fr;}
   .cpl-success-card{padding:36px 24px;}
 }
+
+/* ═══════════════════════════════════════════════════════
+   SVC-CARD — clickable, hover hint, "View Workers" arrow
+   ═══════════════════════════════════════════════════════ */
+.svc-cta-hint{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:13px;font-size:.7rem;font-weight:700;letter-spacing:.4px;
+  color:rgba(37,99,235,.7);
+  opacity:0;transform:translateY(5px);
+  transition:opacity .22s ease,transform .22s ease,color .18s;
+  pointer-events:none;
+}
+.svc-arrow{display:inline-block;transition:transform .2s ease;}
+.svc-card:hover .svc-cta-hint{opacity:1;transform:translateY(0);color:#06B6D4;}
+.svc-card:hover .svc-arrow{transform:translateX(4px);}
+.svc-card:focus-visible{outline:2px solid #2563EB;outline-offset:3px;border-radius:16px;}
+
+/* ═══════════════════════════════════════════════════════
+   SERVICE WORKERS OVERLAY — full-screen bottom sheet
+   ═══════════════════════════════════════════════════════ */
+#svcOverlay{
+  position:fixed;inset:0;z-index:700;
+  display:flex;align-items:flex-end;justify-content:center;
+  background:transparent;
+  pointer-events:none;
+  transition:background .38s ease;
+}
+#svcOverlay.svo-open{
+  background:rgba(5,9,20,.88);
+  pointer-events:all;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+}
+
+.svo-panel{
+  width:100%;max-width:1240px;
+  height:92vh;
+  background:linear-gradient(175deg,#0c1526 0%,#07101e 100%);
+  border-radius:26px 26px 0 0;
+  border-top:1px solid rgba(255,255,255,.08);
+  border-left:1px solid rgba(255,255,255,.06);
+  border-right:1px solid rgba(255,255,255,.06);
+  box-shadow:0 -28px 80px rgba(0,0,0,.7),0 0 0 1px rgba(37,99,235,.05) inset;
+  display:flex;flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .52s cubic-bezier(.22,1,.36,1);
+  overflow:hidden;
+}
+#svcOverlay.svo-open .svo-panel{transform:translateY(0);}
+
+/* drag handle bar */
+.svo-handle{
+  width:44px;height:4px;border-radius:99px;
+  background:rgba(255,255,255,.14);
+  margin:12px auto 0;flex-shrink:0;
+}
+
+/* header */
+.svo-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 30px 14px;flex-shrink:0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.svo-head-l{display:flex;align-items:center;gap:14px;}
+.svo-svc-icon{
+  width:50px;height:50px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(6,182,212,.12));
+  border:1px solid rgba(37,99,235,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;
+}
+.svo-svc-name{
+  font-family:'Syne',sans-serif;font-size:1.22rem;font-weight:900;
+  color:#fff;letter-spacing:-.3px;line-height:1.1;
+}
+.svo-svc-tag{font-size:.7rem;color:rgba(148,163,184,.45);margin-top:3px;}
+.svo-close{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  color:rgba(148,163,184,.65);cursor:pointer;font-size:.9rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .18s,color .18s,transform .22s;
+}
+.svo-close:hover{background:rgba(239,68,68,.12);color:#FCA5A5;transform:rotate(90deg);}
+
+/* filter bar */
+.svo-filters{
+  display:flex;align-items:center;gap:8px;
+  padding:11px 30px;flex-shrink:0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  overflow-x:auto;scrollbar-width:none;
+}
+.svo-filters::-webkit-scrollbar{display:none;}
+.svo-fpill{
+  white-space:nowrap;padding:6px 15px;border-radius:99px;
+  font-size:.7rem;font-weight:700;cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.03);
+  color:rgba(148,163,184,.6);
+  transition:all .18s ease;
+}
+.svo-fpill:hover{background:rgba(37,99,235,.1);color:#93C5FD;border-color:rgba(37,99,235,.25);}
+.svo-fpill.active{
+  background:rgba(37,99,235,.16);color:#60A5FA;
+  border-color:rgba(37,99,235,.35);
+  box-shadow:0 0 12px rgba(37,99,235,.15);
+}
+.svo-count{margin-left:auto;flex-shrink:0;font-size:.68rem;color:rgba(148,163,184,.35);font-weight:600;white-space:nowrap;}
+
+/* scrollable grid body */
+.svo-body{
+  flex:1;overflow-y:auto;padding:24px 30px 32px;
+  scrollbar-width:thin;scrollbar-color:rgba(37,99,235,.25) transparent;
+}
+.svo-body::-webkit-scrollbar{width:4px;}
+.svo-body::-webkit-scrollbar-thumb{background:rgba(37,99,235,.3);border-radius:4px;}
+
+.svo-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(205px,1fr));
+  gap:18px;
+}
+
+/* ═══ WORKER CARD inside overlay ═══════════════════════ */
+.svo-wcard{
+  background:linear-gradient(158deg,rgba(14,24,46,.98),rgba(9,15,30,.98));
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:20px;padding:22px 16px 16px;
+  text-align:center;position:relative;overflow:hidden;
+  transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s,border-color .3s;
+  animation:svoCardIn .42s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes svoCardIn{
+  from{opacity:0;transform:translateY(20px) scale(.95);}
+  to  {opacity:1;transform:translateY(0)    scale(1);}
+}
+.svo-wcard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,#2563EB,#06B6D4);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .28s ease;
+}
+.svo-wcard:hover::before{transform:scaleX(1);}
+.svo-wcard:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 50px rgba(0,0,0,.48),0 0 0 1px rgba(37,99,235,.2);
+  border-color:rgba(37,99,235,.2);
+}
+
+/* availability badge */
+.svo-avail{
+  position:absolute;top:11px;right:11px;
+  font-size:.57rem;font-weight:800;
+  padding:3px 8px;border-radius:99px;
+  display:flex;align-items:center;gap:3px;
+  letter-spacing:.1px;
+}
+.svo-avail.av{background:rgba(34,197,94,.09);color:#22C55E;border:1px solid rgba(34,197,94,.2);}
+.svo-avail.bz{background:rgba(239,68,68,.07);color:#F87171;border:1px solid rgba(239,68,68,.17);}
+.svo-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:svoBlink 1.6s infinite;}
+@keyframes svoBlink{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* photo ring */
+.svo-photo-ring{
+  width:78px;height:78px;border-radius:50%;
+  margin:0 auto 12px;position:relative;
+  box-shadow:0 0 0 3px rgba(9,15,30,1),0 0 0 5.5px rgba(37,99,235,.22),0 8px 22px rgba(0,0,0,.45);
+  transition:box-shadow .28s;overflow:hidden;
+}
+.svo-wcard:hover .svo-photo-ring{
+  box-shadow:0 0 0 3px rgba(9,15,30,1),0 0 0 5.5px rgba(37,99,235,.52),0 12px 28px rgba(37,99,235,.18);
+}
+.svo-photo-ring img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
+.svo-photo-initials{
+  position:absolute;inset:0;border-radius:50%;
+  background:linear-gradient(135deg,#1E3A8A,#0891B2);
+  display:none;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;
+}
+.svo-verified{
+  position:absolute;bottom:1px;right:1px;
+  width:19px;height:19px;border-radius:50%;
+  background:linear-gradient(135deg,#2563EB,#0891B2);
+  border:2px solid rgba(9,15,30,1);
+  color:#fff;font-size:.55rem;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;
+}
+
+/* text */
+.svo-name{font-family:'Syne',sans-serif;font-size:.87rem;font-weight:800;color:#F1F5F9;margin-bottom:2px;}
+.svo-prof{font-size:.67rem;color:rgba(148,163,184,.5);margin-bottom:8px;line-height:1.3;}
+.svo-stars-row{margin-bottom:4px;}
+.svo-stars{color:#FBBF24;font-size:.74rem;letter-spacing:.3px;}
+.svo-rnum{font-size:.72rem;font-weight:700;color:#F1F5F9;}
+.svo-rct{font-size:.6rem;color:rgba(148,163,184,.37);}
+.svo-area{font-size:.6rem;color:rgba(148,163,184,.37);margin:3px 0 9px;}
+.svo-sep{height:1px;background:rgba(255,255,255,.055);margin-bottom:10px;}
+.svo-pills{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+.svo-cpill{
+  font-size:.62rem;font-weight:600;padding:3px 9px;border-radius:99px;
+  background:rgba(37,99,235,.08);color:#93C5FD;border:1px solid rgba(37,99,235,.14);
+}
+.svo-epill{
+  font-size:.62rem;font-weight:600;padding:3px 9px;border-radius:99px;
+  background:rgba(6,182,212,.07);color:#67E8F9;border:1px solid rgba(6,182,212,.13);
+}
+.svo-bookbtn{
+  width:100%;padding:9px 0;border-radius:11px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,#2563EB,#0891B2);
+  color:#fff;font-size:.75rem;font-weight:700;font-family:'DM Sans',sans-serif;
+  box-shadow:0 4px 14px rgba(37,99,235,.3);
+  transition:opacity .18s,transform .18s,box-shadow .18s;
+}
+.svo-bookbtn:hover{opacity:.87;transform:translateY(-2px);box-shadow:0 8px 22px rgba(37,99,235,.42);}
+.svo-bookbtn:disabled{background:rgba(51,65,85,.55);box-shadow:none;transform:none;opacity:.5;cursor:not-allowed;}
+
+/* empty filter state */
+.svo-empty{text-align:center;padding:60px 20px;color:rgba(148,163,184,.4);font-size:.88rem;grid-column:1/-1;}
+.svo-empty-ico{font-size:2rem;margin-bottom:10px;}
+
+/* mobile */
+@media(max-width:640px){
+  .svo-head{padding:13px 16px 11px;}
+  .svo-filters{padding:9px 14px;}
+  .svo-body{padding:16px 12px 26px;}
+  .svo-grid{grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;}
+  .svo-wcard{padding:16px 12px 13px;}
+  .svo-photo-ring{width:64px;height:64px;}
+}
 </style>
 
 <!-- ══ LOGIN MODAL HTML ═══════════════════════════════════ -->
@@ -3573,6 +4645,7 @@ setTimeout(() => {
       <!-- Buttons -->
       <div class="cpl-footer">
         <button class="cpl-reset-btn" onclick="resetComplaint()">↺ Reset</button>
+        <div id="cplApiError" style="display:none;color:#FCA5A5;font-size:.76rem;text-align:center;margin-bottom:8px;padding:6px 10px;background:rgba(239,68,68,.08);border-radius:8px;"></div>
         <button class="cpl-submit-btn" id="cplSubmitBtn" onclick="submitComplaint()">Submit Complaint →</button>
       </div>
 
@@ -3793,11 +4866,1420 @@ function spawnCplConfetti(){
 // Escape closes whichever modal is open
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
-    closeLogin();closeComplaint();
+    closeLogin();closeComplaint();closeNearby&&closeNearby();closeCreateAccount&&closeCreateAccount();
     document.getElementById('cplSuccess').classList.remove('show');
     document.body.style.overflow='';
   }
 });
 </script>
+
+<!-- ══ NEARBY MAP MODAL ══════════════════════════════════ -->
+<div id="nearbyModal" onclick="if(event.target===this)closeNearby()">
+  <div class="map-panel">
+    <div class="map-header">
+      <div>
+        <div class="map-htitle">📍 Nearby Workers — Bengaluru</div>
+        <div class="map-hsub">Live worker locations within 5 km radius</div>
+      </div>
+      <button class="map-hclose" onclick="closeNearby()">✕</button>
+    </div>
+    <div class="map-canvas-wrap" id="mapCanvasWrap"></div>
+    <div class="map-statsbar">
+      <div class="map-stat"><div class="map-stat-dot" style="background:linear-gradient(135deg,#2563EB,#06B6D4)"></div><span class="map-stat-label">Available:&nbsp;</span><span class="map-stat-val" id="msAvail">6</span></div>
+      <div class="map-stat"><div class="map-stat-dot" style="background:#EF4444"></div><span class="map-stat-label">Busy:&nbsp;</span><span class="map-stat-val" id="msBusy">2</span></div>
+      <div class="map-stat">📍&nbsp;<span class="map-stat-label">Location:&nbsp;</span><span class="map-stat-val">Bengaluru, KA</span></div>
+      <div class="map-stat">🕐&nbsp;<span class="map-stat-label">Avg ETA:&nbsp;</span><span class="map-stat-val">22 min</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CREATE ACCOUNT MODAL ══════════════════════════════ -->
+<div id="createAccModal" onclick="if(event.target===this)closeCreateAccount()">
+  <div class="ca-card">
+    <div class="ca-stripe"></div>
+    <div class="ca-glow"></div>
+    <div class="ca-body">
+      <button class="ca-close" onclick="closeCreateAccount()">✕</button>
+      <div class="ca-icon">👤</div>
+      <div class="ca-title">Join <span>Fixora</span></div>
+      <div class="ca-sub">Create your free account in 2 minutes</div>
+      <div class="ca-steps">
+        <div class="ca-step-dot active" id="casd0">1</div>
+        <div class="ca-step-line" id="casl0"></div>
+        <div class="ca-step-dot" id="casd1">2</div>
+        <div class="ca-step-line" id="casl1"></div>
+        <div class="ca-step-dot" id="casd2">✓</div>
+      </div>
+      <!-- Step 1 -->
+      <div id="ca-step1">
+        <div class="reg-section-label" style="color:var(--cyan);margin-top:0;">👤 Personal Details</div>
+        <div class="ca-field"><label>Full Name *</label><div class="ca-wrap"><span class="ca-ico">👤</span><input type="text" id="ca-fullname" placeholder="e.g. Kavita Sharma"/></div></div>
+        <div class="ca-field"><label>Phone Number *</label><div class="ca-wrap"><span class="ca-ico">📱</span><input type="tel" id="ca-phone2" placeholder="+91 98765 43210"/></div></div>
+        <div class="ca-field"><label>Email Address *</label><div class="ca-wrap"><span class="ca-ico">✉️</span><input type="email" id="ca-email2" placeholder="you@example.com"/></div></div>
+        <div class="ca-field"><label>Address *</label><div class="ca-wrap"><span class="ca-ico">📍</span><input type="text" id="ca-addr2" placeholder="Flat No., Street, City, PIN"/></div></div>
+        <button class="ca-submit" onclick="caSubmitStep1()">Next: Verify Identity →</button>
+        <div class="ca-login-link">Already have an account? <a href="#" onclick="closeCreateAccount();setTimeout(openLogin,250);return false;">Sign In</a></div>
+      </div>
+      <!-- Step 2 -->
+      <div id="ca-step2" style="display:none;">
+        <div class="ca-aadhaar-box">
+          <div class="ca-aadhaar-title">🛡️ Aadhaar Identity Verification</div>
+          <div class="ca-field" style="margin-bottom:10px;">
+            <label>Aadhaar Number *</label>
+            <div class="ca-wrap"><span class="ca-ico">🪪</span><input type="text" id="ca-aadhaar" placeholder="XXXX XXXX XXXX" maxlength="14" oninput="this.value=this.value.replace(/\D/g,'').replace(/(\d{4})(?=\d)/g,'$1 ').trim()"/></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <button class="ca-send-otp" id="caOtpBtn" onclick="caSendOtp()">Send OTP →</button>
+            <span style="font-size:.72rem;color:rgba(148,163,184,.45);">OTP to linked mobile</span>
+          </div>
+          <div id="caOtpHint" style="font-size:.7rem;color:rgba(148,163,184,.45);margin-top:8px;display:none;">Enter 6-digit OTP — use <strong style="color:#67E8F9">123456</strong> for demo</div>
+          <div class="ca-otp-row" id="ca-otp-box" style="display:none;">
+            <input class="ca-otp-inp" type="text" id="ca-otp" maxlength="6" placeholder="______" oninput="if(this.value.replace(/\s/g,'').length===6)caVerifyOtp()"/>
+            <button id="caVerifyBtn" class="ca-send-otp" onclick="caVerifyOtp()">Verify</button>
+          </div>
+          <div class="ca-verify-badge" id="ca-verify-badge" style="display:none;">✅ Aadhaar Verified</div>
+        </div>
+        <div style="font-size:.7rem;color:rgba(148,163,184,.35);margin-bottom:16px;line-height:1.65;">🔒 Encrypted &amp; secured per UIDAI guidelines. Never stored in plain text.</div>
+        <button class="ca-submit" id="caFinalBtn" onclick="caFinalSubmit()">Create My Account →</button>
+        <div class="ca-login-link" style="margin-top:12px;"><a href="#" onclick="showCaStep(1);return false;">← Back</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_WORKERS = [
+  {id:1, name:'Rajan Sharma',    initials:'RS', prof:'Electrician',     rating:4.9, jobs:847, charge:'Rs.299-799',  avail:true,  dist:'1.2 km', eta:'18 min', city:'Koramangala',
+   photo:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:2, name:'Priya Nair',      initials:'PN', prof:'AC Technician',   rating:4.7, jobs:512, charge:'Rs.399-999',  avail:true,  dist:'2.1 km', eta:'24 min', city:'Indiranagar',
+   photo:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:3, name:'Deepak Chauhan',  initials:'DC', prof:'Plumber',         rating:4.8, jobs:634, charge:'Rs.199-599',  avail:false, dist:'0.8 km', eta:'35 min', city:'Whitefield',
+   photo:'https://images.unsplash.com/photo-1504383633899-a8a38d1b9e5c?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:4, name:'Meena Pillai',    initials:'MP', prof:'Painter',         rating:4.6, jobs:298, charge:'Rs.799-2499', avail:true,  dist:'1.8 km', eta:'22 min', city:'HSR Layout',
+   photo:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:5, name:'Arjun Reddy',     initials:'AR', prof:'Carpenter',       rating:4.9, jobs:421, charge:'Rs.349-899',  avail:true,  dist:'2.7 km', eta:'28 min', city:'BTM Layout',
+   photo:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:6, name:'Sunita Verma',    initials:'SV', prof:'Cleaning Expert', rating:4.7, jobs:376, charge:'Rs.499-1499', avail:false, dist:'4.1 km', eta:'42 min', city:'Marathahalli',
+   photo:'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:7, name:'Raj Kumar',       initials:'RK', prof:'Appliance Repair',rating:4.8, jobs:589, charge:'Rs.299-799',  avail:true,  dist:'1.5 km', eta:'20 min', city:'JP Nagar',
+   photo:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=faces&auto=format'},
+  {id:8, name:'Kavitha Iyer',    initials:'KI', prof:'Medical Assist',  rating:4.9, jobs:203, charge:'Rs.599-1999', avail:true,  dist:'2.3 km', eta:'26 min', city:'Jayanagar',
+   photo:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=160&h=160&fit=crop&crop=faces&auto=format'},
+];
+/* Keep WORKERS alias for any legacy references */
+var WORKERS = ALL_WORKERS;
+
+var POPUP_WORKERS = [
+  {name:'Rajan Sharma',    prof:'Electrician',      dist:'1.2 km', rating:4.9, photo:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Deepak Chauhan',  prof:'Plumber',          dist:'0.8 km', rating:4.8, photo:'https://images.unsplash.com/photo-1504383633899-a8a38d1b9e5c?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Arjun Reddy',     prof:'Carpenter',        dist:'2.1 km', rating:4.9, photo:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Raj Kumar',       prof:'Appliance Repair', dist:'1.5 km', rating:4.8, photo:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Priya Nair',      prof:'AC Technician',    dist:'2.4 km', rating:4.7, photo:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Meena Pillai',    prof:'Painter',          dist:'1.8 km', rating:4.6, photo:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Kavitha Iyer',    prof:'Home Nurse',       dist:'3.2 km', rating:4.9, photo:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Sunita Verma',    prof:'Cleaning Expert',  dist:'1.1 km', rating:4.7, photo:'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Anil Patil',      prof:'Plumber',          dist:'0.6 km', rating:4.8, photo:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Suresh Nambiar',  prof:'Electrician',      dist:'1.9 km', rating:4.7, photo:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Lakshmi Devi',    prof:'Cleaning Expert',  dist:'2.6 km', rating:4.9, photo:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Vikram Singh',    prof:'AC Technician',    dist:'1.4 km', rating:4.8, photo:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Rekha Sharma',    prof:'Painter',          dist:'3.0 km', rating:4.6, photo:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Pavan Kumar',     prof:'Carpenter',        dist:'0.9 km', rating:4.9, photo:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Nisha Rao',       prof:'Medical Assist',   dist:'2.8 km', rating:4.9, photo:'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Harish Gupta',    prof:'Appliance Repair', dist:'1.7 km', rating:4.7, photo:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Anita Mathur',    prof:'Painter',          dist:'2.2 km', rating:4.8, photo:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Dinesh Patel',    prof:'Plumber',          dist:'1.3 km', rating:4.8, photo:'https://images.unsplash.com/photo-1463453091185-61582044d556?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Geetha Krishnan', prof:'Cleaning Expert',  dist:'0.7 km', rating:4.7, photo:'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=80&h=80&fit=crop&crop=faces&auto=format'},
+  {name:'Ramesh Yadav',    prof:'Electrician',      dist:'2.5 km', rating:4.9, photo:'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=80&h=80&fit=crop&crop=faces&auto=format'},
+];
+
+var WORKER_MAP_POS = [
+  {id:1,x:54,y:42},{id:2,x:63,y:33},{id:3,x:41,y:57},
+  {id:4,x:61,y:63},{id:5,x:35,y:39},{id:6,x:70,y:51},
+  {id:7,x:47,y:71},{id:8,x:33,y:27},
+];
+
+/* ━━━━ WORKER PROFILE GRID ━━━━━━━━━━━━━━━━━━━━━━ */
+(function renderWorkerGrid() {
+  var grid = document.getElementById('workerGrid');
+  if (!grid) return;
+  grid.innerHTML = ALL_WORKERS.map(function(w) {
+    var stars = '★'.repeat(Math.floor(w.rating)) + '☆'.repeat(5 - Math.floor(w.rating));
+    return '<div class="wp-card reveal" onclick="openWorkerProfile(' + w.id + ')" style="cursor:pointer;">' +
+      '<div class="wp-status ' + (w.avail ? 'avail' : 'busy') + '"><span class="wp-status-dot"></span>' + (w.avail ? 'Available' : 'Busy') + '</div>' +
+      '<div class="wp-photo-ring">' +
+        '<img src="' + w.photo + '" alt="' + w.name + '" class="wp-photo" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/>' +
+        '<div class="wp-photo-fallback" style="display:none">' + w.initials + '</div>' +
+        '<div class="wp-verify-badge">✓</div>' +
+      '</div>' +
+      '<div class="wp-info">' +
+        '<div class="wp-name">' + w.name + '</div>' +
+        '<div class="wp-prof">' + w.prof + '</div>' +
+        '<div class="wp-loc">📍 ' + w.city + ' · ' + w.dist + '</div>' +
+      '</div>' +
+      '<div class="wp-stars-row"><span class="wp-stars">' + stars + '</span><span class="wp-rating-num"> ' + w.rating + '</span><span class="wp-rating-cnt"> (' + w.jobs + ' jobs)</span></div>' +
+      '<div class="wp-divider"></div>' +
+      '<div class="wp-meta-row">' +
+        '<div class="wp-charge-pill"><span>💰</span>' + w.charge + '</div>' +
+        '<div class="wp-eta-pill"><span>🕐</span>' + w.eta + '</div>' +
+      '</div>' +
+      '<div class="wp-view-hint">👁 View Full Profile →</div>' +
+    '</div>';
+  }).join('');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, {threshold: 0.06});
+  document.querySelectorAll('.wp-card.reveal').forEach(function(el) { io.observe(el); });
+})();
+
+/* ━━━━ HERO ROTATING POPUP ━━━━━━━━━━━━━━━━━━━━━━━ */
+(function initHeroPopup() {
+  var idx = 0;
+  var ETAS    = ['18 min','24 min','12 min','32 min','21 min','16 min','28 min','19 min','15 min','27 min','11 min','23 min','30 min','14 min','25 min','17 min','22 min','13 min','20 min','26 min'];
+  var CHARGES = ['Rs.299-799','Rs.399-999','Rs.199-599','Rs.799-2499','Rs.349-899','Rs.499-1499','Rs.299-799','Rs.599-1999','Rs.249-699','Rs.449-1199','Rs.499-1499','Rs.399-999','Rs.799-2499','Rs.349-899','Rs.599-1999','Rs.299-799','Rs.799-2499','Rs.199-599','Rs.499-1499','Rs.299-799'];
+  var JOBS    = [847,512,634,298,421,376,589,203,478,523,312,694,187,445,291,567,334,712,256,480];
+
+  function updateCard(w, i) {
+    var card = document.getElementById('heroWorkerCard');
+    if (!card) return;
+    card.style.transition = 'opacity 0.5s ease';
+    card.style.opacity = '0';
+    setTimeout(function() {
+      var img = document.getElementById('hvcImg');
+      if (img) { img.src = w.photo; img.style.display = 'block'; }
+      var nm  = document.getElementById('hvcName');   if (nm)  nm.textContent  = w.name;
+      var rol = document.getElementById('hvcRole');   if (rol) rol.textContent = w.prof + ' · Verified Pro';
+      var dst = document.getElementById('hvcDist');   if (dst) dst.textContent = w.dist + ' away';
+      var st  = document.getElementById('hvcStars');  if (st)  st.textContent  = '★'.repeat(Math.floor(w.rating)) + '☆'.repeat(5 - Math.floor(w.rating));
+      var rtn = document.getElementById('hvcRating'); if (rtn) rtn.textContent = w.rating;
+      var jbs = document.getElementById('hvcJobs');   if (jbs) jbs.textContent = JOBS[i % JOBS.length];
+      var chg = document.getElementById('hvcCharge'); if (chg) chg.textContent = CHARGES[i % CHARGES.length];
+      var eta = document.getElementById('hvcEta');    if (eta) eta.textContent = '~' + ETAS[i % ETAS.length];
+      card.style.opacity = '1';
+    }, 520);
+  }
+
+  function showToast(w) {
+    var outer = document.querySelector('.h-visual .hv-outer');
+    if (!outer) return;
+    if (getComputedStyle(outer).position === 'static') outer.style.position = 'relative';
+    var toast = document.getElementById('heroToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'heroToast';
+      toast.style.cssText =
+        'position:absolute;bottom:16px;left:50%;' +
+        'transform:translateX(-50%) translateY(12px);' +
+        'background:rgba(10,16,35,0.97);' +
+        'border:1px solid rgba(37,99,235,0.32);' +
+        'border-radius:14px;padding:10px 13px;' +
+        'display:flex;align-items:center;gap:10px;' +
+        'box-shadow:0 12px 36px rgba(0,0,0,0.6),0 0 0 1px rgba(37,99,235,0.1);' +
+        'min-width:230px;max-width:280px;z-index:8;opacity:0;' +
+        'transition:opacity 0.5s ease,transform 0.5s cubic-bezier(.22,1,.36,1);' +
+        'backdrop-filter:blur(16px);pointer-events:none;';
+      outer.appendChild(toast);
+    }
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(12px)';
+    setTimeout(function() {
+      var stars = '★'.repeat(Math.floor(w.rating)) + '☆'.repeat(5 - Math.floor(w.rating));
+      toast.innerHTML =
+        '<img src="' + w.photo + '" alt="' + w.name + '"' +
+        ' style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(37,99,235,.5);flex-shrink:0;"' +
+        ' onerror="this.style.display=\'none\'"/>' +
+        '<div style="min-width:0;flex:1;">' +
+          '<div style="font-family:Syne,sans-serif;font-size:.78rem;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + w.name + '</div>' +
+          '<div style="font-size:.68rem;color:rgba(148,163,184,.72);margin-top:1px;">' + w.prof + ' &bull; ' + w.dist + ' away</div>' +
+          '<div style="font-size:.7rem;color:#FBBF24;margin-top:2px;">' + stars + ' <strong style="color:#fff">' + w.rating + '</strong></div>' +
+        '</div>' +
+        '<div style="flex-shrink:0;background:linear-gradient(135deg,#2563EB,#0891B2);color:#fff;' +
+        'font-size:.65rem;font-weight:700;padding:6px 11px;border-radius:9px;cursor:pointer;' +
+        'white-space:nowrap;box-shadow:0 4px 12px rgba(37,99,235,.4);">Book</div>';
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    }, 520);
+  }
+
+  function rotate() {
+    var w = POPUP_WORKERS[idx];
+    updateCard(w, idx);
+    showToast(w);
+    idx = (idx + 1) % POPUP_WORKERS.length;
+    setTimeout(rotate, 5000);
+  }
+  setTimeout(rotate, 1500);
+})();
+
+/* ━━━━ NEARBY MAP ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function openNearby() {
+  document.getElementById('nearbyModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(renderMap, 480);
+}
+function closeNearby() {
+  document.getElementById('nearbyModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+var _mapRendered = false, _activeMapCard = null;
+
+function renderMap() {
+  if (_mapRendered) return;
+  _mapRendered = true;
+  var wrap = document.getElementById('mapCanvasWrap');
+  if (!wrap) return;
+
+  /* rich SVG base */
+  wrap.innerHTML =
+    '<svg class="map-svg-bg" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg">' +
+      '<rect width="900" height="540" fill="#0c1829"/>' +
+      '<rect x="55"  y="75"  width="165" height="95"  rx="5" fill="rgba(30,58,138,.2)"/>' +
+      '<rect x="275" y="35"  width="205" height="125" rx="5" fill="rgba(30,58,138,.2)"/>' +
+      '<rect x="545" y="95"  width="175" height="105" rx="5" fill="rgba(30,58,138,.2)"/>' +
+      '<rect x="115" y="295" width="145" height="115" rx="5" fill="rgba(30,58,138,.2)"/>' +
+      '<rect x="375" y="325" width="195" height="125" rx="5" fill="rgba(30,58,138,.2)"/>' +
+      '<rect x="635" y="275" width="165" height="135" rx="5" fill="rgba(30,58,138,.2)"/>' +
+      '<rect x="225" y="195" width="75"  height="60"  rx="7" fill="rgba(20,83,45,.38)"/>' +
+      '<rect x="515" y="215" width="65"  height="55"  rx="7" fill="rgba(20,83,45,.3)"/>' +
+      '<path d="M0 270 Q225 238 450 270 Q675 302 900 270" stroke="rgba(96,165,250,.5)"  stroke-width="7"  fill="none"/>' +
+      '<path d="M450 0   Q428 140 450 270 Q472 395 450 540" stroke="rgba(96,165,250,.5)"  stroke-width="7"  fill="none"/>' +
+      '<path d="M0 155 Q320 135 640 198 Q770 226 900 188" stroke="rgba(147,197,253,.28)" stroke-width="3.5" fill="none"/>' +
+      '<path d="M80 540 Q245 368 405 318 Q582 263 762 118" stroke="rgba(147,197,253,.25)" stroke-width="3"   fill="none"/>' +
+      '<path d="M0 400 Q262 374 483 340 Q663 308 900 362" stroke="rgba(147,197,253,.22)" stroke-width="2.5" fill="none"/>' +
+      '<path d="M162 0 Q148 200 162 352 Q176 442 166 540" stroke="rgba(147,197,253,.18)" stroke-width="2"   fill="none"/>' +
+      '<path d="M742 0 Q727 180 742 322 Q757 422 747 540" stroke="rgba(147,197,253,.18)" stroke-width="2"   fill="none"/>' +
+      '<circle cx="450" cy="270" r="105" stroke="rgba(37,99,235,.22)" stroke-width="1.5" fill="rgba(37,99,235,.05)"/>' +
+      '<circle cx="450" cy="270" r="180" stroke="rgba(37,99,235,.12)" stroke-width="1"   fill="none" stroke-dasharray="5 7"/>' +
+      '<circle cx="450" cy="270" r="255" stroke="rgba(37,99,235,.07)" stroke-width="1"   fill="none" stroke-dasharray="3 9"/>' +
+      '<circle cx="193" cy="175" r="5.5" fill="rgba(148,163,184,.22)"/>' +
+      '<circle cx="618" cy="150" r="4.5" fill="rgba(148,163,184,.18)"/>' +
+      '<circle cx="312" cy="412" r="4.5" fill="rgba(148,163,184,.18)"/>' +
+      '<circle cx="682" cy="412" r="5.5" fill="rgba(148,163,184,.22)"/>' +
+      '<text x="450" y="315" fill="rgba(148,163,184,.18)" font-size="11" font-family="DM Sans,sans-serif" text-anchor="middle">Bengaluru Central</text>' +
+    '</svg>';
+
+  /* user pin */
+  var upin = document.createElement('div');
+  upin.className = 'map-user-pin'; upin.style.cssText = 'left:50%;top:50%;';
+  upin.innerHTML = '<div class="map-user-core"></div><div class="map-user-ring"></div>';
+  wrap.appendChild(upin);
+
+  /* photo markers */
+  WORKER_MAP_POS.forEach(function(pos, i) {
+    var w = ALL_WORKERS.find(function(x) { return x.id === pos.id; });
+    if (!w) return;
+    var m = document.createElement('div');
+    m.className = 'map-photo-marker ' + (w.avail ? 'avail' : 'busy');
+    m.style.cssText = 'left:' + pos.x + '%;top:' + pos.y + '%;animation-delay:' + (i * 0.08) + 's;';
+    m.innerHTML =
+      '<div class="mpm-ring">' +
+        '<img src="' + w.photo + '" class="mpm-img" alt="' + w.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/>' +
+        '<div class="mpm-fallback" style="display:none">' + w.initials + '</div>' +
+      '</div>' +
+      '<div class="mpm-dot ' + (w.avail ? 'avail' : 'busy') + '"></div>' +
+      '<div class="mpm-shadow"></div>';
+    m.addEventListener('mouseenter', function() { showMapCard(w, pos); });
+    m.addEventListener('click', function(e) { e.stopPropagation(); showMapCard(w, pos); });
+    wrap.appendChild(m);
+  });
+
+  /* legend */
+  var leg = document.createElement('div'); leg.className = 'map-legend';
+  leg.innerHTML =
+    '<div class="leg-item"><div class="leg-dot you"></div>You</div>' +
+    '<div class="leg-item"><div class="leg-dot avail"></div>Available</div>' +
+    '<div class="leg-item"><div class="leg-dot busy"></div>Busy</div>';
+  wrap.appendChild(leg);
+
+  /* locate btn */
+  var loc = document.createElement('button'); loc.className = 'map-locate-btn';
+  loc.innerHTML = '📍 Use My Location';
+  loc.onclick = function() {
+    if (navigator.geolocation) navigator.geolocation.getCurrentPosition(function() {
+      loc.innerHTML = '✅ Located'; loc.style.background = 'linear-gradient(135deg,#16A34A,#0891B2)';
+    });
+  };
+  wrap.appendChild(loc);
+
+  wrap.addEventListener('click', function() { closeMapCard(); });
+}
+
+function showMapCard(w, pos) {
+  closeMapCard();
+  var wrap = document.getElementById('mapCanvasWrap');
+  if (!wrap) return;
+  var stars = '★'.repeat(Math.floor(w.rating)) + '☆'.repeat(5 - Math.floor(w.rating));
+  var card = document.createElement('div');
+  card.id = 'mapWorkerCard';
+  card.className = 'map-worker-card';
+
+  var left = pos.x + 4; var top = pos.y - 8;
+  if (left > 58) left = pos.x - 30;
+  if (top < 12)  top  = pos.y + 10;
+  card.style.cssText = 'left:' + left + '%;top:' + top + '%;transform:translateY(-100%) scale(.9);opacity:0;pointer-events:none;';
+
+  card.innerHTML =
+    '<div class="mwc-header">' +
+      '<img src="' + w.photo + '" alt="' + w.name + '" class="mwc-img" onerror="this.style.display=\'none\'"/>' +
+      '<div class="mwc-header-info">' +
+        '<div class="mwc-name">' + w.name + '</div>' +
+        '<div class="mwc-prof">' + w.prof + '</div>' +
+        '<div class="mwc-stars">' + stars + ' <strong>' + w.rating + '</strong> <span class="mwc-cnt">(' + w.jobs + ')</span></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="mwc-sep"></div>' +
+    '<div class="mwc-rows">' +
+      '<div class="mwc-row"><span class="mwc-lbl">💰 Charge</span><span class="mwc-val">' + w.charge + '</span></div>' +
+      '<div class="mwc-row"><span class="mwc-lbl">📍 Distance</span><span class="mwc-val">' + w.dist + ' away</span></div>' +
+      '<div class="mwc-row"><span class="mwc-lbl">🕐 ETA</span><span class="mwc-val">~' + w.eta + '</span></div>' +
+    '</div>' +
+    '<div class="mwc-' + (w.avail ? 'avail-badge' : 'busy-badge') + '">' +
+      '<span></span>' + (w.avail ? 'Available Now' : 'Currently Busy') +
+    '</div>';
+
+  wrap.appendChild(card);
+  _activeMapCard = card;
+
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      card.style.transition = 'opacity .28s ease, transform .32s cubic-bezier(.22,1,.36,1)';
+      card.style.opacity    = '1';
+      card.style.transform  = 'translateY(-100%) scale(1)';
+    });
+  });
+}
+
+function closeMapCard() {
+  if (_activeMapCard) { _activeMapCard.remove(); _activeMapCard = null; }
+}
+
+/* ━━━━ CREATE ACCOUNT ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+var caStep = 1, aadhaarVerified = false;
+function openCreateAccount() {
+  caStep = 1; aadhaarVerified = false; showCaStep(1);
+  document.getElementById('createAccModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function() { var el = document.getElementById('ca-fullname'); if (el) el.focus(); }, 480);
+}
+function closeCreateAccount() {
+  document.getElementById('createAccModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function showCaStep(n) {
+  caStep = n;
+  document.getElementById('ca-step1').style.display = n === 1 ? 'block' : 'none';
+  document.getElementById('ca-step2').style.display = n === 2 ? 'block' : 'none';
+  [0,1,2].forEach(function(i) {
+    var d = document.getElementById('casd' + i);
+    var l = document.getElementById('casl' + i);
+    if (d) d.className = 'ca-step-dot' + (i < n-1 ? ' done' : i === n-1 ? ' active' : '');
+    if (l) l.className = 'ca-step-line' + (i < n-1 ? ' done' : '');
+  });
+}
+function caPulse(id, msg) {
+  var el = document.getElementById(id); if (!el) return;
+  el.style.borderColor = 'rgba(239,68,68,.6)';
+  el.style.boxShadow = '0 0 0 3px rgba(239,68,68,.12)';
+  setTimeout(function() { el.style.borderColor = ''; el.style.boxShadow = ''; }, 1600);
+  showCaToast(msg, 'orange');
+}
+function showCaToast(msg, color) {
+  color = color || 'green';
+  var t = document.getElementById('caToast');
+  if (!t) {
+    t = document.createElement('div'); t.id = 'caToast';
+    t.style.cssText = 'position:absolute;bottom:16px;left:50%;transform:translateX(-50%);white-space:nowrap;padding:8px 16px;border-radius:99px;font-size:.76rem;font-weight:600;font-family:"DM Sans",sans-serif;z-index:10;transition:opacity .3s;pointer-events:none;';
+    document.querySelector('.ca-card').appendChild(t);
+  }
+  var bg={green:'rgba(22,163,74,.12)',orange:'rgba(245,158,11,.12)'};
+  var tc={green:'#86EFAC',orange:'#FDE68A'};
+  var bc={green:'rgba(22,163,74,.3)',orange:'rgba(245,158,11,.3)'};
+  t.style.background=bg[color];t.style.color=tc[color];t.style.border='1px solid '+bc[color];t.style.opacity='1';
+  t.textContent=msg;clearTimeout(t._tid);t._tid=setTimeout(function(){t.style.opacity='0';},3000);
+}
+function caSubmitStep1() {
+  var name=document.getElementById('ca-fullname').value.trim();
+  var phone=document.getElementById('ca-phone2').value.replace(/\D/g,'');
+  var email=document.getElementById('ca-email2').value.trim();
+  var addr=document.getElementById('ca-addr2').value.trim();
+  if(!name||name.length<2){caPulse('ca-fullname','Enter your full name');return;}
+  if(phone.length<10){caPulse('ca-phone2','Enter valid phone number');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){caPulse('ca-email2','Enter valid email');return;}
+  if(!addr||addr.length<5){caPulse('ca-addr2','Enter your address');return;}
+  showCaStep(2);
+}
+function caSendOtp() {
+  var aadhaar=document.getElementById('ca-aadhaar').value.replace(/\D/g,'');
+  if(aadhaar.length!==12){caPulse('ca-aadhaar','Aadhaar must be 12 digits');return;}
+  var btn=document.getElementById('caOtpBtn');btn.disabled=true;btn.textContent='Sending...';
+  setTimeout(function(){
+    btn.textContent='Resend OTP';btn.disabled=false;
+    document.getElementById('ca-otp-box').style.display='flex';
+    document.getElementById('caOtpHint').style.display='block';
+    showCaToast('OTP sent to linked mobile','green');
+  },1400);
+}
+function caVerifyOtp() {
+  var otp=document.getElementById('ca-otp').value.replace(/\s/g,'');
+  if(otp==='123456'||otp.length===6){
+    aadhaarVerified=true;
+    document.getElementById('ca-verify-badge').style.display='inline-flex';
+    document.getElementById('ca-otp-box').style.display='none';
+    document.getElementById('caVerifyBtn').style.display='none';
+    document.getElementById('caOtpHint').textContent='Aadhaar verified!';
+    document.getElementById('caOtpHint').style.color='#4ADE80';
+    showCaToast('Identity verified!','green');
+  } else { caPulse('ca-otp','Invalid OTP. Use 123456 for demo.'); }
+}
+function caFinalSubmit() {
+  if(!aadhaarVerified){showCaToast('Please verify your Aadhaar first','orange');return;}
+  var btn=document.getElementById('caFinalBtn');btn.disabled=true;btn.textContent='Creating...';
+  setTimeout(function(){
+    btn.disabled=false;btn.textContent='Create My Account';
+    closeCreateAccount();
+    var d=document.createElement('div');
+    d.style.cssText='position:fixed;inset:0;z-index:900;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,10,24,.9);backdrop-filter:blur(16px);';
+    d.innerHTML='<div style="background:#0F172A;border:1px solid rgba(6,182,212,.25);border-radius:24px;padding:44px 36px;text-align:center;max-width:420px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,.7);"><div style="font-size:3.5rem;margin-bottom:16px;">&#127881;</div><div style="font-family:Syne,sans-serif;font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:10px;">Account <span style="background:linear-gradient(135deg,#22D3EE,#60A5FA);-webkit-background-clip:text;background-clip:text;color:transparent;">Created!</span></div><p style="font-size:.875rem;color:rgba(148,163,184,.7);line-height:1.72;margin-bottom:22px;">Welcome to Fixora! Your Aadhaar-verified account is ready.</p><button onclick="this.closest(\'div[style*=fixed]\').remove();document.body.style.overflow=\'\';" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#06B6D4,#2563EB);border:none;color:#fff;font-size:.9rem;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">Start Exploring</button></div>';
+    document.body.appendChild(d);document.body.style.overflow='hidden';
+  },1800);
+}
+
+document.addEventListener('keydown', function(e) {
+  if(e.key==='Escape'){
+    if(typeof closeNearby==='function') closeNearby();
+    if(typeof closeCreateAccount==='function') closeCreateAccount();
+    var cs=document.getElementById('cplSuccess');if(cs)cs.classList.remove('show');
+    document.body.style.overflow='';
+  }
+});
+</script>
+
+<!-- ══ FIXORA API CLIENT ════════════════════════════════ -->
+<script>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Fixora API Client — connects all frontend forms to the
+   Node.js / Express / MongoDB backend.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+const API = {
+  BASE: window.location.origin + '/api',
+
+  /* ── Token management ─────────────────────────────── */
+  getToken() { return localStorage.getItem('fx_token'); },
+  setToken(t) { localStorage.setItem('fx_token', t); },
+  clearToken() { localStorage.removeItem('fx_token'); localStorage.removeItem('fx_user'); },
+
+  getUser() {
+    try { return JSON.parse(localStorage.getItem('fx_user')); } catch { return null; }
+  },
+  setUser(u) { localStorage.setItem('fx_user', JSON.stringify(u)); },
+
+  /* ── Generic fetch helper ─────────────────────────── */
+  async request(method, endpoint, body = null, isFormData = false) {
+    const headers = {};
+    const token = this.getToken();
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    if (!isFormData) headers['Content-Type'] = 'application/json';
+
+    const opts = { method, headers };
+    if (body) opts.body = isFormData ? body : JSON.stringify(body);
+
+    const res  = await fetch(this.BASE + endpoint, opts);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Request failed');
+    return data;
+  },
+
+  /* ── Auth ─────────────────────────────────────────── */
+  async register(payload) {
+    const data = await this.request('POST', '/users/register', payload);
+    this.setToken(data.token); this.setUser(data.data);
+    return data;
+  },
+  async login(email, password) {
+    const data = await this.request('POST', '/users/login', { email, password });
+    this.setToken(data.token); this.setUser(data.data);
+    return data;
+  },
+  logout() { this.clearToken(); updateNavForAuth(); },
+
+  /* ── Workers ──────────────────────────────────────── */
+  async getWorkers(params = {}) {
+    const q = new URLSearchParams(params).toString();
+    return this.request('GET', '/workers/list' + (q ? '?' + q : ''));
+  },
+  async getNearbyWorkers(lat, lng, radius = 5000) {
+    return this.request('GET', `/workers/nearby?lat=${lat}&lng=${lng}&radius=${radius}`);
+  },
+  async registerWorker(formData) {
+    const data = await this.request('POST', '/workers/register', formData, true);
+    this.setToken(data.token); this.setUser(data.data);
+    return data;
+  },
+
+  /* ── Services ─────────────────────────────────────── */
+  async createService(formData) {
+    return this.request('POST', '/services/create', formData, true);
+  },
+  async getMyServices() {
+    return this.request('GET', '/services/my');
+  },
+  async getServiceStatus(id) {
+    return this.request('GET', `/services/status/${id}`);
+  },
+
+  /* ── Reviews ──────────────────────────────────────── */
+  async addReview(serviceId, rating, comment) {
+    return this.request('POST', '/reviews/add', { serviceId, rating, comment });
+  },
+  async getWorkerReviews(workerId) {
+    return this.request('GET', `/reviews/worker/${workerId}`);
+  },
+};
+
+/* ━━━━ UI HELPERS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function showApiError(msg, containerId) {
+  const el = containerId ? document.getElementById(containerId) : null;
+  if (el) {
+    el.textContent = '⚠️ ' + msg;
+    el.style.cssText = 'color:#FCA5A5;font-size:.78rem;text-align:center;margin-top:8px;padding:6px;background:rgba(239,68,68,.08);border-radius:8px;';
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 5000);
+  } else {
+    // fallback toast
+    const t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.96);border:1px solid rgba(239,68,68,.4);color:#FCA5A5;padding:12px 22px;border-radius:12px;font-size:.82rem;font-weight:600;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.5);';
+    t.textContent = '⚠️ ' + msg;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 4000);
+  }
+}
+
+function showApiSuccess(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(15,23,42,.96);border:1px solid rgba(34,197,94,.4);color:#4ADE80;padding:12px 22px;border-radius:12px;font-size:.82rem;font-weight:600;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,.5);';
+  t.textContent = '✅ ' + msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+function setButtonLoading(btn, loading, label = 'Submit') {
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.textContent = loading ? '⏳ Please wait…' : label;
+}
+
+/* ━━━━ NAV AUTH STATE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function updateNavForAuth() {
+  const user = API.getUser();
+  const loginBtn  = document.querySelector('[onclick*="openLogin"]');
+  const regBtn    = document.querySelector('[onclick*="openCreateAccount"]');
+
+  if (user && loginBtn) {
+    loginBtn.textContent = '👤 ' + (user.fullName || user.name || 'Account').split(' ')[0];
+    loginBtn.onclick = () => showUserMenu(user);
+  }
+  if (user && regBtn) {
+    regBtn.textContent = 'Dashboard';
+    regBtn.onclick = () => openUserDashboard();
+  }
+}
+
+function showUserMenu(user) {
+  const menu = document.createElement('div');
+  menu.id = 'userMenu';
+  menu.style.cssText = 'position:fixed;top:70px;right:20px;background:rgba(15,23,42,.98);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:16px;min-width:200px;z-index:500;box-shadow:0 20px 50px rgba(0,0,0,.6);backdrop-filter:blur(16px);';
+  menu.innerHTML =
+    '<div style="font-weight:800;font-family:Syne,sans-serif;color:#fff;margin-bottom:4px;">' + (user.fullName || user.name) + '</div>' +
+    '<div style="font-size:.75rem;color:rgba(148,163,184,.6);margin-bottom:14px;">' + (user.email || user.phone) + '</div>' +
+    '<button onclick="openUserDashboard();document.getElementById('userMenu').remove();" style="width:100%;text-align:left;background:rgba(37,99,235,.1);border:none;color:#93C5FD;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600;margin-bottom:6px;">📋 My Bookings</button>' +
+    '<button onclick="API.logout();document.getElementById('userMenu').remove();showApiSuccess('Logged out');" style="width:100%;text-align:left;background:rgba(239,68,68,.08);border:none;color:#FCA5A5;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:.8rem;font-weight:600;">🚪 Log Out</button>';
+  document.body.appendChild(menu);
+  setTimeout(() => document.addEventListener('click', function rm(e) {
+    if (!menu.contains(e.target)) { menu.remove(); document.removeEventListener('click', rm); }
+  }), 50);
+}
+
+/* ━━━━ USER DASHBOARD MODAL ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function openUserDashboard() {
+  const user = API.getUser();
+  if (!user) { openLogin(); return; }
+
+  const modal = document.createElement('div');
+  modal.id = 'userDashModal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:600;display:flex;align-items:center;justify-content:center;background:rgba(6,10,24,.88);backdrop-filter:blur(16px);padding:20px;';
+  modal.innerHTML =
+    '<div style="background:#0F172A;border:1px solid rgba(37,99,235,.2);border-radius:24px;padding:36px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 40px 100px rgba(0,0,0,.7);position:relative;">' +
+      '<button onclick="document.getElementById('userDashModal').remove();document.body.style.overflow='';" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,.07);border:none;color:#94A3B8;width:32px;height:32px;border-radius:50%;font-size:1rem;cursor:pointer;">✕</button>' +
+      '<div style="font-family:Syne,sans-serif;font-size:1.25rem;font-weight:900;color:#fff;margin-bottom:6px;">👤 My Account</div>' +
+      '<div style="font-size:.8rem;color:rgba(148,163,184,.6);margin-bottom:24px;">' + (user.email || '') + ' · ' + (user.phone || '') + '</div>' +
+      '<div id="dashBookings"><div style="color:rgba(148,163,184,.5);font-size:.85rem;text-align:center;padding:24px;">Loading bookings…</div></div>' +
+    '</div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  modal.addEventListener('click', (e) => { if (e.target === modal) { modal.remove(); document.body.style.overflow = ''; } });
+
+  // Load bookings
+  if (API.getToken()) {
+    API.getMyServices().then((data) => {
+      const container = document.getElementById('dashBookings');
+      if (!container) return;
+      if (!data.data || !data.data.length) {
+        container.innerHTML = '<div style="color:rgba(148,163,184,.5);font-size:.85rem;text-align:center;padding:24px;">No service requests yet.</div>';
+        return;
+      }
+      container.innerHTML = '<div style="font-weight:700;color:#fff;margin-bottom:12px;font-size:.9rem;">My Service Requests</div>' +
+        data.data.map((s) => {
+          const statusColor = { Pending:'#FBBF24', Assigned:'#60A5FA', 'In Progress':'#34D399', Completed:'#4ADE80', Cancelled:'#F87171' }[s.status] || '#94A3B8';
+          return '<div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px;margin-bottom:10px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+              '<div style="font-weight:700;color:#F1F5F9;font-size:.85rem;">' + s.title + '</div>' +
+              '<span style="font-size:.65rem;font-weight:700;color:' + statusColor + ';background:' + statusColor + '18;padding:3px 10px;border-radius:99px;border:1px solid ' + statusColor + '40;">' + s.status + '</span>' +
+            '</div>' +
+            '<div style="font-size:.72rem;color:rgba(148,163,184,.55);margin-top:4px;">' + s.problemType + ' · ' + new Date(s.createdAt).toLocaleDateString('en-IN') + '</div>' +
+            (s.worker ? '<div style="font-size:.72rem;color:#67E8F9;margin-top:4px;">Worker: ' + s.worker.name + ' (' + s.worker.profession + ')</div>' : '') +
+          '</div>';
+        }).join('');
+    }).catch((err) => {
+      const container = document.getElementById('dashBookings');
+      if (container) container.innerHTML = '<div style="color:#FCA5A5;font-size:.8rem;text-align:center;">' + err.message + '</div>';
+    });
+  }
+}
+
+/* ━━━━ LOGIN FORM → API ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function doLogin() {
+  const email    = document.getElementById('loginEmail')?.value?.trim();
+  const password = document.getElementById('loginPassword')?.value;
+  const btn      = document.getElementById('loginSubmitBtn');
+
+  if (!email || !password) { showApiError('Email and password are required', 'loginError'); return; }
+
+  setButtonLoading(btn, true, 'Sign In →');
+  API.login(email, password)
+    .then(() => {
+      setButtonLoading(btn, false, 'Sign In →');
+      closeLogin();
+      updateNavForAuth();
+      showApiSuccess('Welcome back! Logged in successfully.');
+    })
+    .catch((err) => {
+      setButtonLoading(btn, false, 'Sign In →');
+      showApiError(err.message, 'loginError');
+    });
+}
+
+/* ━━━━ CREATE ACCOUNT FORM → API ━━━━━━━━━━━━━━━━━━━━━━━ */
+function caFinalSubmit() {
+  if (!aadhaarVerified) { showCaToast('Please verify your Aadhaar first', 'orange'); return; }
+
+  const btn      = document.getElementById('caFinalBtn');
+  const fullName = document.getElementById('ca-fullname')?.value?.trim();
+  const phone    = document.getElementById('ca-phone2')?.value?.replace(/\D/g,'');
+  const email    = document.getElementById('ca-email2')?.value?.trim();
+  const address  = document.getElementById('ca-addr2')?.value?.trim();
+  const aadhaar  = document.getElementById('ca-aadhaar')?.value?.replace(/\D/g,'');
+  const password = document.getElementById('ca-password')?.value || 'Fixora@' + phone.slice(-4);
+
+  setButtonLoading(btn, true, 'Create My Account');
+
+  API.register({ fullName, phone, email, address, aadhaar, password })
+    .then(() => {
+      setButtonLoading(btn, false, 'Create My Account');
+      closeCreateAccount();
+      updateNavForAuth();
+      showApiSuccess('Account created successfully! Welcome to Fixora.');
+    })
+    .catch((err) => {
+      setButtonLoading(btn, false, 'Create My Account');
+      showCaToast(err.message, 'orange');
+    });
+}
+
+/* ━━━━ WORKER REGISTRATION FORM → API ━━━━━━━━━━━━━━━━━━ */
+function submitWorkerReg() {
+  // Uses the ACTUAL field IDs from the worker registration modal
+  const btn       = document.getElementById('submitBtn');
+  const name      = document.getElementById('inp-name')?.value?.trim();
+  const phone     = document.getElementById('inp-phone')?.value?.replace(/[^0-9]/g,'');
+  const email     = document.getElementById('inp-email')?.value?.trim();
+  const city      = document.getElementById('inp-city')?.value || 'Bengaluru';
+  const expSlider = document.getElementById('expSlider')?.value || 1;
+  const skill     = document.querySelector('input[name="skill"]:checked')?.value;
+  const idProof   = document.getElementById('inp-file')?.files?.[0];
+
+  if (!name || name.length < 2)    { showApiError('Name is required','wrApiError'); return; }
+  if (!phone || phone.length < 10) { showApiError('Valid 10-digit phone required','wrApiError'); return; }
+  if (!skill)                       { showApiError('Please select your profession','wrApiError'); return; }
+
+  const professionCharges = {
+    'Electrician':{'min':249,'max':799},'Plumber':{'min':199,'max':599},
+    'AC Technician':{'min':399,'max':999},'Carpenter':{'min':349,'max':899},
+    'Painter':{'min':799,'max':2499},'Appliance Repair':{'min':299,'max':799},
+    'Cleaning Expert':{'min':499,'max':1499},'Medical Assist':{'min':599,'max':1999},
+  };
+  const charges = professionCharges[skill] || {min:299,max:799};
+
+  const fd = new FormData();
+  fd.append('name',       name);
+  fd.append('phone',      phone);
+  if (email) fd.append('email', email);
+  fd.append('password',   'Fixora@' + phone.slice(-4));
+  fd.append('profession', skill);
+  fd.append('experience', expSlider);
+  fd.append('chargeMin',  charges.min);
+  fd.append('chargeMax',  charges.max);
+  fd.append('city',       city);
+  if (idProof) fd.append('photo', idProof);
+
+  const doSubmit = (lat, lng) => {
+    if (lat) { fd.append('lat', lat); fd.append('lng', lng); }
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Registering…'; }
+    API.registerWorker(fd)
+      .then(() => {
+        if (btn) { btn.disabled = false; btn.textContent = 'Submit Application →'; }
+        closeWorkerReg();
+        updateNavForAuth();
+        showSuccess(); // existing success popup
+        refreshWorkerGrid();
+      })
+      .catch((err) => {
+        if (btn) { btn.disabled = false; btn.textContent = 'Submit Application →'; }
+        showApiError(err.message, 'wrApiError');
+      });
+  };
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (p) => doSubmit(p.coords.latitude, p.coords.longitude),
+      ()  => doSubmit(null, null),
+      { timeout: 3000 }
+    );
+  } else {
+    doSubmit(null, null);
+  }
+}
+
+/* ━━━━ COMPLAINT FORM → API ━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function submitComplaint() {
+  const btn = document.getElementById('cplSubmitBtn');
+
+  if (!API.getToken()) {
+    closeComplaint();
+    openLogin();
+    showApiError('Please log in to submit a service request');
+    return;
+  }
+
+  // Uses actual IDs from the complaint modal: c-svc, c-title, c-desc, c-addr, c-photo
+  const problemType = document.getElementById('c-svc')?.value;
+  const title       = document.getElementById('c-title')?.value?.trim();
+  const description = document.getElementById('c-desc')?.value?.trim();
+  const address     = document.getElementById('c-addr')?.value?.trim();
+  const photo       = document.getElementById('c-photo')?.files?.[0];
+
+  if (!problemType) { showApiError('Select a service type', 'cplApiError'); return; }
+  if (!title || title.length < 3) { showApiError('Add a complaint title', 'cplApiError'); return; }
+  if (!description || description.length < 10) { showApiError('Describe the issue in more detail', 'cplApiError'); return; }
+  if (!address) { showApiError('Address is required', 'cplApiError'); return; }
+
+  const fd = new FormData();
+  fd.append('problemType',  problemType);
+  fd.append('title',        title);
+  fd.append('description',  description);
+  fd.append('address',      address);
+  if (window._pendingWorkerId) { fd.append('workerId', window._pendingWorkerId); window._pendingWorkerId = null; }
+  if (photo) fd.append('photo', photo);
+
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Submitting…'; }
+
+  API.createService(fd)
+    .then((data) => {
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit Complaint →'; }
+      closeComplaint();
+      showCplSuccess(data.data?._id);
+    })
+    .catch((err) => {
+      if (btn) { btn.disabled = false; btn.textContent = 'Submit Complaint →'; }
+      showApiError(err.message, 'cplApiError');
+    });
+}
+
+/* ━━━━ LOAD WORKERS FROM API ━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function refreshWorkerGrid() {
+  const grid = document.getElementById('workerGrid');
+  if (!grid) return;
+
+  API.getWorkers({ limit: 12, sort: '-avgRating' })
+    .then((res) => {
+      if (!res.data || !res.data.length) return; // fallback to seeded static data
+      const emojiMap = {
+        'Electrician':'⚡','Plumber':'🔧','AC Technician':'❄️',
+        'Carpenter':'🪚','Painter':'🎨','Appliance Repair':'🖥️',
+        'Cleaning Expert':'🧹','Medical Assist':'🏥',
+        'Pest Control':'🐛','Other':'🔨',
+      };
+
+      grid.innerHTML = res.data.map((w) => {
+        const stars   = '★'.repeat(Math.floor(w.avgRating)) + '☆'.repeat(5 - Math.floor(w.avgRating));
+        const charge  = w.chargeDisplay || `₹${w.chargeMin}–₹${w.chargeMax}`;
+        const photoSrc = w.photo
+          ? (w.photo.startsWith('http') ? w.photo : window.location.origin + w.photo)
+          : '';
+        const fallbackEmoji = emojiMap[w.profession] || '👷';
+        return '<div class="wp-card reveal vis">' +
+          '<div class="wp-status ' + (w.isAvailable ? 'avail' : 'busy') + '"><span class="wp-status-dot"></span>' + (w.isAvailable ? 'Available' : 'Busy') + '</div>' +
+          '<div class="wp-photo-ring">' +
+            (photoSrc
+              ? '<img src="' + photoSrc + '" alt="' + w.name + '" class="wp-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>'
+              : '') +
+            '<div class="wp-photo-fallback" style="display:' + (photoSrc ? 'none' : 'flex') + '">' + fallbackEmoji + '</div>' +
+            '<div class="wp-verify-badge">✓</div>' +
+          '</div>' +
+          '<div class="wp-info">' +
+            '<div class="wp-name">' + w.name + '</div>' +
+            '<div class="wp-prof">' + w.profession + '</div>' +
+            '<div class="wp-loc">📍 ' + (w.location?.area || w.location?.city || 'Bengaluru') + '</div>' +
+          '</div>' +
+          '<div class="wp-stars-row"><span class="wp-stars">' + stars + '</span><span class="wp-rating-num"> ' + w.avgRating + '</span><span class="wp-rating-cnt"> (' + w.totalJobs + ' jobs)</span></div>' +
+          '<div class="wp-divider"></div>' +
+          '<div class="wp-meta-row">' +
+            '<div class="wp-charge-pill"><span>💰</span>' + charge + '</div>' +
+            '<div class="wp-eta-pill"><span>⏱️</span>' + (w.experience || 1) + ' yrs exp</div>' +
+          '</div>' +
+          '<button class="wp-book-btn" ' + (w.isAvailable ? '' : 'disabled') + ' onclick="bookWorker('' + w._id + '','' + w.name + '')">' +
+            (w.isAvailable ? '⚡ Book Now' : '⏳ Busy') +
+          '</button>' +
+        '</div>';
+      }).join('');
+    })
+    .catch(() => {
+      // API not reachable — static demo data already rendered, just skip
+    });
+}
+
+/* ━━━━ BOOK A WORKER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function bookWorker(workerId, workerName) {
+  if (!API.getToken()) {
+    openLogin();
+    showApiError('Please log in to book a worker');
+    return;
+  }
+
+  // Open complaint/request modal pre-filled
+  openComplaint();
+  setTimeout(() => {
+    const title = document.getElementById('cpl-title');
+    if (title) title.value = 'Service request for ' + workerName;
+    // Stash worker ID to attach on submit
+    window._pendingWorkerId = workerId;
+  }, 400);
+}
+
+/* ━━━━ NEARBY WORKERS FROM API ━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function loadNearbyFromAPI(lat, lng) {
+  API.getNearbyWorkers(lat, lng, 5000)
+    .then((res) => {
+      if (!res.data || !res.data.length) return;
+
+      // Update stat bar
+      const avail = res.data.filter((w) => w.isAvailable).length;
+      const busy  = res.data.length - avail;
+      const msA   = document.getElementById('msAvail');
+      const msB   = document.getElementById('msBusy');
+      if (msA) msA.textContent = avail;
+      if (msB) msB.textContent = busy;
+    })
+    .catch(() => { /* API offline — map already shows seeded markers */ });
+}
+
+/* ━━━━ COMPLAINT SUCCESS WITH TICKET ID ━━━━━━━━━━━━━━━━ */
+function showCplSuccess(ticketId) {
+  var d = document.createElement('div');
+  d.style.cssText = 'position:fixed;inset:0;z-index:800;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,10,24,.9);backdrop-filter:blur(16px);';
+  const shortId = ticketId ? '#FX-' + String(ticketId).slice(-6).toUpperCase() : '#FX-' + Math.random().toString(36).slice(2,8).toUpperCase();
+  d.innerHTML =
+    '<div style="background:#0F172A;border:1px solid rgba(34,197,94,.25);border-radius:24px;padding:44px 36px;text-align:center;max-width:420px;width:100%;box-shadow:0 40px 100px rgba(0,0,0,.7);">' +
+      '<div style="font-size:3.5rem;margin-bottom:16px;">✅</div>' +
+      '<div style="font-family:Syne,sans-serif;font-size:1.45rem;font-weight:900;color:#fff;margin-bottom:10px;">Complaint Registered!</div>' +
+      '<div style="font-size:.82rem;color:rgba(148,163,184,.6);margin-bottom:16px;">Ticket ID: <strong style="color:#4ADE80;">' + shortId + '</strong></div>' +
+      '<p style="font-size:.875rem;color:rgba(148,163,184,.7);line-height:1.72;margin-bottom:22px;">Our team will assign a verified worker within 30 minutes.</p>' +
+      '<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:22px;">' +
+        '<span style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#4ADE80;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:99px;">🎫 Ticket Created</span>' +
+        '<span style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#4ADE80;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:99px;">📲 SMS Sent</span>' +
+        '<span style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);color:#4ADE80;font-size:.7rem;font-weight:700;padding:4px 12px;border-radius:99px;">⏰ 30 min Response</span>' +
+      '</div>' +
+      '<button onclick="this.closest('div[style*=fixed]').remove();document.body.style.overflow='';" style="width:100%;padding:13px;border-radius:12px;background:linear-gradient(135deg,#16A34A,#0891B2);border:none;color:#fff;font-size:.9rem;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;">Done</button>' +
+    '</div>';
+  document.body.appendChild(d);
+  document.body.style.overflow = 'hidden';
+  d.addEventListener('click', (e) => { if (e.target === d) { d.remove(); document.body.style.overflow = ''; } });
+}
+
+/* ━━━━ INJECT IDs NEEDED BY API BRIDGE ━━━━━━━━━━━━━━━━━ */
+// Ensure login form fields have IDs if not already set
+document.addEventListener('DOMContentLoaded', () => {
+  // Login form field IDs
+  const loginInputs = document.querySelectorAll('#loginModal input');
+  if (loginInputs[0] && !loginInputs[0].id) loginInputs[0].id = 'loginEmail';
+  if (loginInputs[1] && !loginInputs[1].id) loginInputs[1].id = 'loginPassword';
+
+  const loginBtn = document.querySelector('#loginModal button[onclick*="doLogin"]');
+  if (loginBtn) loginBtn.id = 'loginSubmitBtn';
+
+  // Create error containers for forms
+  ['loginModal','workerRegModal','complaintModal'].forEach((modalId) => {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    const errId = { loginModal:'loginError', workerRegModal:'wrError', complaintModal:'cplError' }[modalId];
+    if (!document.getElementById(errId)) {
+      const err = document.createElement('div');
+      err.id = errId; err.style.display = 'none';
+      const btn = modal.querySelector('button[onclick*="doLogin"], button[onclick*="submitWorkerReg"], button[onclick*="submitComplaint"]');
+      if (btn) btn.insertAdjacentElement('beforebegin', err);
+    }
+  });
+
+  // CA password field — add if missing
+  const caStep1 = document.getElementById('ca-step1');
+  if (caStep1 && !document.getElementById('ca-password')) {
+    const pwWrap = document.createElement('div');
+    pwWrap.style.cssText = 'margin-top:10px;';
+    pwWrap.innerHTML = '<label style="font-size:.75rem;color:rgba(148,163,184,.6);display:block;margin-bottom:4px;">Password</label><input id="ca-password" type="password" placeholder="Create a password (min 6 chars)" style="width:100%;padding:11px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;font-family:DM Sans,sans-serif;font-size:.875rem;box-sizing:border-box;" />';
+    caStep1.appendChild(pwWrap);
+  }
+
+  // Update nav to reflect already-logged-in state
+  updateNavForAuth();
+
+  // Try loading workers from API (falls back to static data if API offline)
+  refreshWorkerGrid();
+});
+
+
+/* ═══════════════════════════════════════════════════════════
+   SERVICE WORKERS FEATURE — 10 workers per category (80 total)
+   ═══════════════════════════════════════════════════════════ */
+
+
+document.addEventListener('keydown', function(e){
+  if (e.key==='Escape'){closeWorkerProfile();closeContractors();}
+});
+
+});
+
+
+/* ═══════════════════════════════════════════════════════════
+   SERVICE WORKERS OVERLAY
+   80 workers across 8 categories — 10 per service
+   ═══════════════════════════════════════════════════════════ */
+
+var _SVO_KEY    = null;
+var _SVO_SOURCE = [];
+
+/* ── Worker data ──────────────────────────────────────── */
+var SVC_WORKERS_DB = {
+
+  Plumbing: {
+    icon: '🔧', label: 'Plumbing Professionals',
+    tag:  'Pipe, drain & fixture specialists',
+    list: [
+      {n:'Deepak Chauhan',  p:'Master Plumber',            r:4.8, j:634, cmin:199, cmax:599,  av:1, exp:'11 yrs', area:'Whitefield',     img:'https://images.unsplash.com/photo-1504383633899-a8a38d1b9e5c?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Suresh Kumar',    p:'Plumbing Expert',           r:4.9, j:702, cmin:299, cmax:699,  av:1, exp:'14 yrs', area:'Indiranagar',    img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Anil Patil',      p:'Plumber & Fitter',          r:4.8, j:521, cmin:199, cmax:499,  av:1, exp:'8 yrs',  area:'Koramangala',    img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Dinesh Patel',    p:'Pipe Specialist',           r:4.8, j:412, cmin:249, cmax:599,  av:1, exp:'7 yrs',  area:'HSR Layout',     img:'https://images.unsplash.com/photo-1463453091185-61582044d556?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ramesh Yadav',    p:'Drain & Pipe Expert',       r:4.7, j:389, cmin:199, cmax:549,  av:0, exp:'6 yrs',  area:'BTM Layout',     img:'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Pradeep Nair',    p:'Tap & Geyser Repair',       r:4.6, j:278, cmin:199, cmax:449,  av:1, exp:'5 yrs',  area:'JP Nagar',       img:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Harish Reddy',    p:'Plumber & Sanitation',      r:4.7, j:345, cmin:249, cmax:599,  av:1, exp:'9 yrs',  area:'Marathahalli',   img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Santosh Mishra',  p:'Drain Clearing Expert',     r:4.8, j:467, cmin:299, cmax:649,  av:1, exp:'10 yrs', area:'Electronic City', img:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Govind Sharma',   p:'Geyser & Tap Specialist',   r:4.5, j:198, cmin:199, cmax:399,  av:0, exp:'4 yrs',  area:'Jayanagar',      img:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ravi Thakur',     p:'Plumber',                   r:4.7, j:312, cmin:199, cmax:499,  av:1, exp:'8 yrs',  area:'Banashankari',   img:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  Electrical: {
+    icon: '⚡', label: 'Electrical Professionals',
+    tag:  'Certified electricians near you',
+    list: [
+      {n:'Rajan Sharma',    p:'Master Electrician',        r:4.9, j:847, cmin:299, cmax:799,  av:1, exp:'9 yrs',  area:'Koramangala',    img:'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Pavan Kumar',     p:'Solar & Electrical',        r:4.9, j:445, cmin:349, cmax:999,  av:1, exp:'10 yrs', area:'HSR Layout',     img:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ramesh Yadav',    p:'Wiring Specialist',         r:4.9, j:480, cmin:299, cmax:749,  av:1, exp:'12 yrs', area:'Whitefield',     img:'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Suresh Nambiar',  p:'Electrical Engineer',       r:4.7, j:523, cmin:249, cmax:699,  av:1, exp:'11 yrs', area:'Indiranagar',    img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ajay Verma',      p:'MCB & Inverter Expert',     r:4.8, j:394, cmin:299, cmax:799,  av:1, exp:'8 yrs',  area:'Jayanagar',      img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Vikash Singh',    p:'Electrician',               r:4.6, j:321, cmin:249, cmax:599,  av:0, exp:'6 yrs',  area:'BTM Layout',     img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Dinesh Rao',      p:'Switchboard Specialist',    r:4.7, j:267, cmin:249, cmax:649,  av:1, exp:'7 yrs',  area:'JP Nagar',       img:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Sanjay Tiwari',   p:'Electrician',               r:4.8, j:412, cmin:299, cmax:749,  av:1, exp:'9 yrs',  area:'Banashankari',   img:'https://images.unsplash.com/photo-1463453091185-61582044d556?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Harish Gupta',    p:'Industrial Electrician',    r:4.7, j:567, cmin:349, cmax:899,  av:0, exp:'13 yrs', area:'Marathahalli',   img:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Mohan Pillai',    p:'Fan & Wiring Repair',       r:4.6, j:234, cmin:249, cmax:599,  av:1, exp:'5 yrs',  area:'Electronic City', img:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  'AC Repair': {
+    icon: '❄️', label: 'AC Repair Specialists',
+    tag:  'HVAC & cooling system experts',
+    list: [
+      {n:'Vikram Singh',    p:'HVAC Specialist',           r:4.8, j:694, cmin:449, cmax:999,  av:1, exp:'10 yrs', area:'Koramangala',    img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Rajiv Menon',     p:'AC Repair & Service',       r:4.9, j:756, cmin:399, cmax:1199, av:1, exp:'12 yrs', area:'Whitefield',     img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Priya Nair',      p:'AC Technician',             r:4.7, j:512, cmin:399, cmax:999,  av:1, exp:'6 yrs',  area:'Indiranagar',    img:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Anand Krishnan',  p:'Split AC Specialist',       r:4.8, j:489, cmin:399, cmax:999,  av:1, exp:'9 yrs',  area:'HSR Layout',     img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Karthik Reddy',   p:'Gas Refill Expert',         r:4.7, j:423, cmin:399, cmax:899,  av:1, exp:'8 yrs',  area:'JP Nagar',       img:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Lakshmi Devi',    p:'AC & Refrigeration',        r:4.9, j:312, cmin:449, cmax:1099, av:1, exp:'8 yrs',  area:'Marathahalli',   img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Manoj Shetty',    p:'AC Installation Expert',    r:4.8, j:534, cmin:449, cmax:1299, av:1, exp:'11 yrs', area:'Electronic City', img:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Sunil Iyer',      p:'AC Technician',             r:4.6, j:312, cmin:349, cmax:899,  av:0, exp:'7 yrs',  area:'BTM Layout',     img:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Deepa Sharma',    p:'HVAC Technician',           r:4.6, j:267, cmin:349, cmax:849,  av:0, exp:'5 yrs',  area:'Jayanagar',      img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ritu Verma',      p:'AC Service Tech',           r:4.7, j:389, cmin:399, cmax:949,  av:1, exp:'7 yrs',  area:'Banashankari',   img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  'Appliance Repair': {
+    icon: '🖥️', label: 'Appliance Repair Experts',
+    tag:  'All major brand technicians',
+    list: [
+      {n:'Raj Kumar',       p:'Appliance Specialist',      r:4.8, j:589, cmin:299, cmax:799,  av:1, exp:'10 yrs', area:'JP Nagar',       img:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Sanjay Pillai',   p:'Washing Machine Expert',    r:4.8, j:478, cmin:349, cmax:849,  av:1, exp:'11 yrs', area:'Indiranagar',    img:'https://images.unsplash.com/photo-1463453091185-61582044d556?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Priyanka Rao',    p:'Appliance Technician',      r:4.9, j:334, cmin:299, cmax:749,  av:1, exp:'7 yrs',  area:'HSR Layout',     img:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ankit Sharma',    p:'Refrigerator Specialist',   r:4.7, j:412, cmin:299, cmax:799,  av:1, exp:'8 yrs',  area:'Whitefield',     img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Harish Gupta',    p:'Home Appliance Tech',       r:4.7, j:567, cmin:299, cmax:799,  av:0, exp:'9 yrs',  area:'Koramangala',    img:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Kavitha Nair',    p:'Microwave & Oven Tech',     r:4.8, j:298, cmin:299, cmax:699,  av:0, exp:'7 yrs',  area:'Jayanagar',      img:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Deepak Joshi',    p:'TV & Electronics Repair',   r:4.6, j:256, cmin:249, cmax:699,  av:1, exp:'6 yrs',  area:'BTM Layout',     img:'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ravi Menon',      p:'Appliance Repair',          r:4.7, j:389, cmin:299, cmax:799,  av:1, exp:'9 yrs',  area:'Marathahalli',   img:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Suresh Patel',    p:'Dryer & Dishwasher Tech',   r:4.5, j:187, cmin:249, cmax:649,  av:1, exp:'5 yrs',  area:'Electronic City', img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Nitesh Kumar',    p:'Home Appliance Expert',     r:4.8, j:445, cmin:349, cmax:899,  av:1, exp:'10 yrs', area:'Banashankari',   img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  Painting: {
+    icon: '🎨', label: 'Painting Professionals',
+    tag:  'Interior, exterior & texture artists',
+    list: [
+      {n:'Sundar Rao',      p:'Exterior Painter',          r:4.9, j:567, cmin:899,  cmax:2999, av:1, exp:'14 yrs', area:'BTM Layout',    img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Anita Mathur',    p:'Texture & Wall Artist',     r:4.8, j:334, cmin:999,  cmax:3499, av:1, exp:'11 yrs', area:'Koramangala',   img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Lalitha Devi',    p:'Interior Designer & Painter',r:4.8, j:289, cmin:1299, cmax:4999, av:1, exp:'12 yrs', area:'Jayanagar',    img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Rajesh Kumar',    p:'Painter',                   r:4.7, j:456, cmin:799,  cmax:1999, av:1, exp:'10 yrs', area:'Whitefield',    img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Meena Pillai',    p:'Interior Painter',          r:4.6, j:298, cmin:799,  cmax:2499, av:1, exp:'8 yrs',  area:'HSR Layout',    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Arun Nair',       p:'Putty & Polish Expert',     r:4.8, j:423, cmin:899,  cmax:2499, av:1, exp:'10 yrs', area:'Electronic City',img:'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Rekha Sharma',    p:'Painter & Decorator',       r:4.6, j:334, cmin:799,  cmax:2299, av:0, exp:'9 yrs',  area:'Indiranagar',   img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Mohan Verma',     p:'Waterproofing Specialist',  r:4.7, j:378, cmin:799,  cmax:2499, av:0, exp:'9 yrs',  area:'JP Nagar',      img:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Priya Shetty',    p:'Painter',                   r:4.5, j:198, cmin:699,  cmax:1799, av:1, exp:'5 yrs',  area:'Marathahalli',  img:'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Suma Krishnan',   p:'Painter & Decorator',       r:4.6, j:267, cmin:799,  cmax:2099, av:1, exp:'7 yrs',  area:'Banashankari',  img:'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  Carpentry: {
+    icon: '🪚', label: 'Carpentry Professionals',
+    tag:  'Custom woodwork & furniture experts',
+    list: [
+      {n:'Arjun Reddy',     p:'Master Carpenter',          r:4.9, j:421, cmin:349, cmax:899,  av:1, exp:'13 yrs', area:'BTM Layout',    img:'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Pavan Kumar',     p:'Furniture Specialist',      r:4.9, j:445, cmin:399, cmax:1099, av:1, exp:'14 yrs', area:'Indiranagar',   img:'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Prakash Rao',     p:'Modular Furniture Expert',  r:4.9, j:512, cmin:499, cmax:1599, av:1, exp:'12 yrs', area:'Electronic City',img:'https://images.unsplash.com/photo-1463453091185-61582044d556?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Ramesh Shetty',   p:'Door & Window Repair',      r:4.8, j:456, cmin:349, cmax:799,  av:1, exp:'10 yrs', area:'Koramangala',   img:'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Mahesh Patil',    p:'Wood Flooring Expert',      r:4.7, j:312, cmin:449, cmax:1299, av:1, exp:'9 yrs',  area:'HSR Layout',    img:'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Srinivas Rao',    p:'Carpenter & Joiner',        r:4.8, j:389, cmin:349, cmax:899,  av:0, exp:'11 yrs', area:'Whitefield',    img:'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Anand Sharma',    p:'Cabinet Maker',             r:4.6, j:234, cmin:399, cmax:1199, av:1, exp:'7 yrs',  area:'JP Nagar',      img:'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Nikhil Reddy',    p:'Carpenter',                 r:4.7, j:367, cmin:349, cmax:899,  av:1, exp:'8 yrs',  area:'Jayanagar',     img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Kaveri Devi',     p:'Interior Carpentry',        r:4.8, j:298, cmin:449, cmax:1299, av:0, exp:'8 yrs',  area:'Marathahalli',  img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Shilpa Nair',     p:'Custom Woodwork',           r:4.7, j:278, cmin:399, cmax:1099, av:1, exp:'9 yrs',  area:'Banashankari',  img:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  Cleaning: {
+    icon: '🧹', label: 'Cleaning Professionals',
+    tag:  'Deep cleaning & sanitisation pros',
+    list: [
+      {n:'Lakshmi Devi',    p:'Home Cleaning Specialist',  r:4.9, j:312, cmin:499, cmax:1299, av:1, exp:'7 yrs',  area:'Koramangala',   img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Rekha Patil',     p:'Home & Office Cleaning',    r:4.8, j:423, cmin:499, cmax:1499, av:1, exp:'8 yrs',  area:'Indiranagar',   img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Priya Iyer',      p:'Bathroom Sanitisation',     r:4.9, j:312, cmin:399, cmax:999,  av:1, exp:'6 yrs',  area:'Whitefield',    img:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Radha Menon',     p:'Post-Renovation Cleanup',   r:4.8, j:345, cmin:699, cmax:1999, av:1, exp:'9 yrs',  area:'Jayanagar',     img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Geetha Krishnan', p:'Sanitisation Expert',       r:4.7, j:256, cmin:449, cmax:1199, av:1, exp:'6 yrs',  area:'JP Nagar',      img:'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Sunita Verma',    p:'Deep Cleaning Expert',      r:4.7, j:376, cmin:499, cmax:1499, av:0, exp:'5 yrs',  area:'Marathahalli',  img:'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Sudha Rao',       p:'Kitchen Deep Clean',        r:4.7, j:289, cmin:499, cmax:1399, av:1, exp:'7 yrs',  area:'BTM Layout',    img:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Anita Kumar',     p:'Sofa & Carpet Cleaning',    r:4.6, j:198, cmin:599, cmax:1999, av:0, exp:'5 yrs',  area:'HSR Layout',    img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Saroj Devi',      p:'Pest Control & Cleaning',   r:4.7, j:234, cmin:599, cmax:1699, av:0, exp:'6 yrs',  area:'Electronic City',img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Usha Sharma',     p:'Professional Cleaner',      r:4.6, j:178, cmin:449, cmax:1299, av:1, exp:'4 yrs',  area:'Banashankari',  img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  },
+
+  Medical: {
+    icon: '🏥', label: 'Medical Assistance',
+    tag:  'Certified nurses & home doctors',
+    list: [
+      {n:'Kavitha Iyer',    p:'Home Nurse & Caregiver',    r:4.9, j:203, cmin:599,  cmax:1999, av:1, exp:'7 yrs',  area:'Jayanagar',    img:'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Dr. Radha Menon', p:'Home Doctor',               r:4.9, j:423, cmin:999,  cmax:2999, av:1, exp:'14 yrs', area:'BTM Layout',   img:'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Nisha Rao',       p:'Registered Nurse',          r:4.9, j:291, cmin:699,  cmax:2499, av:1, exp:'9 yrs',  area:'Indiranagar',  img:'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Meena Krishnan',  p:'Elder Care Specialist',     r:4.9, j:267, cmin:699,  cmax:2499, av:1, exp:'11 yrs', area:'HSR Layout',   img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Anitha Pillai',   p:'Physiotherapist',           r:4.8, j:312, cmin:799,  cmax:2999, av:0, exp:'10 yrs', area:'Koramangala',  img:'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Sunita Sharma',   p:'IV & Injection Admin',      r:4.7, j:189, cmin:599,  cmax:1799, av:1, exp:'8 yrs',  area:'Whitefield',   img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Priya Nambiar',   p:'Blood Test & Lab Assist',   r:4.8, j:334, cmin:499,  cmax:1499, av:0, exp:'7 yrs',  area:'JP Nagar',     img:'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Rekha Verma',     p:'Wound Dressing & Care',     r:4.7, j:245, cmin:599,  cmax:1799, av:1, exp:'8 yrs',  area:'Marathahalli', img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Lalitha Reddy',   p:'Nursing Assistant',         r:4.8, j:298, cmin:599,  cmax:1999, av:1, exp:'9 yrs',  area:'Electronic City',img:'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=160&h=160&fit=crop&crop=faces'},
+      {n:'Geetha Iyer',     p:'Palliative Care Nurse',     r:4.9, j:178, cmin:799,  cmax:2499, av:1, exp:'10 yrs', area:'Banashankari', img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces'},
+    ]
+  }
+};
+
+/* ── open overlay ─────────────────────────────────────── */
+function openServiceWorkers(key) {
+  var d = SVC_WORKERS_DB[key];
+  if (!d) { console.warn('[Fixora] No data for key:', key); return; }
+
+  _SVO_KEY    = key;
+  _SVO_SOURCE = d.list;
+
+  /* update header */
+  document.getElementById('svoIcon').textContent  = d.icon;
+  document.getElementById('svoTitle').textContent = d.label;
+  document.getElementById('svoTag').textContent   = d.tag;
+
+  /* reset filter pills */
+  document.querySelectorAll('.svo-fpill').forEach(function(p){ p.classList.remove('active'); });
+  var allPill = document.querySelector('.svo-fpill[data-f="all"]');
+  if (allPill) allPill.classList.add('active');
+
+  /* render all workers */
+  _svoRender(_SVO_SOURCE);
+
+  /* open */
+  var overlay = document.getElementById('svcOverlay');
+  overlay.style.display = 'flex';           /* ensure visible */
+  requestAnimationFrame(function() {
+    overlay.classList.add('svo-open');
+  });
+  document.body.style.overflow = 'hidden';
+}
+
+/* ── close overlay ────────────────────────────────────── */
+function closeSvcOverlay() {
+  var overlay = document.getElementById('svcOverlay');
+  overlay.classList.remove('svo-open');
+  document.body.style.overflow = '';
+}
+
+/* ── filter ───────────────────────────────────────────── */
+function svoFilter(btn) {
+  document.querySelectorAll('.svo-fpill').forEach(function(p){ p.classList.remove('active'); });
+  btn.classList.add('active');
+  var f = btn.getAttribute('data-f');
+  var src = _SVO_SOURCE;
+  var out;
+  if (f === 'avail')  out = src.filter(function(w){ return w.av; });
+  else if (f === 'top') out = src.filter(function(w){ return w.r >= 4.8; });
+  else if (f === 'budget') {
+    out = src.slice().sort(function(a,b){ return a.cmin - b.cmin; }).slice(0, 6);
+  } else {
+    out = src;
+  }
+  _svoRender(out);
+}
+
+/* ── render cards ─────────────────────────────────────── */
+function _svoRender(list) {
+  var grid  = document.getElementById('svoGrid');
+  var count = document.getElementById('svoCount');
+  if (!grid) return;
+
+  count.textContent = list.length + (list.length === 1 ? ' worker found' : ' workers found');
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="svo-empty"><div class="svo-empty-ico">🔍</div>No workers match this filter.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(function(w, i) {
+    var stars  = '★'.repeat(Math.floor(w.r)) + '☆'.repeat(5 - Math.floor(w.r));
+    var charge = '\u20B9' + w.cmin + '\u2013\u20B9' + w.cmax;
+    var init   = w.n.split(' ').map(function(x){ return x[0]; }).join('').slice(0,2).toUpperCase();
+    var delay  = (i * 0.06).toFixed(2) + 's';
+    var safeName = w.n.replace(/'/g, '');
+
+    return [
+      '<div class="svo-wcard" style="animation-delay:' + delay + '">',
+
+        /* availability badge */
+        '<div class="svo-avail ' + (w.av ? 'av' : 'bz') + '">',
+          '<span class="svo-dot"></span>',
+          (w.av ? 'Available' : 'Busy'),
+        '</div>',
+
+        /* photo */
+        '<div class="svo-photo-ring">',
+          '<img src="' + w.img + '" alt="' + w.n + '" loading="lazy"',
+              ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">',
+          '<div class="svo-photo-initials">' + init + '</div>',
+          '<div class="svo-verified">\u2713</div>',
+        '</div>',
+
+        /* name + profession */
+        '<div class="svo-name">'  + w.n + '</div>',
+        '<div class="svo-prof">'  + w.p + '</div>',
+
+        /* stars + count */
+        '<div class="svo-stars-row">',
+          '<span class="svo-stars">' + stars + '</span>',
+          '<span class="svo-rnum"> ' + w.r.toFixed(1) + '</span>',
+          '<span class="svo-rct"> (' + w.j + ' jobs)</span>',
+        '</div>',
+
+        /* location */
+        '<div class="svo-area">\uD83D\uDCCD ' + w.area + '  \u00B7  ' + w.exp + ' exp</div>',
+
+        '<div class="svo-sep"></div>',
+
+        /* charge + exp pills */
+        '<div class="svo-pills">',
+          '<span class="svo-cpill">\uD83D\uDCB0 ' + charge + '</span>',
+          '<span class="svo-epill">\uD83C\uDFC5 ' + w.exp + '</span>',
+        '</div>',
+
+        /* book button */
+        '<button class="svo-bookbtn"',
+          (w.av ? '' : ' disabled'),
+          ' onclick="_svoBook(\'' + safeName + '\')">' ,
+          (w.av ? '\u26A1 Book Now' : '\u23F3 Unavailable'),
+        '</button>',
+
+      '</div>'
+    ].join('');
+  }).join('');
+}
+
+/* ── book action ──────────────────────────────────────── */
+function _svoBook(name) {
+  closeSvcOverlay();
+  setTimeout(function() {
+    if (typeof openComplaint === 'function') openComplaint();
+    setTimeout(function() {
+      var t = document.getElementById('c-title');
+      if (t) t.value = 'Service request for ' + name;
+    }, 400);
+  }, 360);
+}
+
+/* ── keyboard support ─────────────────────────────────── */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeSvcOverlay();
+});
+
+/* ── keyboard: Enter/Space on svc-card ───────────────── */
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.svc-card[onclick]').forEach(function(card) {
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
+});
+
+</script>
+
+
+<!-- ═══ SERVICE WORKERS MODAL ═══════════════════════════════ -->
+
+
+
+<!-- ═══ WORKER PROFILE MODAL ════════════════════════════════ -->
+<div id="wpModal" onclick="if(event.target===this)closeWorkerProfile()">
+  <div class="wpm-card" id="wpmCard">
+    <div class="wpm-hero">
+      <button class="wpm-close-btn" onclick="closeWorkerProfile()">✕</button>
+      <div class="wpm-photo-wrap" id="wpmPhotoWrap">
+        <img id="wpmPhoto" src="" alt="" onerror="this.style.display='none';document.getElementById('wpmFallback').style.display='flex'">
+        <div class="wpm-photo-fallback" id="wpmFallback" style="display:none"></div>
+        <div class="wpm-vbadge">✓</div>
+      </div>
+      <div class="wpm-avail-pill" id="wpmAvailPill">
+        <span class="wpm-avail-dot"></span><span id="wpmAvailTxt">Available</span>
+      </div>
+      <div class="wpm-name" id="wpmName"></div>
+      <div class="wpm-prof" id="wpmProf"></div>
+      <div class="wpm-stars-row">
+        <span class="wpm-stars" id="wpmStars"></span>
+        <span class="wpm-rating-big" id="wpmRating"></span>
+        <span class="wpm-jobs-ct" id="wpmJobs"></span>
+      </div>
+    </div>
+    <div class="wpm-stats">
+      <div class="wpm-stat"><div class="wpm-stat-lbl">💰 Charge Range</div><div class="wpm-stat-val" id="wpmCharge"></div></div>
+      <div class="wpm-stat"><div class="wpm-stat-lbl">📍 Service Area</div><div class="wpm-stat-val" id="wpmCity"></div></div>
+      <div class="wpm-stat"><div class="wpm-stat-lbl">⏱️ Avg. ETA</div><div class="wpm-stat-val" id="wpmEta"></div></div>
+      <div class="wpm-stat"><div class="wpm-stat-lbl">📏 Distance</div><div class="wpm-stat-val" id="wpmDist"></div></div>
+    </div>
+    <div class="wpm-about">
+      <div class="wpm-about-title">About</div>
+      <div class="wpm-about-text" id="wpmAbout"></div>
+    </div>
+    <div class="wpm-tags" id="wpmTags"></div>
+    <div class="wpm-actions">
+      <button class="wpm-btn-book" id="wpmBookBtn" onclick="wpmBook()">⚡ Book Service</button>
+      <button class="wpm-btn-call" onclick="wpmCall()">📞 Call Worker</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTRACTORS MODAL ════════════════════════════════════ -->
+<div id="contractorsModal" onclick="if(event.target===this)closeContractors()">
+  <div class="cm-sheet">
+    <div class="cm-handle"></div>
+    <div class="cm-hdr">
+      <div class="cm-hdr-left">
+        <div class="cm-icon">🏗️</div>
+        <div>
+          <div class="cm-title">Verified Contractors</div>
+          <div class="cm-sub">Licensed contractors for large projects &amp; renovations</div>
+        </div>
+      </div>
+      <button class="cm-x" onclick="closeContractors()">✕</button>
+    </div>
+    <div class="cm-filterbar">
+      <button class="cm-pill on" data-cf="all"       onclick="filterContractors(this)">All Contractors</button>
+      <button class="cm-pill"     data-cf="avail"    onclick="filterContractors(this)">✅ Available</button>
+      <button class="cm-pill"     data-cf="civil"    onclick="filterContractors(this)">🏠 Civil &amp; Construction</button>
+      <button class="cm-pill"     data-cf="interior" onclick="filterContractors(this)">🛋️ Interior</button>
+      <button class="cm-pill"     data-cf="electric" onclick="filterContractors(this)">⚡ Electrical</button>
+      <button class="cm-pill"     data-cf="plumbing" onclick="filterContractors(this)">🔧 Plumbing</button>
+      <span class="cm-found" id="cmFound">10 contractors</span>
+    </div>
+    <div class="cm-body">
+      <div class="cm-grid" id="cmGrid"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════
+     SERVICE WORKERS OVERLAY
+     ═══════════════════════════════════════════════════════ -->
+<div id="svcOverlay" onclick="if(event.target===this)closeSvcOverlay()">
+  <div class="svo-panel">
+    <div class="svo-handle"></div>
+
+    <!-- header -->
+    <div class="svo-head">
+      <div class="svo-head-l">
+        <div class="svo-svc-icon" id="svoIcon">🔧</div>
+        <div>
+          <div class="svo-svc-name" id="svoTitle">Workers</div>
+          <div class="svo-svc-tag"  id="svoTag">Verified professionals near you</div>
+        </div>
+      </div>
+      <button class="svo-close" onclick="closeSvcOverlay()" aria-label="Close panel">✕</button>
+    </div>
+
+    <!-- filter pills -->
+    <div class="svo-filters">
+      <button class="svo-fpill active" data-f="all"    onclick="svoFilter(this)">All Workers</button>
+      <button class="svo-fpill"        data-f="avail"  onclick="svoFilter(this)">✅ Available Now</button>
+      <button class="svo-fpill"        data-f="top"    onclick="svoFilter(this)">⭐ Top Rated 4.8+</button>
+      <button class="svo-fpill"        data-f="budget" onclick="svoFilter(this)">💰 Budget-Friendly</button>
+      <span class="svo-count" id="svoCount">10 workers</span>
+    </div>
+
+    <!-- grid -->
+    <div class="svo-body">
+      <div class="svo-grid" id="svoGrid"></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
